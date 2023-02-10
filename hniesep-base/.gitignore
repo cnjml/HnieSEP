@@ -2,8 +2,8 @@
 
 ### IntelliJ IDEA ###
 .idea
+target
 target/
-**/target
 
 ### VS Code ###
 .vscode/
