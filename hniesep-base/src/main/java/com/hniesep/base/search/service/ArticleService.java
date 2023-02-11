@@ -1,4 +1,4 @@
-package com.hniesep.base.service;
+package com.hniesep.base.search.service;
 
 import com.hniesep.base.entity.Article;
 

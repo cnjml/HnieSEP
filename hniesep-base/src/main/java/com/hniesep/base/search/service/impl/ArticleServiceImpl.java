@@ -1,8 +1,8 @@
-package com.hniesep.base.service.impl;
+package com.hniesep.base.search.service.impl;
 
 import com.hniesep.base.entity.Article;
-import com.hniesep.base.mapper.ArticleMapper;
-import com.hniesep.base.service.ArticleService;
+import com.hniesep.base.search.mapper.ArticleMapper;
+import com.hniesep.base.search.service.ArticleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

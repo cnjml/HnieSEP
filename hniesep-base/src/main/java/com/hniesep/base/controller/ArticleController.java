@@ -1,8 +1,7 @@
 package com.hniesep.base.controller;
 
 import com.hniesep.base.entity.Article;
-import com.hniesep.base.service.ArticleService;
-import com.hniesep.base.service.impl.ArticleServiceImpl;
+import com.hniesep.base.search.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

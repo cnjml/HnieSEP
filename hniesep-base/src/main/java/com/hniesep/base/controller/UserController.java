@@ -2,7 +2,7 @@ package com.hniesep.base.controller;
 
 import com.hniesep.base.common.*;
 import com.hniesep.base.entity.User;
-import com.hniesep.base.service.impl.UserServiceImpl;
+import com.hniesep.base.signinup.service.impl.LoginServiceImpl;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserServiceImpl service;
+    private LoginServiceImpl service;
 
     /**
      * json注册
@@ -113,7 +113,7 @@ public class UserController {
      * @param service 自动装配的userServiceImpl的Bean
      */
     @Autowired
-    public void setService(UserServiceImpl service) {
+    public void setService(LoginServiceImpl service) {
         this.service = service;
     }
 

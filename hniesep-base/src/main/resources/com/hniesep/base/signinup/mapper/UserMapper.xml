@@ -2,22 +2,22 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hniesep.base.mapper.UserMapper">
+<mapper namespace="com.hniesep.base.signinup.mapper.UserMapper">
 
     <select id="selectAll" resultType="com.hniesep.base.entity.User">
-        select * from user_account;
+        select * from t_account;
     </select>
     <select id="selectById" resultType="com.hniesep.base.entity.User">
-        select * from user_account where id = #{id};
+        select * from t_account where id = #{id};
     </select>
     <select id="select" resultType="com.hniesep.base.entity.User">
-        select * from user_account where username=#{username} and password = #{password};
+        select * from t_account where username=#{username} and password = #{password};
     </select>
     <select id="selectByName" resultType="com.hniesep.base.entity.User">
-        select * from user_account where username=#{username}
+        select * from t_account where username=#{username}
     </select>
     <insert id="insert">
-        insert into user_account (username,password) values (#{username},#{password});
+        insert into t_account (username,password) values (#{username},#{password});
     </insert>
 
 </mapper>

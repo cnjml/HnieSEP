@@ -1,8 +1,8 @@
-package com.hniesep.base.service.impl;
+package com.hniesep.base.signinup.service.impl;
 
-import com.hniesep.base.mapper.UserMapper;
+import com.hniesep.base.signinup.service.LoginService;
+import com.hniesep.base.signinup.mapper.UserMapper;
 import com.hniesep.base.entity.User;
-import com.hniesep.base.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,11 +11,11 @@ import java.util.List;
  * @author HKRR
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class LoginServiceImpl implements LoginService {
 
     final UserMapper userMapper;
 
-    public UserServiceImpl(UserMapper userMapper) {
+    public LoginServiceImpl(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
 

@@ -1,4 +1,4 @@
-package com.hniesep.base.service;
+package com.hniesep.base.signinup.service;
 
 import com.hniesep.base.entity.User;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * @author HKRR
  */
 
-public interface UserService {
+public interface LoginService {
 
   /**
    *登录

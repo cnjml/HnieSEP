@@ -11,7 +11,7 @@ public class Result {
     private Integer code;
     private Object data;
     private String token;
-    private String msg ;
+    private String msg;
 
     public Result(){}
 

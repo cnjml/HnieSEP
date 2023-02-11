@@ -1,14 +1,17 @@
-package com.hniesep.base.mapper;
+package com.hniesep.base.signinup.mapper;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.hniesep.base.entity.User;
+
 import java.util.List;
 
 /**作者
  * @author HKRR
  */
 @Mapper
+@DS("user")
 public interface UserMapper {
     /**
      *查询所有用户

@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hniesep.base.mapper.ArticleMapper">
+<mapper namespace="com.hniesep.base.search.mapper.ArticleMapper">
 
     <select id="selectAll" resultType="com.hniesep.base.entity.Article">
-        select * from article_all ;
+        select * from article_all;
     </select>
     <select id="selectByAuthor" resultType="com.hniesep.base.entity.Article">
 
