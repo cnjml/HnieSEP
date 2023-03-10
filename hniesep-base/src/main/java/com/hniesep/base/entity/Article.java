@@ -6,6 +6,7 @@ import java.util.Date;
 /**
  * @author 吉铭炼
  */
+@Data
 public class Article {
     /**
      * @

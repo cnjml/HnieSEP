@@ -8,9 +8,13 @@ public class StatusCode {
 
     public static final Integer LOGIN_OK = 200;
     public static final Integer REGISTER_OK = 200;
-    public static final Integer LOGIN_ERR = 401;
-    public static final Integer REGISTER_ERR = 402;
     public static final Integer ISREG_OK = 200;
-    public static final Integer ISREG_ERR = 403;
+    public static final Integer SENDVERIFYCODE_OK = 200;
+
+
+    public static final Integer LOGIN_ERR = 4001;
+    public static final Integer REGISTER_ERR = 4002;
+    public static final Integer ISREG_ERR = 4003;
+    public static final Integer SENDVERIFYCODE_ERR = 4004;
 
 }

@@ -1,4 +1,4 @@
-package com.hniesep.admin;
+package com.hniesep.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author HKRR
  */
 @SpringBootApplication
-public class HneisepAdminApplication {
+public class HnieSEPUserApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(HneisepAdminApplication.class, args);
+        SpringApplication.run(HnieSEPUserApplication.class, args);
     }
 
 }

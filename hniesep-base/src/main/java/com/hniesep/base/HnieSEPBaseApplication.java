@@ -10,14 +10,14 @@ import org.springframework.context.ConfigurableApplicationContext;
  */
 @Slf4j
 @SpringBootApplication
-public class HnieSepBaseApplication {
+public class HnieSEPBaseApplication {
 
     public static ConfigurableApplicationContext ac;
 
     public static void main(String[] args) {
 
-        ac = SpringApplication.run(HnieSepBaseApplication.class, args);
-        log.info("http://localhost");
+        ac = SpringApplication.run(HnieSEPBaseApplication.class, args);
+        log.info("http://localhost:8080");
 
     }
 

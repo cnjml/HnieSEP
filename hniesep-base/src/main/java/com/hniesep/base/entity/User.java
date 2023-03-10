@@ -5,6 +5,7 @@ import lombok.Data;
 /**
  * @author 吉铭炼
  */
+@Data
 public class User {
 
     private int id;

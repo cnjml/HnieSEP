@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HniesepBaseApplicationTests {
+class HnieSEPBaseApplicationTests {
     @Autowired
     MailUtil mailUtil;
     @Test
     void contextLoads() {
-        mailUtil.sendVerificationCode("2918208425@qq.com");
+        int i=0;
+        while (i++<5){
+            mailUtil.sendVerificationCode("3204749055@qq.com");
+        }
     }
 }

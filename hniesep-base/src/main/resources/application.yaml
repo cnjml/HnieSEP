@@ -62,7 +62,7 @@ spring:
     #前缀
     prefix: classpath:/templates/
     suffix: .html
-    mode: HTML5
+    mode: HTML
     #编码
     encoding: UTF-8
     #是否缓存

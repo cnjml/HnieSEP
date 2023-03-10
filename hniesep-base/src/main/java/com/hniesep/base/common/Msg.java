@@ -12,5 +12,7 @@ public class Msg {
     public static final String REGISTER_ERR = "用户名已存在";
     public static final String ISREG_OK = "用户名可用";
     public static final String ISREG_ERR = "用户名已存在";
+    public static final String SENDVERIFYCODE_OK = "发送验证码成功";
+    public static final String SENDVERIFYCODE_ERR = "发送验证码失败";
 
 }
