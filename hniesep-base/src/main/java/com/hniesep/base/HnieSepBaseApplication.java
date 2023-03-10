@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
- * @author Debuneko23
+ * @author 吉铭炼
  */
 @Slf4j
 @SpringBootApplication

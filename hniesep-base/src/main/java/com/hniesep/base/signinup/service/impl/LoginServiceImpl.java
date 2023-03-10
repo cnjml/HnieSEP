@@ -5,6 +5,7 @@ import com.hniesep.base.signinup.mapper.UserMapper;
 import com.hniesep.base.entity.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,8 +26,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public void register(String username, String password) {
-        userMapper.insert(username, password);
+    public void register(String username, String password, Date regTime) {
+        userMapper.insert(username, password,regTime);
     }
 
     @Override

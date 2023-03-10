@@ -1,21 +1,99 @@
 server:
-  port: 80
+  #设置启动端口
+  port: 8080
 
+#spring配置
 spring:
+  #数据源配置
   datasource:
+    #动态数据源(允许多个数据库)
     dynamic:
-      primary: base #设置默认的数据源或者数据源组,默认值即为master
-      strict: false #严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      #设置默认的数据源或者数据源组
+      primary: base
+      #严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      strict: false
+      #动态数据源配置
       datasource:
-        base:
-          url: jdbc:mysql://18.179.35.133/base
+        base: #自定义名称1
+          #url：驱动+端口+数据库
+          url: jdbc:mysql://3.112.34.135:33066/base
+          #username：数据库用户名
           username: root
-          password: root
+          #password：数据库密码
+          password: Hni1sep-backend
+          #driver-class-name：驱动jar包包名
+          driver-class-name: com.mysql.cj.jdbc.Driver # 3.2.0开始支持SPI可省略此配置
+          #type：数据库源类型
+          type: com.alibaba.druid.pool.DruidDataSource
+        user: #自定义名称2
+          url: jdbc:mysql://3.112.34.135:33066/user
+          username: root
+          password: Hni1sep-backend
           driver-class-name: com.mysql.cj.jdbc.Driver # 3.2.0开始支持SPI可省略此配置
           type: com.alibaba.druid.pool.DruidDataSource
-        user:
-          url: jdbc:mysql://18.179.35.133/user
-          username: root
-          password: root
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          type: com.alibaba.druid.pool.DruidDataSource
+
+  #邮件配置
+  mail:
+    #主机ip
+    host: smtp.qq.com
+    #传输协议
+    protocol: smtp
+    #账户名
+    username: minglian-ji@qq.com
+    #授权码
+    password: wqsnqfyxexhxgigj
+    #邮件端口
+    port: 587
+    #默认编码
+    default-encoding: UTF-8
+    #发件名称
+    nickname: 湖南工程学院校园交流平台
+    #详细配置
+    properties:
+      mail:
+        debug: true
+        smtp:
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+          starttls:
+            required: false
+
+  #thymelea模板配置
+  thymeleaf:
+    #前缀
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    #编码
+    encoding: UTF-8
+    #是否缓存
+    cache: false
+  web:
+    resources:
+      chain:
+        strategy:
+          content:
+            enabled: true
+            paths: /**
+
+  data:
+    redis:
+      jedis:
+        pool:
+          #连接池最大连接数（使用负值表示没有限制）
+          max-active: 8
+          #连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-wait: 3000ms
+          #连接池中的最大空闲连接
+          max-idle: 8
+          #连接池中的最小空闲连接
+          min-idle: 0
+      #超时时间
+      timeout: 3000ms
+      #主机ip
+      host: 127.0.0.1
+      #主机端口
+      port: 6379
+      #数据库
+      database: 0
+      #密码
+      password:

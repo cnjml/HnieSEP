@@ -5,19 +5,19 @@
 <mapper namespace="com.hniesep.base.signinup.mapper.UserMapper">
 
     <select id="selectAll" resultType="com.hniesep.base.entity.User">
-        select * from t_account;
+        select account_id id,account_username username,account_email email ,account_tel tel from t_account;
     </select>
     <select id="selectById" resultType="com.hniesep.base.entity.User">
-        select * from t_account where id = #{id};
+        select account_username username from t_account where account_id = #{id};
     </select>
     <select id="select" resultType="com.hniesep.base.entity.User">
-        select * from t_account where username=#{username} and password = #{password};
+        select account_id id from t_account where account_username=#{username} and account_password = #{password};
     </select>
     <select id="selectByName" resultType="com.hniesep.base.entity.User">
-        select * from t_account where username=#{username}
+        select account_username username from t_account where account_username=#{username}
     </select>
     <insert id="insert">
-        insert into t_account (username,password) values (#{username},#{password});
+        insert into t_account (account_username,account_password,account_regtime) values (#{username},#{password},#{regTime});
     </insert>
 
 </mapper>

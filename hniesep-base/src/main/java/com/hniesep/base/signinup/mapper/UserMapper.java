@@ -4,7 +4,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.hniesep.base.entity.User;
-
+import java.util.Date;
 import java.util.List;
 
 /**作者
@@ -46,7 +46,8 @@ public interface UserMapper {
      * 注册
      * @param username 用户名
      * @param password 密码
+     * @param regTime 注册时间
      */
-    void insert(@Param("username")String username,@Param("password")String password);
+    void insert(@Param("username")String username,@Param("password")String password,@Param("regTime") Date regTime);
 
 }

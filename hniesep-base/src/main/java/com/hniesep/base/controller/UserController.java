@@ -3,6 +3,7 @@ package com.hniesep.base.controller;
 import com.hniesep.base.common.*;
 import com.hniesep.base.entity.User;
 import com.hniesep.base.signinup.service.impl.LoginServiceImpl;
+import com.hniesep.base.util.DateTimeUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,7 +75,7 @@ public class UserController {
         Integer code = !flag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
         String msg = !flag ? Msg.REGISTER_OK:Msg.REGISTER_ERR;
         if(!flag) {
-            service.register(user.getRegUsername(),user.getRegPwd());
+            service.register(user.getRegUsername(),user.getRegPwd(), DateTimeUtil.getDateTime());
         }
         return new Result(code,msg);
     }
@@ -93,7 +94,7 @@ public class UserController {
         Integer code = !flag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
         String msg = !flag ? Msg.REGISTER_OK:Msg.REGISTER_ERR;
         if(!flag) {
-            service.register(username,password);
+            service.register(username,password, DateTimeUtil.getDateTime());
         }
         return new Result(code,msg);
     }

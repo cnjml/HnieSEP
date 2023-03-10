@@ -2,6 +2,7 @@ package com.hniesep.base.signinup.service;
 
 import com.hniesep.base.entity.User;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,8 +23,9 @@ public interface LoginService {
    *注册
    * @param username 用户名
    * @param password 密码
+   * @param regTime  注册时间
    */
-  void register(String username, String password);
+  void register(String username, String password, Date regTime);
 
   /**
    *根据用户名查询用户
