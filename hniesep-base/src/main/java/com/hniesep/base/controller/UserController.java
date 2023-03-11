@@ -1,8 +1,9 @@
 package com.hniesep.base.controller;
 
+import com.hniesep.base.account.service.impl.RegisterServiceImpl;
 import com.hniesep.base.common.*;
 import com.hniesep.base.entity.User;
-import com.hniesep.base.signinup.service.impl.LoginServiceImpl;
+import com.hniesep.base.account.service.impl.LoginServiceImpl;
 import com.hniesep.base.util.DateTimeUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,16 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
-    private LoginServiceImpl service;
-
+    private LoginServiceImpl loginService;
+    private RegisterServiceImpl registerService;
+    @Autowired
+    public void setLoginService(LoginServiceImpl loginService) {
+        this.loginService = loginService;
+    }
+    @Autowired
+    public void setRegisterService(RegisterServiceImpl registerService) {
+        this.registerService = registerService;
+    }
     /**
      * json注册
      * @param user 请求体：一个json对象
@@ -27,10 +35,21 @@ public class UserController {
     @PostMapping("/login")
     @ResponseBody
     public Result login(@RequestBody User user) {
-        boolean flag = service.login(user.getUsername(),user.getPassword());
+        boolean flag = loginService.login(user.getUsername(),user.getPassword());
         Integer code = flag ? StatusCode.LOGIN_OK:StatusCode.LOGIN_ERR;
         String msg = flag ? Msg.LOGIN_OK:Msg.LOGIN_ERR;
         return new Result(code,msg);
+    }
+
+    /**
+     *
+     * @return 返回类
+     */
+    @RequestMapping()
+    @ResponseBody
+    public Result verify(){
+        boolean flag = true;
+        return new Result();
     }
 
     /**
@@ -43,7 +62,7 @@ public class UserController {
     @ResponseBody
     @Deprecated
     public Result originLogin(@Param("username")String username,@Param("password")String password){
-        boolean flag = service.login(username,password);
+        boolean flag = loginService.login(username,password);
         Integer code = flag ? StatusCode.LOGIN_OK:StatusCode.LOGIN_ERR;
         String msg = flag ? Msg.LOGIN_OK:Msg.LOGIN_ERR;
         return new Result(code,msg);
@@ -57,7 +76,7 @@ public class UserController {
     @RequestMapping("/isreg")
     @ResponseBody
     public Result isreg(@RequestBody User user){
-        boolean flag =service.selectByName(user.getRegUsername());
+        boolean flag = loginService.selectByName(user.getRegUsername());
         Integer code = !flag ? StatusCode.ISREG_OK:StatusCode.ISREG_ERR;
         String msg = !flag ? Msg.ISREG_OK:Msg.ISREG_ERR;
         return new Result(code,msg);
@@ -71,11 +90,11 @@ public class UserController {
     @PostMapping("/register")
     @ResponseBody
     public Result register(@RequestBody User user){
-        boolean flag =service.selectByName(user.getRegUsername());
+        boolean flag = loginService.selectByName(user.getRegUsername());
         Integer code = !flag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
         String msg = !flag ? Msg.REGISTER_OK:Msg.REGISTER_ERR;
         if(!flag) {
-            service.register(user.getRegUsername(),user.getRegPwd(), DateTimeUtil.getDateTime());
+            registerService.register(user.getRegUsername(),user.getRegPwd(), DateTimeUtil.getDateTime());
         }
         return new Result(code,msg);
     }
@@ -86,15 +105,15 @@ public class UserController {
      * @param password 原始表单的password
      * @return 返回类
      */
-    @PostMapping("/originregister")
+    @PostMapping("/originRegister")
     @ResponseBody
     @Deprecated
-    public Result originregister(@Param("username")String username,@Param("password")String password){
-        boolean flag =service.selectByName(username);
+    public Result originRegister(@Param("username")String username,@Param("password")String password){
+        boolean flag = loginService.selectByName(username);
         Integer code = !flag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
         String msg = !flag ? Msg.REGISTER_OK:Msg.REGISTER_ERR;
         if(!flag) {
-            service.register(username,password, DateTimeUtil.getDateTime());
+            registerService.register(username,password, DateTimeUtil.getDateTime());
         }
         return new Result(code,msg);
     }
@@ -105,17 +124,8 @@ public class UserController {
      */
     @RequestMapping("/selectall")
     @ResponseBody
-    public String selectall(){
-        return service.selectAll().toString();
-    }
-
-    /**
-     * 自动装配
-     * @param service 自动装配的userServiceImpl的Bean
-     */
-    @Autowired
-    public void setService(LoginServiceImpl service) {
-        this.service = service;
+    public String selectAll(){
+        return loginService.selectAll().toString();
     }
 
 }

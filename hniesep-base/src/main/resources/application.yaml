@@ -90,10 +90,10 @@ spring:
       #超时时间
       timeout: 3000ms
       #主机ip
-      host: 127.0.0.1
+      host: 3.112.34.135
       #主机端口
       port: 6379
       #数据库
       database: 0
       #密码
-      password:
+      password: Hni1sep-backend

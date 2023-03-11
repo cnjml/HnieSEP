@@ -1,4 +1,4 @@
-package com.hniesep.base.signinup.mapper;
+package com.hniesep.base.account.mapper;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import org.apache.ibatis.annotations.Mapper;

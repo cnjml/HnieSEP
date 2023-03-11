@@ -3,6 +3,7 @@ package com.hniesep.base.controller;
 import com.hniesep.base.common.Msg;
 import com.hniesep.base.common.Result;
 import com.hniesep.base.common.StatusCode;
+import com.hniesep.base.entity.Mail;
 import com.hniesep.base.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +21,8 @@ public class MailController {
     private final MailUtil mailUtil;
     @PostMapping("/sendVerifyCode")
     @ResponseBody
-    public Result sendVerifyCode(@RequestBody String toAddress){
-        boolean flag = mailUtil.sendVerificationCode(toAddress);
+    public Result sendVerifyCode(@RequestBody Mail mail){
+        boolean flag = mailUtil.sendVerificationCode(mail.getToAddress());
         Integer code = flag ? StatusCode.SENDVERIFYCODE_OK:StatusCode.SENDVERIFYCODE_ERR;
         String msg = flag ? Msg.SENDVERIFYCODE_OK:Msg.SENDVERIFYCODE_ERR;
         return new Result(code,msg);

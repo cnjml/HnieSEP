@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hniesep.base.signinup.mapper.UserMapper">
+<mapper namespace="com.hniesep.base.account.mapper.UserMapper">
 
     <select id="selectAll" resultType="com.hniesep.base.entity.User">
         select account_id id,account_username username,account_email email ,account_tel tel from t_account;

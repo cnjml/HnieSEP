@@ -1,11 +1,10 @@
-package com.hniesep.base.signinup.service.impl;
+package com.hniesep.base.account.service.impl;
 
-import com.hniesep.base.signinup.service.LoginService;
-import com.hniesep.base.signinup.mapper.UserMapper;
+import com.hniesep.base.account.service.LoginService;
+import com.hniesep.base.account.mapper.UserMapper;
 import com.hniesep.base.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,20 +13,15 @@ import java.util.List;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-    final UserMapper userMapper;
-
-    public LoginServiceImpl(UserMapper userMapper) {
+    UserMapper userMapper;
+    @Autowired
+    public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
 
     @Override
     public boolean login(String username, String password) {
         return userMapper.select(username, password)!=null;
-    }
-
-    @Override
-    public void register(String username, String password, Date regTime) {
-        userMapper.insert(username, password,regTime);
     }
 
     @Override
