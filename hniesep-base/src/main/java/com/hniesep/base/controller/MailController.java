@@ -1,8 +1,8 @@
 package com.hniesep.base.controller;
 
-import com.hniesep.base.common.Msg;
-import com.hniesep.base.common.Result;
-import com.hniesep.base.common.StatusCode;
+import com.hniesep.base.protocol.Msg;
+import com.hniesep.base.entity.Result;
+import com.hniesep.base.protocol.StatusCode;
 import com.hniesep.base.entity.Mail;
 import com.hniesep.base.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;

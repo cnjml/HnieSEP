@@ -4,7 +4,6 @@ import com.hniesep.base.entity.Article;
 import com.hniesep.base.search.mapper.ArticleMapper;
 import com.hniesep.base.search.service.ArticleService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
@@ -12,16 +11,12 @@ import java.util.List;
  */
 @Service
 public class ArticleServiceImpl implements ArticleService {
-
     final ArticleMapper articleMapper;
-
     public ArticleServiceImpl(ArticleMapper articleMapper) {
         this.articleMapper = articleMapper;
     }
-
     @Override
     public List<Article> getAll(){
         return articleMapper.selectAll();
     }
-
 }

@@ -4,7 +4,6 @@ import com.hniesep.base.account.mapper.UserMapper;
 import com.hniesep.base.account.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 
 /**

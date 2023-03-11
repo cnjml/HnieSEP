@@ -18,14 +18,12 @@ public interface UserMapper {
      * @return 返回所有用户
      */
     List<User> selectAll();
-
     /**
      * 根据id查询用户
      * @param id id
      * @return 返回根据id选择的用户
      */
     User selectById(int id);
-
     /**
      *根据用户名查找用户
      * @param username 用户名
@@ -39,9 +37,7 @@ public interface UserMapper {
      * @param password 密码
      * @return 查询用户
      */
-
     User select(@Param("username") String username,@Param("password") String password);
-
     /**
      * 注册
      * @param username 用户名
@@ -49,5 +45,4 @@ public interface UserMapper {
      * @param regTime 注册时间
      */
     void insert(@Param("username")String username,@Param("password")String password,@Param("regTime") Date regTime);
-
 }

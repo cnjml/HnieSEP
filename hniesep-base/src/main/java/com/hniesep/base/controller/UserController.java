@@ -1,7 +1,8 @@
 package com.hniesep.base.controller;
 
 import com.hniesep.base.account.service.impl.RegisterServiceImpl;
-import com.hniesep.base.common.*;
+import com.hniesep.base.protocol.*;
+import com.hniesep.base.entity.Result;
 import com.hniesep.base.entity.User;
 import com.hniesep.base.account.service.impl.LoginServiceImpl;
 import com.hniesep.base.util.DateTimeUtil;
@@ -40,7 +41,6 @@ public class UserController {
         String msg = flag ? Msg.LOGIN_OK:Msg.LOGIN_ERR;
         return new Result(code,msg);
     }
-
     /**
      *
      * @return 返回类
@@ -51,7 +51,6 @@ public class UserController {
         boolean flag = true;
         return new Result();
     }
-
     /**
      * 原始表单登录
      * @param username 原始表单的username
@@ -67,7 +66,6 @@ public class UserController {
         String msg = flag ? Msg.LOGIN_OK:Msg.LOGIN_ERR;
         return new Result(code,msg);
     }
-
     /**
      * json注册
      * @param user 请求体：一个json对象
@@ -81,7 +79,6 @@ public class UserController {
         String msg = !flag ? Msg.ISREG_OK:Msg.ISREG_ERR;
         return new Result(code,msg);
     }
-
     /**
      * json注册
      * @param user 请求体：一个json对象
@@ -98,7 +95,6 @@ public class UserController {
         }
         return new Result(code,msg);
     }
-
     /**
      * 原始表单的注册
      * @param username 原始表单的username
@@ -117,7 +113,6 @@ public class UserController {
         }
         return new Result(code,msg);
     }
-
     /**
      * 获取所有用户，json格式
      * @return json对象
@@ -127,5 +122,4 @@ public class UserController {
     public String selectAll(){
         return loginService.selectAll().toString();
     }
-
 }

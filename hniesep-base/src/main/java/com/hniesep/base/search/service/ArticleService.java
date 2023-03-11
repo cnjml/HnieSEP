@@ -1,7 +1,6 @@
 package com.hniesep.base.search.service;
 
 import com.hniesep.base.entity.Article;
-
 import java.util.List;
 
 /**

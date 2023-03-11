@@ -12,26 +12,21 @@ import java.util.List;
  */
 @Service
 public class LoginServiceImpl implements LoginService {
-
     UserMapper userMapper;
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
-
     @Override
     public boolean login(String username, String password) {
         return userMapper.select(username, password)!=null;
     }
-
     @Override
     public boolean selectByName(String username) {
         return userMapper.selectByName(username)!=null;
     }
-
     @Override
     public List<User> selectAll() {
         return userMapper.selectAll();
     }
-
 }

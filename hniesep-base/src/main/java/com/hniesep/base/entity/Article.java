@@ -8,9 +8,6 @@ import java.util.Date;
  */
 @Data
 public class Article {
-    /**
-     * @
-     */
     private String title;
     private String author;
     private String content;
@@ -20,5 +17,4 @@ public class Article {
     private Integer id;
     private Integer liked;
     private Integer uid;
-
 }

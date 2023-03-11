@@ -42,7 +42,6 @@ public class VerifyUtil {
         }
         return verificationCode.toString();
     }
-
     /**
      * 使用系统默认字符源生成验证码
      *
@@ -52,7 +51,6 @@ public class VerifyUtil {
     public static String generateVerifyCode(int verifySize) {
         return generateVerifyCode(verifySize, VERIFY_CODES);
     }
-
     /**
      * 使用指定源生成验证码
      *
@@ -72,7 +70,6 @@ public class VerifyUtil {
         }
         return verifyCode.toString();
     }
-
     /**
      * 生成随机验证码文件,并返回验证码值
      *
@@ -88,7 +85,6 @@ public class VerifyUtil {
         outputImage(w, h, outputFile, verifyCode);
         return verifyCode;
     }
-
     /**
      * 生成随机验证码文件,并返回验证码值
      *
@@ -104,7 +100,6 @@ public class VerifyUtil {
         outputImage(w, h, os, verifyCode);
         return verifyCode;
     }
-
     /**
      * 生成随机验证码文件,并返回验证码值
      *
@@ -127,7 +122,6 @@ public class VerifyUtil {
         outputImage(w, h, fos, code);
         fos.close();
     }
-
     /**
      * 输出指定验证码图片流
      *
@@ -153,14 +147,11 @@ public class VerifyUtil {
             fractions[i] = rand.nextFloat();
         }
         Arrays.sort(fractions);
-
         g2.setColor(Color.GRAY);// 设置边框色
         g2.fillRect(0, 0, w, h);
-
         Color c = getRandColor(200, 250);
         g2.setColor(c);// 设置背景色
         g2.fillRect(0, 2, w, h - 4);
-
         //绘制干扰线
         Random random = new Random();
         g2.setColor(getRandColor(160, 200));// 设置线条的颜色
@@ -171,7 +162,6 @@ public class VerifyUtil {
             int yl = random.nextInt(12) + 1;
             g2.drawLine(x, y, x + xl + 40, y + yl + 20);
         }
-
         // 添加噪点
         float yawpRate = 0.05f;// 噪声率
         int area = (int) (yawpRate * w * h);
@@ -181,9 +171,7 @@ public class VerifyUtil {
             int rgb = getRandomIntColor();
             image.setRGB(x, y, rgb);
         }
-
         shear(g2, w, h, c);// 使图片扭曲
-
         g2.setColor(getRandColor(100, 160));
         int fontSize = h - 4;
         Font font = new Font("Algerian", Font.ITALIC, fontSize);
@@ -195,11 +183,9 @@ public class VerifyUtil {
             g2.setTransform(affine);
             g2.drawChars(chars, i, 1, ((w - 10) / verifySize) * i + 5, h / 2 + fontSize / 2 - 10);
         }
-
         g2.dispose();
         ImageIO.write(image, "png", os);
     }
-
     private static Color getRandColor(int fc, int bc) {
         if (fc > 255) {
             fc = 255;
@@ -212,7 +198,6 @@ public class VerifyUtil {
         int b = fc + random.nextInt(bc - fc);
         return new Color(r, g, b);
     }
-
     private static int getRandomIntColor() {
         int[] rgb = getRandomRgb();
         int color = 0;
@@ -222,7 +207,6 @@ public class VerifyUtil {
         }
         return color;
     }
-
     private static int[] getRandomRgb() {
         int[] rgb = new int[3];
         for (int i = 0; i < 3; i++) {
@@ -230,20 +214,15 @@ public class VerifyUtil {
         }
         return rgb;
     }
-
     private static void shear(Graphics g, int w1, int h1, Color color) {
         shearX(g, w1, h1, color);
         shearY(g, w1, h1, color);
     }
-
     private static void shearX(Graphics g, int w1, int h1, Color color) {
-
         int period = random.nextInt(2);
-
         boolean borderGap = true;
         int frames = 1;
         int phase = random.nextInt(2);
-
         for (int i = 0; i < h1; i++) {
             double d = (double) (period >> 1)
                     * Math.sin((double) i / (double) period
@@ -256,13 +235,9 @@ public class VerifyUtil {
                 g.drawLine((int) d + w1, i, w1, i);
             }
         }
-
     }
-
     private static void shearY(Graphics g, int w1, int h1, Color color) {
-
         int period = random.nextInt(40) + 10; // 50;
-
         boolean borderGap = true;
         int frames = 20;
         int phase = 7;
@@ -280,7 +255,6 @@ public class VerifyUtil {
 
         }
     }
-
     public static void main(String[] args) throws IOException {
         String s = VerifyUtil.outputVerifyImage(400, 200, new FileOutputStream("d:/a.jpg"), 4);
 //        String s = VerifyUtil.generateVerifyCode(5);
