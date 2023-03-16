@@ -74,7 +74,8 @@ spring:
           content:
             enabled: true
             paths: /**
-#其他数据库
+
+  #其他数据库
   data:
     redis:
       jedis:
