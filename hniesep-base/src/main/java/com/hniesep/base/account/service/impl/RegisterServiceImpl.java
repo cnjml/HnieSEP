@@ -26,18 +26,23 @@ public class RegisterServiceImpl implements RegisterService {
         this.redisUtil=redisUtil;
     }
     @Override
-    public void register(String username, String password, Date regTime) {
-        userMapper.insert(username, password,regTime);
+    public void register(String username, String password, String email, Date regTime) {
+        userMapper.insert(username, password ,email ,regTime);
     }
     @Override
-    public void setVerificationCode(String toAddress) {
+    public void setRegisterVerificationCode(String toAddress) {
         String verificationCode = VerificationUtil.generateVerificationCode();
-        redisUtil.setVerificationCode(toAddress,verificationCode);
+        redisUtil.set(toAddress,verificationCode);
     }
 
     @Override
-    public boolean checkVerificationCode() {
+    public boolean checkRegisterVerificationCode(String username,String verificationCode) {
+        String realVerificationCode = this.getRegisterVerificationCode(username);
+        return realVerificationCode.equals(verificationCode);
+    }
 
-        return false;
+    @Override
+    public String getRegisterVerificationCode(String username) {
+        return redisUtil.get(username);
     }
 }

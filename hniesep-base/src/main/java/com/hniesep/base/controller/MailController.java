@@ -24,8 +24,8 @@ public class MailController {
     @ResponseBody
     public Result sendVerifyCode(@RequestBody Mail mail){
         boolean flag = mailUtil.sendVerificationCode(mail.getToAddress());
-        Integer code = flag ? StatusCode.SENDVERIFYCODE_OK:StatusCode.SENDVERIFYCODE_ERR;
-        String msg = flag ? Msg.SENDVERIFYCODE_OK:Msg.SENDVERIFYCODE_ERR;
+        Integer code = flag ? StatusCode.SEND_VERIFICATION_CODE_OK:StatusCode.SEND_VERIFICATION_CODE_ERR;
+        String msg = flag ? Msg.SEND_VERIFICATION_CODE_OK:Msg.SEND_VERIFICATION_CODE_ERR;
         return new Result(code,msg);
     }
     @Autowired

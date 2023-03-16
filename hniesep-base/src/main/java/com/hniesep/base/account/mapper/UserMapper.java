@@ -45,6 +45,7 @@ public interface UserMapper {
      * @param username 用户名
      * @param password 密码
      * @param regTime 注册时间
+     * @param email 注册邮箱
      */
-    void insert(@Param("username")String username,@Param("password")String password,@Param("regTime") Date regTime);
+    void insert(@Param("username")String username,@Param("password")String password,@Param("email")String email,@Param("regTime") Date regTime);
 }

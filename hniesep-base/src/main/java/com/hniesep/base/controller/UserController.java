@@ -1,5 +1,6 @@
 package com.hniesep.base.controller;
 
+import com.hniesep.base.util.MailUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import com.hniesep.base.util.DateTimeUtil;
 public class UserController {
     private LoginServiceImpl loginService;
     private RegisterServiceImpl registerService;
+    private MailUtil mailUtil;
     @Autowired
     public void setLoginService(LoginServiceImpl loginService) {
         this.loginService = loginService;
@@ -28,6 +30,10 @@ public class UserController {
     @Autowired
     public void setRegisterService(RegisterServiceImpl registerService) {
         this.registerService = registerService;
+    }
+    @Autowired
+    public void setRedisUtil(MailUtil mailUtil){
+        this.mailUtil=mailUtil;
     }
     /**
      * json注册
@@ -62,12 +68,12 @@ public class UserController {
      * @param user 请求体：一个json对象
      * @return 返回类
      */
-    @RequestMapping("/isreg")
+    @RequestMapping("/isRegister")
     @ResponseBody
-    public Result isreg(@RequestBody User user){
+    public Result isRegister(@RequestBody User user){
         boolean flag = loginService.selectByName(user.getRegUsername());
-        Integer code = !flag ? StatusCode.ISREG_OK:StatusCode.ISREG_ERR;
-        String msg = !flag ? Msg.ISREG_OK:Msg.ISREG_ERR;
+        Integer code = !flag ? StatusCode.IS_REGISTER_OK:StatusCode.IS_REGISTER_ERR;
+        String msg = !flag ? Msg.IS_REGISTER_OK:Msg.IS_REGISTER_ERR;
         return new Result(code,msg);
     }
     /**
@@ -82,7 +88,19 @@ public class UserController {
         Integer code = !flag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
         String msg = !flag ? Msg.REGISTER_OK:Msg.REGISTER_ERR;
         if(!flag) {
-            registerService.register(user.getRegUsername(),user.getRegPwd(), DateTimeUtil.getDateTime());
+            if(user.getVerificationCode()!=null){
+                flag = registerService.checkRegisterVerificationCode(user.getUsername(),user.getVerificationCode());
+                code = !flag ? StatusCode.CHECK_VERIFICATION_CODE_OK:StatusCode.CHECK_VERIFICATION_CODE_ERR;
+                msg = !flag ? Msg.CHECK_VERIFICATION_CODE_OK:Msg.CHECK_VERIFICATION_CODE_ERR;
+                if(flag){
+                    registerService.register(user.getRegUsername(),user.getRegPwd(),user.getEmail(),DateTimeUtil.getDateTime());
+                }
+                return new Result(code,msg);
+            }
+            else {
+                mailUtil.sendVerificationCode(user.getEmail());
+                registerService.setRegisterVerificationCode(user.getEmail());
+            }
         }
         return new Result(code,msg);
     }
@@ -95,12 +113,12 @@ public class UserController {
     @PostMapping("/originRegister")
     @ResponseBody
     @Deprecated
-    public Result originRegister(@Param("username")String username,@Param("password")String password){
+    public Result originRegister(@Param("username")String username,@Param("password")String password,@Param("email")String email){
         boolean flag = loginService.selectByName(username);
         Integer code = !flag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
         String msg = !flag ? Msg.REGISTER_OK:Msg.REGISTER_ERR;
         if(!flag) {
-            registerService.register(username,password, DateTimeUtil.getDateTime());
+            registerService.register(username,password,email,DateTimeUtil.getDateTime());
         }
         return new Result(code,msg);
     }

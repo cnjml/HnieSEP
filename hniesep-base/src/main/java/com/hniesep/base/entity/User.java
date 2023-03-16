@@ -14,4 +14,5 @@ public class User {
     private String password;
     private String tel;
     private String email;
+    private String verificationCode;
 }

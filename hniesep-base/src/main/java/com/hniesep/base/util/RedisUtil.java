@@ -17,8 +17,10 @@ public class RedisUtil {
     public void setRedisTemplate(RedisTemplate<String, String> redisTemplate){
         this.redisTemplate=redisTemplate;
     }
-    public void setVerificationCode(String regUsername,String verifyCode){
-        redisTemplate.opsForValue().set(regUsername,verifyCode,120,TimeUnit.SECONDS);
+    public void set(String key,String value){
+        redisTemplate.opsForValue().set(key,value,120,TimeUnit.SECONDS);
     }
-
+    public String get(String key){
+       return redisTemplate.opsForValue().get(key);
+    }
 }

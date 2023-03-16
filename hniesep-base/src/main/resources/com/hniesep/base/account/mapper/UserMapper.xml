@@ -17,7 +17,7 @@
         select account_username username from t_account where account_username=#{username}
     </select>
     <insert id="insert">
-        insert into t_account (account_username,account_password,account_regtime) values (#{username},#{password},#{regTime});
+        insert into t_account (account_username,account_password,account_email,account_regtime) values (#{username},#{password},#{email},#{regTime});
     </insert>
 
 </mapper>
