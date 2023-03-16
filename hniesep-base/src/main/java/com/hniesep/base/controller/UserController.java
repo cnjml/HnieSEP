@@ -54,7 +54,7 @@ public class UserController {
      * @param password 原始表单的password
      * @return 返回类
      */
-    @RequestMapping("/originlogin")
+    @RequestMapping("/originLogin")
     @ResponseBody
     @Deprecated
     public Result originLogin(@Param("username")String username,@Param("password")String password){
@@ -71,9 +71,9 @@ public class UserController {
     @RequestMapping("/isRegister")
     @ResponseBody
     public Result isRegister(@RequestBody User user){
-        boolean flag = loginService.selectByName(user.getRegUsername());
-        Integer code = !flag ? StatusCode.IS_REGISTER_OK:StatusCode.IS_REGISTER_ERR;
-        String msg = !flag ? Msg.IS_REGISTER_OK:Msg.IS_REGISTER_ERR;
+        boolean existFlag = loginService.selectByName(user.getRegUsername());
+        Integer code = existFlag ? StatusCode.EXIST_TRUE:StatusCode.EXIST_FALSE;
+        String msg = existFlag ? Msg.EXIST_TRUE:Msg.EXIST_FALSE;
         return new Result(code,msg);
     }
     /**
@@ -84,23 +84,23 @@ public class UserController {
     @PostMapping("/register")
     @ResponseBody
     public Result register(@RequestBody User user){
-        boolean flag = loginService.selectByName(user.getRegUsername());
-        Integer code = !flag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
-        String msg = !flag ? Msg.REGISTER_OK:Msg.REGISTER_ERR;
-        if(!flag) {
-            if(user.getVerificationCode()!=null){
-                flag = registerService.checkRegisterVerificationCode(user.getUsername(),user.getVerificationCode());
-                code = !flag ? StatusCode.CHECK_VERIFICATION_CODE_OK:StatusCode.CHECK_VERIFICATION_CODE_ERR;
-                msg = !flag ? Msg.CHECK_VERIFICATION_CODE_OK:Msg.CHECK_VERIFICATION_CODE_ERR;
-                if(flag){
-                    registerService.register(user.getRegUsername(),user.getRegPwd(),user.getEmail(),DateTimeUtil.getDateTime());
-                }
-                return new Result(code,msg);
+        boolean existFlag = loginService.selectByName(user.getRegUsername());
+        Integer code = existFlag ? StatusCode.EXIST_TRUE:StatusCode.EXIST_FALSE;
+        String msg = existFlag ? Msg.EXIST_TRUE:Msg.EXIST_FALSE;
+        if(!existFlag) {
+            System.out.println(user.getRegUsername()+user.getVerificationCode());
+            boolean checkVerificationCodeFlag = registerService.checkRegisterVerificationCode(user.getEmail(),user.getVerificationCode());
+            if(checkVerificationCodeFlag){
+                registerService.register(user.getRegUsername(),user.getRegPwd(),user.getEmail(),DateTimeUtil.getDateTime());
+                code = StatusCode.REGISTER_OK;
+                msg = Msg.REGISTER_OK;
             }
             else {
-                mailUtil.sendVerificationCode(user.getEmail());
-                registerService.setRegisterVerificationCode(user.getEmail());
+                boolean sendVerificationCodeFlag = mailUtil.sendVerificationCode(user.getEmail());
+                code = sendVerificationCodeFlag ? StatusCode.SEND_VERIFICATION_CODE_OK : StatusCode.SEND_VERIFICATION_CODE_ERR;
+                msg = sendVerificationCodeFlag ? Msg.SEND_VERIFICATION_CODE_OK : Msg.SEND_VERIFICATION_CODE_ERR;
             }
+            return new Result(code,msg);
         }
         return new Result(code,msg);
     }
@@ -126,7 +126,7 @@ public class UserController {
      * 获取所有用户，json格式
      * @return json对象
      */
-    @RequestMapping("/selectall")
+    @RequestMapping("/selectAll")
     @ResponseBody
     public String selectAll(){
         return loginService.selectAll().toString();

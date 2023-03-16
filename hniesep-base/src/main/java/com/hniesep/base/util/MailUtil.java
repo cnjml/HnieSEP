@@ -1,5 +1,6 @@
 package com.hniesep.base.util;
 
+import com.hniesep.base.account.service.impl.RegisterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,11 +23,11 @@ public class MailUtil {
     @Value("${spring.mail.nickname}")
     private String nickname;
     private JavaMailSender javaMailSender;
-    private VerificationUtil verificationUtil;
     private TemplateEngine templateEngine;
+    private RegisterServiceImpl registerService;
     @Autowired
-    public void setVerifyCodeGenerateUtil(VerificationUtil verificationUtil) {
-        this.verificationUtil = verificationUtil;
+    public void setRegisterService(RegisterServiceImpl registerService){
+        this.registerService = registerService;
     }
     @Autowired
     public void setJavaMailSender(JavaMailSender javaMailSender) {
@@ -38,10 +39,10 @@ public class MailUtil {
     }
     public boolean sendVerificationCode(String toAddress) {
         //调用 VerificationCodeService 生产验证码
-        String verifyCode = VerificationUtil.generateVerificationCode();
+        String verificationCode = VerificationUtil.generateVerificationCode();
         //创建邮件正文
         Context context = new Context();
-        context.setVariable("verifyCode", Arrays.asList(verifyCode.split("")));
+        context.setVariable("verifyCode", Arrays.asList(verificationCode.split("")));
         //将模块引擎内容解析成html字符串
         String emailContent = templateEngine.process("VerifyCode", context);
         MimeMessage message=javaMailSender.createMimeMessage();
@@ -53,6 +54,8 @@ public class MailUtil {
             helper.setSubject("注册验证码");
             helper.setText(emailContent,true);
             javaMailSender.send(message);
+            //redis设置验证码
+            registerService.setRegisterVerificationCode(toAddress,verificationCode);
             return true;
         }catch (MessagingException ignored) {
             return false;

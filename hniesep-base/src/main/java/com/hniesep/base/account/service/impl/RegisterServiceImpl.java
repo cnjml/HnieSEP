@@ -8,7 +8,6 @@ import java.util.Date;
 import com.hniesep.base.account.mapper.UserMapper;
 import com.hniesep.base.account.service.RegisterService;
 import com.hniesep.base.util.RedisUtil;
-import com.hniesep.base.util.VerificationUtil;
 
 /**
  * @author 吉铭炼
@@ -30,19 +29,23 @@ public class RegisterServiceImpl implements RegisterService {
         userMapper.insert(username, password ,email ,regTime);
     }
     @Override
-    public void setRegisterVerificationCode(String toAddress) {
-        String verificationCode = VerificationUtil.generateVerificationCode();
+    public void setRegisterVerificationCode(String toAddress,String verificationCode) {
         redisUtil.set(toAddress,verificationCode);
     }
 
     @Override
-    public boolean checkRegisterVerificationCode(String username,String verificationCode) {
-        String realVerificationCode = this.getRegisterVerificationCode(username);
-        return realVerificationCode.equals(verificationCode);
+    public boolean checkRegisterVerificationCode(String email,String verificationCode) {
+        String realVerificationCode = this.getRegisterVerificationCode(email);
+        if(realVerificationCode==null){
+            return false;
+        }
+        else {
+            return verificationCode.equals(realVerificationCode);
+        }
     }
 
     @Override
-    public String getRegisterVerificationCode(String username) {
-        return redisUtil.get(username);
+    public String getRegisterVerificationCode(String email) {
+        return redisUtil.get(email);
     }
 }

@@ -17,8 +17,9 @@ public interface RegisterService {
     /**
      *设置注册验证码
      * @param toAddress 待注册的邮箱
+     * @param verificationCode 验证码
      */
-    void setRegisterVerificationCode(String toAddress);
+    void setRegisterVerificationCode(String toAddress,String verificationCode);
     /**
      * 校验验证码
      * @param verificationCode 验证码

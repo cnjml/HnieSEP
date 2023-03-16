@@ -16,7 +16,7 @@ import com.hniesep.base.search.service.ArticleService;
 @RequestMapping("/article")
 public class ArticleController {
     private ArticleService articleService;
-    @RequestMapping("/getall")
+    @RequestMapping("/getAll")
     @ResponseBody
     public List<Article> getAll(){
         return articleService.getAll();
