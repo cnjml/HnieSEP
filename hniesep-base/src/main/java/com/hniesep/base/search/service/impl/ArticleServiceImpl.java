@@ -1,10 +1,12 @@
 package com.hniesep.base.search.service.impl;
 
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 import com.hniesep.base.entity.Article;
 import com.hniesep.base.search.mapper.ArticleMapper;
 import com.hniesep.base.search.service.ArticleService;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
 /**
  * @author 吉铭炼

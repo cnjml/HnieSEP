@@ -41,7 +41,7 @@ spring:
     #账户名
     username: minglian-ji@qq.com
     #授权码
-    password: wqsnqfyxexhxgigj
+    password: vtxqizxjaeyygbjc
     #邮件端口
     port: 587
     #默认编码
@@ -74,7 +74,7 @@ spring:
           content:
             enabled: true
             paths: /**
-
+#其他数据库
   data:
     redis:
       jedis:

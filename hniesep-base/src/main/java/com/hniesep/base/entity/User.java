@@ -1,6 +1,7 @@
 package com.hniesep.base.entity;
 
 import lombok.Data;
+
 /**
  * @author 吉铭炼
  */

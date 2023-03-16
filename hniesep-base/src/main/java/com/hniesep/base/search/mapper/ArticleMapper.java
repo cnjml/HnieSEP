@@ -1,8 +1,10 @@
 package com.hniesep.base.search.mapper;
 
-import com.hniesep.base.entity.Article;
 import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
+
+import com.hniesep.base.entity.Article;
 
 /**
  * @author 吉铭炼

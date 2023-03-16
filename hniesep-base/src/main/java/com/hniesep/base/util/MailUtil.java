@@ -1,7 +1,5 @@
 package com.hniesep.base.util;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,6 +7,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import java.util.Arrays;
 
 /**
@@ -21,11 +22,11 @@ public class MailUtil {
     @Value("${spring.mail.nickname}")
     private String nickname;
     private JavaMailSender javaMailSender;
-    private VerifyUtil verifyUtil;
+    private VerificationUtil verificationUtil;
     private TemplateEngine templateEngine;
     @Autowired
-    public void setVerifyCodeGenerateUtil(VerifyUtil verifyUtil) {
-        this.verifyUtil = verifyUtil;
+    public void setVerifyCodeGenerateUtil(VerificationUtil verificationUtil) {
+        this.verificationUtil = verificationUtil;
     }
     @Autowired
     public void setJavaMailSender(JavaMailSender javaMailSender) {
@@ -37,7 +38,7 @@ public class MailUtil {
     }
     public boolean sendVerificationCode(String toAddress) {
         //调用 VerificationCodeService 生产验证码
-        String verifyCode = verifyUtil.generateVerificationCode();
+        String verifyCode = VerificationUtil.generateVerificationCode();
         //创建邮件正文
         Context context = new Context();
         context.setVariable("verifyCode", Arrays.asList(verifyCode.split("")));

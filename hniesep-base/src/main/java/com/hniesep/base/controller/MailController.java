@@ -1,16 +1,17 @@
 package com.hniesep.base.controller;
 
-import com.hniesep.base.protocol.Msg;
-import com.hniesep.base.entity.Result;
-import com.hniesep.base.protocol.StatusCode;
-import com.hniesep.base.entity.Mail;
-import com.hniesep.base.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.hniesep.base.protocol.Msg;
+import com.hniesep.base.entity.Result;
+import com.hniesep.base.protocol.StatusCode;
+import com.hniesep.base.entity.Mail;
+import com.hniesep.base.util.MailUtil;
 
 /**
  * @author 吉铭炼

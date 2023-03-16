@@ -1,15 +1,16 @@
 package com.hniesep.base.controller;
 
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
 import com.hniesep.base.account.service.impl.RegisterServiceImpl;
 import com.hniesep.base.protocol.*;
 import com.hniesep.base.entity.Result;
 import com.hniesep.base.entity.User;
 import com.hniesep.base.account.service.impl.LoginServiceImpl;
 import com.hniesep.base.util.DateTimeUtil;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 吉铭炼
@@ -40,16 +41,6 @@ public class UserController {
         Integer code = flag ? StatusCode.LOGIN_OK:StatusCode.LOGIN_ERR;
         String msg = flag ? Msg.LOGIN_OK:Msg.LOGIN_ERR;
         return new Result(code,msg);
-    }
-    /**
-     *
-     * @return 返回类
-     */
-    @RequestMapping()
-    @ResponseBody
-    public Result verify(){
-        boolean flag = true;
-        return new Result();
     }
     /**
      * 原始表单登录
