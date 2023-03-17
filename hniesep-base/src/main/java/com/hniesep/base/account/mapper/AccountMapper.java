@@ -14,7 +14,7 @@ import com.hniesep.base.entity.User;
  */
 @Mapper
 @DS("user")
-public interface UserMapper {
+public interface AccountMapper {
     /**
      *查询所有用户
      * @return 返回所有用户
@@ -48,4 +48,11 @@ public interface UserMapper {
      * @param email 注册邮箱
      */
     void insert(@Param("username")String username,@Param("password")String password,@Param("email")String email,@Param("regTime") Date regTime);
+    /**
+     *根据邮箱查找用户
+     * @param email 用户名
+     * @return 返回一个用户
+     *
+     */
+    User selectByEmail(String email);
 }

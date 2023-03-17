@@ -1,5 +1,6 @@
 package com.hniesep.base.controller;
 
+import com.hniesep.base.account.service.impl.AccountServiceImpl;
 import com.hniesep.base.util.MailUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,10 @@ import com.hniesep.base.util.DateTimeUtil;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class AccountController {
     private LoginServiceImpl loginService;
     private RegisterServiceImpl registerService;
+    private AccountServiceImpl accountService;
     private MailUtil mailUtil;
     @Autowired
     public void setLoginService(LoginServiceImpl loginService) {
@@ -32,7 +34,11 @@ public class UserController {
         this.registerService = registerService;
     }
     @Autowired
-    public void setRedisUtil(MailUtil mailUtil){
+    public void setAccountService(AccountServiceImpl accountService){
+        this.accountService = accountService;
+    }
+    @Autowired
+    public void setMailUtil(MailUtil mailUtil){
         this.mailUtil=mailUtil;
     }
     /**
@@ -71,7 +77,7 @@ public class UserController {
     @RequestMapping("/isRegister")
     @ResponseBody
     public Result isRegister(@RequestBody User user){
-        boolean existFlag = loginService.selectByName(user.getRegUsername());
+        boolean existFlag = accountService.checkExist(user.getRegUsername(),user.getEmail());
         Integer code = existFlag ? StatusCode.EXIST_TRUE:StatusCode.EXIST_FALSE;
         String msg = existFlag ? Msg.EXIST_TRUE:Msg.EXIST_FALSE;
         return new Result(code,msg);
@@ -84,12 +90,12 @@ public class UserController {
     @PostMapping("/register")
     @ResponseBody
     public Result register(@RequestBody User user){
-        boolean existFlag = loginService.selectByName(user.getRegUsername());
+        boolean existFlag = accountService.checkExist(user.getRegUsername(),user.getEmail());
         Integer code = existFlag ? StatusCode.EXIST_TRUE:StatusCode.EXIST_FALSE;
         String msg = existFlag ? Msg.EXIST_TRUE:Msg.EXIST_FALSE;
         if(!existFlag) {
-            System.out.println(user.getRegUsername()+user.getVerificationCode());
             boolean checkVerificationCodeFlag = registerService.checkRegisterVerificationCode(user.getEmail(),user.getVerificationCode());
+            System.out.println(checkVerificationCodeFlag);
             if(checkVerificationCodeFlag){
                 registerService.register(user.getRegUsername(),user.getRegPwd(),user.getEmail(),DateTimeUtil.getDateTime());
                 code = StatusCode.REGISTER_OK;
@@ -114,7 +120,7 @@ public class UserController {
     @ResponseBody
     @Deprecated
     public Result originRegister(@Param("username")String username,@Param("password")String password,@Param("email")String email){
-        boolean flag = loginService.selectByName(username);
+        boolean flag = accountService.checkExist(username,email);
         Integer code = !flag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
         String msg = !flag ? Msg.REGISTER_OK:Msg.REGISTER_ERR;
         if(!flag) {

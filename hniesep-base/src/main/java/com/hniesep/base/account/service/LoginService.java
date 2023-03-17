@@ -15,12 +15,6 @@ public interface LoginService {
    */
   boolean login(String username, String password);
   /**
-   *根据用户名查询用户
-   * @param username 用户名
-   * @return boolean 返回一个user对象
-   */
-  boolean selectByName(String username);
-  /**
    * 选择所有用户
    * @return 返回所有user对象
    */

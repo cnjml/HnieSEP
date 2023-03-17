@@ -1,11 +1,12 @@
 package com.hniesep.base.account.service.impl;
 
+import com.hniesep.base.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-import com.hniesep.base.account.mapper.UserMapper;
+import com.hniesep.base.account.mapper.AccountMapper;
 import com.hniesep.base.account.service.RegisterService;
 import com.hniesep.base.util.RedisUtil;
 
@@ -14,11 +15,16 @@ import com.hniesep.base.util.RedisUtil;
  */
 @Service
 public class RegisterServiceImpl implements RegisterService {
-    private UserMapper userMapper;
+    private AccountMapper accountMapper;
     private RedisUtil redisUtil;
+    private AccountUtil accountUtil;
     @Autowired
-    public void setUserMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    public void setAccountUtil(AccountUtil accountUtil){
+        this.accountUtil = accountUtil;
+    }
+    @Autowired
+    public void setAccountMapper(AccountMapper accountMapper) {
+        this.accountMapper = accountMapper;
     }
     @Autowired
     public void setRedisUtil(RedisUtil redisUtil){
@@ -26,7 +32,8 @@ public class RegisterServiceImpl implements RegisterService {
     }
     @Override
     public void register(String username, String password, String email, Date regTime) {
-        userMapper.insert(username, password ,email ,regTime);
+        String md5Password = accountUtil.generateMd5Password(password);
+        accountMapper.insert(username, md5Password ,email ,regTime);
     }
     @Override
     public void setRegisterVerificationCode(String toAddress,String verificationCode) {
