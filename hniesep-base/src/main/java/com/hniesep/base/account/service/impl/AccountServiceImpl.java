@@ -3,8 +3,11 @@ package com.hniesep.base.account.service.impl;
 import com.hniesep.base.account.mapper.AccountMapper;
 import com.hniesep.base.account.service.AccountService;
 import com.hniesep.base.entity.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author 吉铭炼
@@ -27,5 +30,13 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public User selectByEmail(String email) {
         return accountMapper.selectByEmail(email);
+    }
+    @Override
+    public List<User> selectAll() {
+        return accountMapper.selectAll();
+    }
+    @Override
+    public void setVerificationImage() {
+
     }
 }

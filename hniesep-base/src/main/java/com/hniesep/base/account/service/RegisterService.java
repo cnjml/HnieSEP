@@ -21,14 +21,14 @@ public interface RegisterService {
      */
     void setRegisterVerificationCode(String toAddress,String verificationCode);
     /**
-     * 校验验证码
+     * 校验注册验证码
      * @param verificationCode 验证码
      * @param username 用户名
      * @return 验证码校验结果
      */
     boolean checkRegisterVerificationCode(String username, String verificationCode);
     /**
-     * 获取待注册用户名的验证码
+     * 获取待注册验证码
      * @param username 待注册用户名
      * @return 待注册用户名的验证码
      */

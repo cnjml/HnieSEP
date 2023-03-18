@@ -45,7 +45,7 @@ public class AccountController {
     public Result login(@RequestBody User user) {
         boolean flag = loginService.login(user.getUsername(),user.getPassword());
         Integer code = flag ? StatusCode.LOGIN_OK:StatusCode.LOGIN_ERR;
-        String msg = flag ? Message.LOGIN_OK: Message.LOGIN_ERR;
+        String msg = flag ? StatusMessage.LOGIN_OK: StatusMessage.LOGIN_ERR;
         return new Result(code,msg);
     }
     /**
@@ -60,7 +60,7 @@ public class AccountController {
     public Result originLogin(@Param("username")String username,@Param("password")String password){
         boolean flag = loginService.login(username,password);
         Integer code = flag ? StatusCode.LOGIN_OK:StatusCode.LOGIN_ERR;
-        String msg = flag ? Message.LOGIN_OK: Message.LOGIN_ERR;
+        String msg = flag ? StatusMessage.LOGIN_OK: StatusMessage.LOGIN_ERR;
         return new Result(code,msg);
     }
     /**
@@ -73,7 +73,7 @@ public class AccountController {
     public Result isRegister(@RequestBody User user){
         boolean existFlag = accountService.checkExist(user.getRegUsername(),user.getEmail());
         Integer code = existFlag ? StatusCode.EXIST_TRUE:StatusCode.EXIST_FALSE;
-        String msg = existFlag ? Message.EXIST_TRUE: Message.EXIST_FALSE;
+        String msg = existFlag ? StatusMessage.EXIST_TRUE: StatusMessage.EXIST_FALSE;
         return new Result(code,msg);
     }
     /**
@@ -87,25 +87,25 @@ public class AccountController {
         //判断验证码是否为空
         boolean emptyVerificationCodeFlag = user.getVerificationCode()==null|| "".equals(user.getVerificationCode());
         Integer code = emptyVerificationCodeFlag ? StatusCode.VERIFICATION_CODE_EMPTY:StatusCode.VERIFICATION_CODE_EXIST;
-        String msg = emptyVerificationCodeFlag ? Message.VERIFICATION_CODE_EMPTY: Message.VERIFICATION_CODE_EXIST;
+        String msg = emptyVerificationCodeFlag ? StatusMessage.VERIFICATION_CODE_EMPTY: StatusMessage.VERIFICATION_CODE_EXIST;
         if (emptyVerificationCodeFlag){
             return new Result(code,msg);
         }
         //判断用户名是否存在
         boolean existFlag = accountService.checkExist(user.getRegUsername(),user.getEmail());
         code = existFlag ? StatusCode.EXIST_TRUE:StatusCode.EXIST_FALSE;
-        msg = existFlag ? Message.EXIST_TRUE: Message.EXIST_FALSE;
+        msg = existFlag ? StatusMessage.EXIST_TRUE: StatusMessage.EXIST_FALSE;
         //用户名不存在则进行下一步注册
         if(!existFlag) {
             //校验验证码
             boolean checkVerificationCodeFlag = registerService.checkRegisterVerificationCode(user.getEmail(),user.getVerificationCode());
             code = checkVerificationCodeFlag ? StatusCode.CHECK_VERIFICATION_CODE_OK : StatusCode.CHECK_VERIFICATION_CODE_ERR;
-            msg = checkVerificationCodeFlag ? Message.CHECK_VERIFICATION_CODE_OK : Message.CHECK_VERIFICATION_CODE_ERR;
+            msg = checkVerificationCodeFlag ? StatusMessage.CHECK_VERIFICATION_CODE_OK : StatusMessage.CHECK_VERIFICATION_CODE_ERR;
             //校验成功则直接注册
             if(checkVerificationCodeFlag){
                 registerService.register(user.getRegUsername(),user.getRegPwd(),user.getEmail(),DateTimeUtil.getDateTime());
                 code = StatusCode.REGISTER_OK;
-                msg = Message.REGISTER_OK;
+                msg = StatusMessage.REGISTER_OK;
             }
         }
         return new Result(code,msg);
@@ -122,7 +122,7 @@ public class AccountController {
     public Result originRegister(@Param("username")String username,@Param("password")String password,@Param("email")String email){
         boolean flag = accountService.checkExist(username,email);
         Integer code = !flag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
-        String msg = !flag ? Message.REGISTER_OK: Message.REGISTER_ERR;
+        String msg = !flag ? StatusMessage.REGISTER_OK: StatusMessage.REGISTER_ERR;
         if(!flag) {
             registerService.register(username,password,email,DateTimeUtil.getDateTime());
         }
@@ -135,6 +135,6 @@ public class AccountController {
     @RequestMapping("/selectAll")
     @ResponseBody
     public String selectAll(){
-        return loginService.selectAll().toString();
+        return accountService.selectAll().toString();
     }
 }

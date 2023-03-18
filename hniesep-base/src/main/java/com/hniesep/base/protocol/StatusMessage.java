@@ -4,7 +4,7 @@ package com.hniesep.base.protocol;
  * @author 吉铭炼
  * 一些返回的信息
  */
-public class Message {
+public class StatusMessage {
     public static final String LOGIN_OK = "登录成功";
     public static final String EXIST_FALSE = "用户名可用";
     public static final String SEND_VERIFICATION_CODE_OK = "验证码发送成功";

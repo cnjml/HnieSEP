@@ -1,6 +1,5 @@
 package com.hniesep.base.account.service.impl;
 
-import com.hniesep.base.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +8,8 @@ import java.util.Date;
 import com.hniesep.base.account.mapper.AccountMapper;
 import com.hniesep.base.account.service.RegisterService;
 import com.hniesep.base.util.RedisUtil;
+import com.hniesep.base.protocol.Autograph;
+import com.hniesep.base.util.AccountUtil;
 
 /**
  * @author 吉铭炼
@@ -37,7 +38,8 @@ public class RegisterServiceImpl implements RegisterService {
     }
     @Override
     public void setRegisterVerificationCode(String toAddress,String verificationCode) {
-        redisUtil.set(toAddress,verificationCode);
+        String autograph = Autograph.VERIFICATION_CODE_SIGNATURE;
+        redisUtil.set(toAddress,autograph+verificationCode);
     }
 
     @Override
@@ -47,7 +49,7 @@ public class RegisterServiceImpl implements RegisterService {
             return false;
         }
         else {
-            return verificationCode.equals(realVerificationCode);
+            return realVerificationCode.equals(Autograph.VERIFICATION_CODE_SIGNATURE+verificationCode);
         }
     }
 

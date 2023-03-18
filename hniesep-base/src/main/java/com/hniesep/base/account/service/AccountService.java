@@ -2,6 +2,8 @@ package com.hniesep.base.account.service;
 
 import com.hniesep.base.entity.User;
 
+import java.util.List;
+
 /**
  * @author 吉铭炼
  */
@@ -25,4 +27,13 @@ public interface AccountService {
      * @return boolean 返回一个user对象
      */
     User selectByEmail(String email);
+    /**
+     * 选择所有用户
+     * @return 返回所有user对象
+     */
+    List<User> selectAll();
+    /**
+     * 设置图片验证码
+     */
+    void setVerificationImage();
 }
