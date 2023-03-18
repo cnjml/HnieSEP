@@ -12,6 +12,7 @@ import org.thymeleaf.context.Context;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 /**
  * @author 吉铭炼
@@ -37,6 +38,12 @@ public class MailUtil {
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
+
+    /**
+     * 发送验证码到指定邮箱
+     * @param toAddress 邮箱地址
+     * @return 发送结果
+     */
     public boolean sendVerificationCode(String toAddress) {
         //调用 VerificationCodeService 生产验证码
         String verificationCode = VerificationUtil.generateVerificationCode();
@@ -60,5 +67,16 @@ public class MailUtil {
         }catch (MessagingException ignored) {
             return false;
         }
+    }
+    /**
+     * 校验邮箱是否合法
+     * @param email 邮件地址
+     * @return 是否合法
+     */
+    public boolean checkEmailLegality(String email) {
+        if ((email != null) && (!email.isEmpty())) {
+            return Pattern.matches("^(\\w+([-.][A-Za-z0-9]+)*){3,18}@\\w+([-.][A-Za-z0-9]+)*\\.\\w+([-.][A-Za-z0-9]+)*$", email);
+        }
+        return false;
     }
 }

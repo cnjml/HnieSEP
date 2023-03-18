@@ -9,4 +9,5 @@ import lombok.Data;
 public class Mail {
     private String toAddress;
     private String fromAddress;
+    private String email;
 }

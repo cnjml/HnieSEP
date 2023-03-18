@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hniesep.base.protocol.Msg;
+import com.hniesep.base.protocol.Message;
 import com.hniesep.base.entity.Result;
 import com.hniesep.base.protocol.StatusCode;
 import com.hniesep.base.entity.Mail;
@@ -20,16 +20,21 @@ import com.hniesep.base.util.MailUtil;
 @RequestMapping("/mail")
 public class MailController {
     private final MailUtil mailUtil;
-    @PostMapping("/sendVerifyCode")
-    @ResponseBody
-    public Result sendVerifyCode(@RequestBody Mail mail){
-        boolean flag = mailUtil.sendVerificationCode(mail.getToAddress());
-        Integer code = flag ? StatusCode.SEND_VERIFICATION_CODE_OK:StatusCode.SEND_VERIFICATION_CODE_ERR;
-        String msg = flag ? Msg.SEND_VERIFICATION_CODE_OK:Msg.SEND_VERIFICATION_CODE_ERR;
-        return new Result(code,msg);
-    }
     @Autowired
     private MailController (MailUtil mailUtil){
         this.mailUtil = mailUtil;
+    }
+    @PostMapping("/sendVerifyCode")
+    @ResponseBody
+    public Result sendVerifyCode(@RequestBody Mail mail){
+        boolean emailValidFlag = mailUtil.checkEmailLegality(mail.getToAddress());
+        Integer code = emailValidFlag ? StatusCode.EMAIL_LEGITIMATE:StatusCode.EMAIL_ILLEGAL;
+        String msg = emailValidFlag ? Message.EMAIL_LEGITIMATE: Message.EMAIL_ILLEGAL;
+        if(emailValidFlag){
+            boolean sendVerificationCodeFlag = mailUtil.sendVerificationCode(mail.getToAddress());
+            code = sendVerificationCodeFlag ? StatusCode.SEND_VERIFICATION_CODE_OK:StatusCode.SEND_VERIFICATION_CODE_ERR;
+            msg = sendVerificationCodeFlag ? Message.SEND_VERIFICATION_CODE_OK: Message.SEND_VERIFICATION_CODE_ERR;
+        }
+        return new Result(code,msg);
     }
 }
