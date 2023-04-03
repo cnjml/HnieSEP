@@ -9,13 +9,13 @@ import java.util.Date;
  */
 @Data
 public class Article {
-    private String title;
-    private String author;
-    private String content;
-    private String[] keywords;
-    private Date date;
-    private Integer[] commentsId;
     private Integer id;
-    private Integer liked;
-    private Integer uid;
+    private String author;
+    private Date createTime;
+    private Date updateTime;
+    private String title;
+    private String content;
+    private Integer likes;
+    private String[] keywords;
+    private Integer[] commentsId;
 }

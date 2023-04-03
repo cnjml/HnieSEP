@@ -5,7 +5,7 @@
 <mapper namespace="com.hniesep.base.account.mapper.AccountMapper">
 
     <select id="selectAll" resultType="com.hniesep.base.entity.User">
-        select account_id id,account_username username,account_email email ,account_tel tel from t_account;
+        select account_id id,account_username username,account_email email , account_telephone tel from t_account;
     </select>
     <select id="selectById" resultType="com.hniesep.base.entity.User">
         select account_username username from t_account where account_id = #{id};
@@ -20,7 +20,7 @@
         select account_username username from t_account where account_email=#{email};
     </select>
     <insert id="insert">
-        insert into t_account (account_username,account_password,account_email,account_regtime) values (#{username},#{password},#{email},#{regTime});
+        insert into t_account (account_username,account_password,account_email,account_register_time) values (#{username},#{password},#{email},#{regTime});
     </insert>
 
 </mapper>

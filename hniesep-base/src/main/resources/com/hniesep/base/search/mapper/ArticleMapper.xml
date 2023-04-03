@@ -5,7 +5,7 @@
 <mapper namespace="com.hniesep.base.search.mapper.ArticleMapper">
 
     <select id="selectAll" resultType="com.hniesep.base.entity.Article">
-        select * from article_all;
+        select article_id id, article_author author,article_create_time createTime,article_update_time updateTime, article_title title,article_content content,article_likes likes from t_article;
     </select>
     <select id="selectByAuthor" resultType="com.hniesep.base.entity.Article">
 

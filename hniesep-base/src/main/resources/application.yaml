@@ -16,7 +16,7 @@ spring:
       datasource:
         base: #自定义名称1
           #url：驱动+端口+数据库
-          url: jdbc:mysql://3.112.34.135:33066/base
+          url: jdbc:mysql://43.206.126.181:33066/base
           #username：数据库用户名
           username: root
           #password：数据库密码
@@ -26,7 +26,7 @@ spring:
           #type：数据库源类型
           type: com.alibaba.druid.pool.DruidDataSource
         user: #自定义名称2
-          url: jdbc:mysql://3.112.34.135:33066/user
+          url: jdbc:mysql://43.206.126.181:33066/user
           username: root
           password: Hni1sep-backend
           driver-class-name: com.mysql.cj.jdbc.Driver # 3.2.0开始支持SPI可省略此配置
@@ -91,9 +91,9 @@ spring:
       #超时时间
       timeout: 3000ms
       #主机ip
-      host: 3.112.34.135
+      host: 43.206.126.181
       #主机端口
-      port: 6379
+      port: 63799
       #数据库
       database: 0
       #密码

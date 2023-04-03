@@ -1,24 +1,25 @@
 package com.hniesep.base.controller;
 
-import com.hniesep.base.account.service.impl.AccountServiceImpl;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
 import com.hniesep.base.account.service.impl.RegisterServiceImpl;
 import com.hniesep.base.protocol.*;
 import com.hniesep.base.entity.Result;
 import com.hniesep.base.entity.User;
 import com.hniesep.base.account.service.impl.LoginServiceImpl;
 import com.hniesep.base.util.DateTimeUtil;
+import com.hniesep.base.account.service.impl.AccountServiceImpl;
+import com.hniesep.base.util.VerificationUtil;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 吉铭炼
  * user控制器
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/account")
 public class AccountController {
     private LoginServiceImpl loginService;
     private RegisterServiceImpl registerService;
@@ -136,5 +137,17 @@ public class AccountController {
     @ResponseBody
     public String selectAll(){
         return accountService.selectAll().toString();
+    }
+    /**
+     * 获取图片验证码
+     */
+    @RequestMapping("/setVerificationImage")
+    @ResponseBody
+    public void verificationImage(HttpServletResponse httpServletResponse){
+        String realCode = VerificationUtil.generateVerificationCode();
+        httpServletResponse.setHeader("verificationImageCode", realCode);
+        httpServletResponse.setContentType("image/jpeg");
+        httpServletResponse.setHeader("Cache-Control","no-cache");
+        VerificationUtil.generateVerificationImage(realCode,httpServletResponse);
     }
 }
