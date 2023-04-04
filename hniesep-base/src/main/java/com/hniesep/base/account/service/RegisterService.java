@@ -7,13 +7,15 @@ import java.util.Date;
  */
 public interface RegisterService {
     /**
-     *注册
+     * 注册
+     *
      * @param username 用户名
      * @param password 密码
      * @param regTime  注册时间
-     * @param email 注册邮箱
+     * @param email    注册邮箱
+     * @return 是否注册成功
      */
-    void register(String username, String password,String email, Date regTime);
+    boolean register(String username, String password, String email, Date regTime);
     /**
      *设置注册验证码
      * @param toAddress 待注册的邮箱
@@ -24,7 +26,7 @@ public interface RegisterService {
      * 校验注册验证码
      * @param verificationCode 验证码
      * @param username 用户名
-     * @return 验证码校验结果
+     * @return 返回校验结果
      */
     boolean checkRegisterVerificationCode(String username, String verificationCode);
     /**

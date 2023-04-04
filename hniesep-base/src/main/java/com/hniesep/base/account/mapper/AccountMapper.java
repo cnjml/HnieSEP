@@ -9,8 +9,8 @@ import java.util.List;
 
 import com.hniesep.base.entity.User;
 
-/**作者
- * @author HKRR
+/**
+ * @author 吉铭炼
  */
 @Mapper
 @DS("user")
@@ -46,13 +46,24 @@ public interface AccountMapper {
      * @param password 密码
      * @param regTime 注册时间
      * @param email 注册邮箱
+     * @return 是否注册成功
      */
-    void insert(@Param("username")String username,@Param("password")String password,@Param("email")String email,@Param("regTime") Date regTime);
+    boolean insert(@Param("username")String username,@Param("password")String password,@Param("email")String email,@Param("regTime") Date regTime);
     /**
      *根据邮箱查找用户
      * @param email 用户名
      * @return 返回一个用户
      *
      */
-    User selectByEmail(String email);
+    User selectByEmail(@Param("email")String email);
+
+    /**
+     * 使用旧密码更改密码
+     * @return 更改密码结果
+     * @param account 账户名
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     */
+    boolean changePasswordByOldPassword(String account, String oldPassword,String newPassword);
+
 }

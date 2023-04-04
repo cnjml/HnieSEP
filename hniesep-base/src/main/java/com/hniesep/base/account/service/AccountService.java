@@ -1,6 +1,7 @@
 package com.hniesep.base.account.service;
 
 import com.hniesep.base.entity.User;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
@@ -32,8 +33,20 @@ public interface AccountService {
      * @return 返回所有user对象
      */
     List<User> selectAll();
+
     /**
      * 设置图片验证码
+     * @param rightCode 正确验证码
+     * @param httpServletResponse http应答
      */
-    void setVerificationImage();
+    void setVerificationImage(String rightCode, HttpServletResponse httpServletResponse);
+
+    /**
+     * 使用旧密码更改密码
+     * @return 更改密码结果
+     * @param account 账户名
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     */
+    boolean changePasswordByOldPassword(String account, String oldPassword,String newPassword);
 }

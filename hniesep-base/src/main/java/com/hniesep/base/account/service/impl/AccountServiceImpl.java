@@ -4,6 +4,10 @@ import com.hniesep.base.account.mapper.AccountMapper;
 import com.hniesep.base.account.service.AccountService;
 import com.hniesep.base.entity.User;
 
+import com.hniesep.base.protocol.Autograph;
+import com.hniesep.base.util.AccountUtil;
+import com.hniesep.base.util.VerificationUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +19,11 @@ import java.util.List;
 @Service
 public class AccountServiceImpl implements AccountService {
     private AccountMapper accountMapper;
+    private AccountUtil accountUtil;
+    @Autowired
+    public void setAccountUtil(AccountUtil accountUtil){
+        this.accountUtil = accountUtil;
+    }
     @Autowired
     public void setAccountMapper(AccountMapper accountMapper){
         this.accountMapper=accountMapper;
@@ -36,7 +45,13 @@ public class AccountServiceImpl implements AccountService {
         return accountMapper.selectAll();
     }
     @Override
-    public void setVerificationImage() {
-
+    public void setVerificationImage(String realCode, HttpServletResponse httpServletResponse) {
+       VerificationUtil.generateVerificationImage(realCode,httpServletResponse);
+    }
+    @Override
+    public boolean changePasswordByOldPassword(String account, String oldPassword,String newPassword){
+        oldPassword = accountUtil.generateMd5String(oldPassword, Autograph.PASSWORD_SALT);
+        newPassword = accountUtil.generateMd5String(newPassword, Autograph.PASSWORD_SALT);
+        return accountMapper.changePasswordByOldPassword(account,oldPassword,newPassword);
     }
 }

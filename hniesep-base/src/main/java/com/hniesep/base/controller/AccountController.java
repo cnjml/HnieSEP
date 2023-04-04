@@ -105,9 +105,9 @@ public class AccountController {
             msg = checkVerificationCodeFlag ? StatusMessage.CHECK_VERIFICATION_CODE_OK : StatusMessage.CHECK_VERIFICATION_CODE_ERR;
             //校验成功则直接注册
             if(checkVerificationCodeFlag){
-                registerService.register(user.getRegUsername(),user.getRegPwd(),user.getEmail(),DateTimeUtil.getDateTime());
-                code = StatusCode.REGISTER_OK;
-                msg = StatusMessage.REGISTER_OK;
+                boolean registerFlag = registerService.register(user.getRegUsername(),user.getRegPwd(),user.getEmail(),DateTimeUtil.getDateTime());
+                code = registerFlag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
+                msg = registerFlag ? StatusMessage.REGISTER_OK:StatusMessage.REGISTER_ERR;
             }
         }
         return new Result(code,msg);
@@ -145,11 +145,11 @@ public class AccountController {
     @RequestMapping("/setVerificationImage")
     @ResponseBody
     public void verificationImage(HttpServletResponse httpServletResponse){
-        String realCode = VerificationUtil.generateVerificationCode();
-        httpServletResponse.setHeader(Autograph.VERIFICATION_IMAGE_SIGNATURE + "verificationImageCode", realCode);
+        String rightCode = VerificationUtil.generateVerificationCode();
+        httpServletResponse.setHeader(Autograph.VERIFICATION_IMAGE_SIGNATURE + "verificationImageCode", rightCode);
         httpServletResponse.setContentType("image/jpeg");
         httpServletResponse.setHeader("Cache-Control","no-cache");
-        VerificationUtil.generateVerificationImage(realCode,httpServletResponse);
+        accountService.setVerificationImage(rightCode,httpServletResponse);
     }
     /**
      * 校验图片验证码
@@ -160,5 +160,16 @@ public class AccountController {
         System.out.println(code);
         String realCode = (String) httpSession.getAttribute(Autograph.VERIFICATION_IMAGE_SIGNATURE + "verificationImageCode");
         return code.equals(realCode);
+    }
+    @RequestMapping("/changePassword")
+    @ResponseBody
+    public Result changePassword(@RequestBody User user){
+        String account = user.getEmail();
+        String oldPassword = user.getOldPassword();
+        String newPassword = user.getNewPassword();
+        boolean changePasswordFlag = accountService.changePasswordByOldPassword(account,oldPassword,newPassword);
+        Integer code = changePasswordFlag? StatusCode.CHANGE_PASSWORD_OK:StatusCode.CHANGE_PASSWORD_ERR;
+        String msg = changePasswordFlag? StatusMessage.CHANGE_PASSWORD_OK:StatusMessage.CHANGE_PASSWORD_ERR;
+        return new Result(code,msg);
     }
 }

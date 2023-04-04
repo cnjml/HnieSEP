@@ -12,6 +12,7 @@ public class StatusCode {
     public static final Integer REGISTER_OK = 200;
     public static final Integer VERIFICATION_CODE_EXIST = 200;
     public static final Integer EMAIL_LEGITIMATE = 200;
+    public static final Integer CHANGE_PASSWORD_OK = 200;
 
 
     public static final Integer LOGIN_ERR = 4001;
@@ -21,4 +22,6 @@ public class StatusCode {
     public static final Integer REGISTER_ERR = 4005;
     public static final Integer VERIFICATION_CODE_EMPTY = 4006;
     public static final Integer EMAIL_ILLEGAL = 4007;
+    public static final Integer CHANGE_PASSWORD_ERR = 4008;
+
 }

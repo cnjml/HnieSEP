@@ -8,8 +8,8 @@ import org.springframework.util.DigestUtils;
  */
 @Service
 public class AccountUtil {
-    public String generateMd5Password(String rawPassword,String salt){
-        rawPassword = rawPassword+salt;
-        return DigestUtils.md5DigestAsHex((rawPassword+salt).getBytes());
+    public String generateMd5String(String rawString,String salt){
+        rawString = rawString+salt;
+        return DigestUtils.md5DigestAsHex((rawString+salt).getBytes());
     }
 }

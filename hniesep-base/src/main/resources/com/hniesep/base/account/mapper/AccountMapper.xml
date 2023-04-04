@@ -22,5 +22,8 @@
     <insert id="insert">
         insert into t_account (account_username,account_password,account_email,account_register_time) values (#{username},#{password},#{email},#{regTime});
     </insert>
+    <update id="changePasswordByOldPassword" >
+        update t_account set account_password = #{newPassword} where account_password = #{oldPassword};
+    </update>
 
 </mapper>

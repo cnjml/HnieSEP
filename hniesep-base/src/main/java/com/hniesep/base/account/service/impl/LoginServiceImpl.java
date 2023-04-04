@@ -25,7 +25,7 @@ public class LoginServiceImpl implements LoginService {
     }
     @Override
     public boolean login(String username, String password) {
-        String md5Password = accountUtil.generateMd5Password(password,PASSWORD_SALT);
+        String md5Password = accountUtil.generateMd5String(password,PASSWORD_SALT);
         return accountMapper.select(username, md5Password) != null;
     }
 }
