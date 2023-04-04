@@ -33,7 +33,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
     @Override
     public void register(String username, String password, String email, Date regTime) {
-        String md5Password = accountUtil.generateMd5Password(password);
+        String md5Password = accountUtil.generateMd5Password(password,Autograph.PASSWORD_SALT);
         accountMapper.insert(username, md5Password ,email ,regTime);
     }
     @Override

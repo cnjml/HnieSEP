@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.hniesep.base.account.service.LoginService;
 import com.hniesep.base.account.mapper.AccountMapper;
+import static com.hniesep.base.protocol.Autograph.PASSWORD_SALT;
 
 /**
  * @author 吉铭炼
@@ -24,7 +25,7 @@ public class LoginServiceImpl implements LoginService {
     }
     @Override
     public boolean login(String username, String password) {
-        String md5Password = accountUtil.generateMd5Password(password);
+        String md5Password = accountUtil.generateMd5Password(password,PASSWORD_SALT);
         return accountMapper.select(username, md5Password) != null;
     }
 }

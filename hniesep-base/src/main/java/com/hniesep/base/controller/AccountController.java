@@ -9,6 +9,7 @@ import com.hniesep.base.util.DateTimeUtil;
 import com.hniesep.base.account.service.impl.AccountServiceImpl;
 import com.hniesep.base.util.VerificationUtil;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -145,9 +146,19 @@ public class AccountController {
     @ResponseBody
     public void verificationImage(HttpServletResponse httpServletResponse){
         String realCode = VerificationUtil.generateVerificationCode();
-        httpServletResponse.setHeader("verificationImageCode", realCode);
+        httpServletResponse.setHeader(Autograph.VERIFICATION_IMAGE_SIGNATURE + "verificationImageCode", realCode);
         httpServletResponse.setContentType("image/jpeg");
         httpServletResponse.setHeader("Cache-Control","no-cache");
         VerificationUtil.generateVerificationImage(realCode,httpServletResponse);
+    }
+    /**
+     * 校验图片验证码
+     */
+    @RequestMapping("/checkVerificationImage")
+    @ResponseBody
+    public boolean checkVerificationImage(@Param("code") String code, HttpSession httpSession){
+        System.out.println(code);
+        String realCode = (String) httpSession.getAttribute(Autograph.VERIFICATION_IMAGE_SIGNATURE + "verificationImageCode");
+        return code.equals(realCode);
     }
 }
