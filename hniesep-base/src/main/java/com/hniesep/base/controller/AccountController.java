@@ -45,7 +45,7 @@ public class AccountController {
     @PostMapping("/login")
     @ResponseBody
     public Result login(@RequestBody User user) {
-        boolean flag = loginService.login(user.getUsername(),user.getPassword());
+        boolean flag = loginService.login(user.getEmail(),user.getPassword())|| loginService.login(user.getUsername(), user.getPassword());
         Integer code = flag ? StatusCode.LOGIN_OK:StatusCode.LOGIN_ERR;
         String msg = flag ? StatusMessage.LOGIN_OK: StatusMessage.LOGIN_ERR;
         return new Result(code,msg);
@@ -59,8 +59,8 @@ public class AccountController {
     @RequestMapping("/originLogin")
     @ResponseBody
     @Deprecated
-    public Result originLogin(@Param("username")String username,@Param("password")String password){
-        boolean flag = loginService.login(username,password);
+    public Result originLogin(@Param("username")String username,@Param("email")String email,@Param("password")String password){
+        boolean flag = loginService.login(username,password) || loginService.login(email,password);
         Integer code = flag ? StatusCode.LOGIN_OK:StatusCode.LOGIN_ERR;
         String msg = flag ? StatusMessage.LOGIN_OK: StatusMessage.LOGIN_ERR;
         return new Result(code,msg);
@@ -161,13 +161,18 @@ public class AccountController {
         String realCode = (String) httpSession.getAttribute(Autograph.VERIFICATION_IMAGE_SIGNATURE + "verificationImageCode");
         return code.equals(realCode);
     }
+    /**
+     * 修改密码
+     * @param user 用户对象
+     * @return 结果
+     */
     @RequestMapping("/changePassword")
     @ResponseBody
     public Result changePassword(@RequestBody User user){
-        String account = user.getEmail();
+        String email = user.getEmail();
         String oldPassword = user.getOldPassword();
         String newPassword = user.getNewPassword();
-        boolean changePasswordFlag = accountService.changePasswordByOldPassword(account,oldPassword,newPassword);
+        boolean changePasswordFlag = accountService.changePasswordByEmailAndOldPassword(email,oldPassword,newPassword);
         Integer code = changePasswordFlag? StatusCode.CHANGE_PASSWORD_OK:StatusCode.CHANGE_PASSWORD_ERR;
         String msg = changePasswordFlag? StatusMessage.CHANGE_PASSWORD_OK:StatusMessage.CHANGE_PASSWORD_ERR;
         return new Result(code,msg);

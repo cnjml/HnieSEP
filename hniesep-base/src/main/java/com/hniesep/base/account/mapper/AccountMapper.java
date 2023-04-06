@@ -27,19 +27,19 @@ public interface AccountMapper {
      */
     User selectById(int id);
     /**
-     *根据用户名查找用户
-     * @param username 用户名
-     * @return 返回一个用户
-     *
-     */
-    User selectByName(String username);
-    /**
-     * 查询账号和密码
+     * 登录用户名密码校验
      * @param username 用户名
      * @param password 密码
      * @return 查询用户
      */
-    User select(@Param("username") String username,@Param("password") String password);
+    User loginByName(@Param("username") String username,@Param("password") String password);
+    /**
+     * 登录邮箱密码校验
+     * @param email 用户名
+     * @param password 密码
+     * @return 查询用户
+     */
+    User loginByEmail(@Param("email") String email,@Param("password") String password);
     /**
      * 注册
      * @param username 用户名
@@ -56,7 +56,13 @@ public interface AccountMapper {
      *
      */
     User selectByEmail(@Param("email")String email);
-
+    /**
+     *根据用户名查找用户
+     * @param username 用户名
+     * @return 返回一个用户
+     *
+     */
+    User selectByName(@Param("username")String username);
     /**
      * 使用旧密码更改密码
      * @return 更改密码结果

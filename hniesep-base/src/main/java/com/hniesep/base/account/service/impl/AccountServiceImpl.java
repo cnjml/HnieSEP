@@ -30,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
     }
     @Override
     public boolean checkExist(String username ,String email) {
-        return this.selectByName(username) != null || this.selectByEmail(email) != null;
+        return this.selectByEmail(email) != null || this.selectByName(username) != null;
     }
     @Override
     public User selectByName(String username) {
@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
        VerificationUtil.generateVerificationImage(realCode,httpServletResponse);
     }
     @Override
-    public boolean changePasswordByOldPassword(String account, String oldPassword,String newPassword){
+    public boolean changePasswordByEmailAndOldPassword(String account, String oldPassword,String newPassword){
         oldPassword = accountUtil.generateMd5String(oldPassword, Autograph.PASSWORD_SALT);
         newPassword = accountUtil.generateMd5String(newPassword, Autograph.PASSWORD_SALT);
         return accountMapper.changePasswordByOldPassword(account,oldPassword,newPassword);

@@ -24,8 +24,17 @@ public class LoginServiceImpl implements LoginService {
         this.accountMapper = accountMapper;
     }
     @Override
-    public boolean login(String username, String password) {
+    public boolean loginByName(String username, String password) {
         String md5Password = accountUtil.generateMd5String(password,PASSWORD_SALT);
-        return accountMapper.select(username, md5Password) != null;
+        return accountMapper.loginByName(username, md5Password) != null;
+    }
+    @Override
+    public boolean loginByEmail(String email, String password) {
+        String md5Password = accountUtil.generateMd5String(password,PASSWORD_SALT);
+        return accountMapper.loginByEmail(email, md5Password) != null;
+    }
+    @Override
+    public boolean login(String account, String password) {
+        return this.loginByEmail(account,password) || this.loginByName(account,password);
     }
 }

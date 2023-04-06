@@ -5,23 +5,32 @@
 <mapper namespace="com.hniesep.base.account.mapper.AccountMapper">
 
     <select id="selectAll" resultType="com.hniesep.base.entity.User">
-        select account_id id,account_username username,account_email email , account_telephone tel from t_account;
+        select account_id id,account_email email , account_telephone tel from t_account;
     </select>
+
     <select id="selectById" resultType="com.hniesep.base.entity.User">
-        select account_username username from t_account where account_id = #{id};
+        select account_email email from t_account where account_id = #{id};
     </select>
-    <select id="select" resultType="com.hniesep.base.entity.User">
-        select account_id id from t_account where account_username=#{username} and account_password = #{password};
+
+    <select id="loginByEmail" resultType="com.hniesep.base.entity.User">
+        select account_id id from t_account where account_email = #{email} and account_password = #{password};
     </select>
-    <select id="selectByName" resultType="com.hniesep.base.entity.User">
-        select account_username username from t_account where account_username=#{username};
-    </select>
+
     <select id="selectByEmail" resultType="com.hniesep.base.entity.User">
-        select account_username username from t_account where account_email=#{email};
+        select account_email username from t_account where account_email=#{email};
     </select>
+
+    <select id="selectByName" resultType="com.hniesep.base.entity.User">
+        select account_username username from t_account where account_username = #{username};
+    </select>
+    <select id="loginByName" resultType="com.hniesep.base.entity.User">
+        select account_username username from t_account where account_username = #{username} and account_password = #{password};
+    </select>
+
     <insert id="insert">
-        insert into t_account (account_username,account_password,account_email,account_register_time) values (#{username},#{password},#{email},#{regTime});
+        insert into t_account (account_email,account_password,account_register_time) values (#{email},#{password},#{regTime});
     </insert>
+
     <update id="changePasswordByOldPassword" >
         update t_account set account_password = #{newPassword} where account_password = #{oldPassword};
     </update>
