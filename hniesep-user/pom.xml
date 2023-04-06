@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.hniesep</groupId>
-        <artifactId>hnie-parent</artifactId>
+        <artifactId>hniesep-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <artifactId>hnie-user</artifactId>
+    <artifactId>hniesep-user</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>hniesep-user</name>
 
@@ -17,17 +17,6 @@
     </properties>
     <dependencies>
 
-        <dependency>
-            <groupId>com.mattunderscore</groupId>
-            <artifactId>filter-utils</artifactId>
-            <version>0.2.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.rhq.misc</groupId>
-            <artifactId>misc</artifactId>
-            <version>0.1.3</version>
-            <scope>import</scope>
-        </dependency>
     </dependencies>
 
     <build>

@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.hniesep</groupId>
-    <artifactId>hnie-parent</artifactId>
+    <artifactId>hniesep-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>hniesep-parent</name>
     <packaging>pom</packaging>
@@ -95,7 +95,20 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>3.5.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+            <version>2.3</version>
+        </dependency>
+
     </dependencies>
+
 
     <build>
         <plugins>

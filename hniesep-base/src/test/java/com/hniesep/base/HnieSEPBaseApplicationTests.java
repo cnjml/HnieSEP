@@ -8,12 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class HnieSEPBaseApplicationTests {
-    @Autowired
-    RegisterServiceImpl registerService;
-    @Autowired
-    MailUtil mailUtil;
     @Test
     void contextLoads() {
-        System.out.println(registerService.getRegisterVerificationCode("3204749055@qq.com"));
+        System.out.printf(System.getProperty("user.dir"));
     }
 }
