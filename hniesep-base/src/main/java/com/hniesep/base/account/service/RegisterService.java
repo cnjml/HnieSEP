@@ -15,7 +15,7 @@ public interface RegisterService {
      * @param email    注册邮箱
      * @return 是否注册成功
      */
-    boolean register(String username, String password, String email, Date regTime);
+    boolean register(String email,String username, String password,Date regTime);
     /**
      *设置注册验证码
      * @param toAddress 待注册的邮箱

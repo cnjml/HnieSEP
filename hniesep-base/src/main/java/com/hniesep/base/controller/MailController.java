@@ -27,11 +27,11 @@ public class MailController {
     @PostMapping("/sendVerifyCode")
     @ResponseBody
     public Result sendVerifyCode(@RequestBody Mail mail){
-        boolean emailValidFlag = mailUtil.checkEmailLegality(mail.getToAddress());
+        boolean emailValidFlag = mailUtil.checkEmailLegality(mail.getEmail());
         Integer code = emailValidFlag ? StatusCode.EMAIL_LEGITIMATE:StatusCode.EMAIL_ILLEGAL;
         String msg = emailValidFlag ? StatusMessage.EMAIL_LEGITIMATE: StatusMessage.EMAIL_ILLEGAL;
         if(emailValidFlag){
-            boolean sendVerificationCodeFlag = mailUtil.sendVerificationCode(mail.getToAddress());
+            boolean sendVerificationCodeFlag = mailUtil.sendVerificationCode(mail.getEmail());
             code = sendVerificationCodeFlag ? StatusCode.SEND_VERIFICATION_CODE_OK:StatusCode.SEND_VERIFICATION_CODE_ERR;
             msg = sendVerificationCodeFlag ? StatusMessage.SEND_VERIFICATION_CODE_OK: StatusMessage.SEND_VERIFICATION_CODE_ERR;
         }

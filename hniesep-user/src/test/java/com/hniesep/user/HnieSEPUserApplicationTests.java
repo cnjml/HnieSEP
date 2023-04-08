@@ -53,4 +53,7 @@ class HnieSEPUserApplicationTests {
                         .addTablePrefix(prefix))
                 .execute();
     }
+    @Test
+    void teseSelectAll(){
+    }
 }

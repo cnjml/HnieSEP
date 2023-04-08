@@ -32,9 +32,9 @@ public class RegisterServiceImpl implements RegisterService {
         this.redisUtil=redisUtil;
     }
     @Override
-    public boolean register(String username, String password, String email, Date regTime) {
+    public boolean register(String email,String username, String password,  Date regTime) {
         String md5Password = accountUtil.generateMd5String(password,Autograph.PASSWORD_SALT);
-        return accountMapper.insert(username, md5Password ,email ,regTime);
+        return accountMapper.insert(email,username ,md5Password,regTime);
     }
     @Override
     public void setRegisterVerificationCode(String toAddress,String verificationCode) {

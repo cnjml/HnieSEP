@@ -48,7 +48,7 @@ public interface AccountMapper {
      * @param email 注册邮箱
      * @return 是否注册成功
      */
-    boolean insert(@Param("username")String username,@Param("password")String password,@Param("email")String email,@Param("regTime") Date regTime);
+    boolean insert(@Param("email")String email,@Param("username")String username,@Param("password")String password,@Param("regTime") Date regTime);
     /**
      *根据邮箱查找用户
      * @param email 用户名

@@ -86,6 +86,9 @@ public class AccountController {
     @PostMapping("/register")
     @ResponseBody
     public Result register(@RequestBody User user){
+        System.out.println(user.getUsername());
+        System.out.println(user.getRegPwd());
+        System.out.println(user.getEmail());
         //判断验证码是否为空
         boolean emptyVerificationCodeFlag = user.getVerificationCode()==null|| "".equals(user.getVerificationCode());
         Integer code = emptyVerificationCodeFlag ? StatusCode.VERIFICATION_CODE_EMPTY:StatusCode.VERIFICATION_CODE_EXIST;
@@ -94,7 +97,7 @@ public class AccountController {
             return new Result(code,msg);
         }
         //判断用户名是否存在
-        boolean existFlag = accountService.checkExist(user.getRegUsername(),user.getEmail());
+        boolean existFlag = accountService.checkExist(user.getUsername(),user.getEmail());
         code = existFlag ? StatusCode.EXIST_TRUE:StatusCode.EXIST_FALSE;
         msg = existFlag ? StatusMessage.EXIST_TRUE: StatusMessage.EXIST_FALSE;
         //用户名不存在则进行下一步注册
@@ -105,7 +108,7 @@ public class AccountController {
             msg = checkVerificationCodeFlag ? StatusMessage.CHECK_VERIFICATION_CODE_OK : StatusMessage.CHECK_VERIFICATION_CODE_ERR;
             //校验成功则直接注册
             if(checkVerificationCodeFlag){
-                boolean registerFlag = registerService.register(user.getRegUsername(),user.getRegPwd(),user.getEmail(),DateTimeUtil.getDateTime());
+                boolean registerFlag = registerService.register(user.getEmail(),user.getUsername(),user.getRegPwd(),DateTimeUtil.getDateTime());
                 code = registerFlag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
                 msg = registerFlag ? StatusMessage.REGISTER_OK:StatusMessage.REGISTER_ERR;
             }
@@ -142,7 +145,7 @@ public class AccountController {
     /**
      * 获取图片验证码
      */
-    @RequestMapping("/setVerificationImage")
+    @RequestMapping("/getVerificationImage")
     @ResponseBody
     public void verificationImage(HttpServletResponse httpServletResponse){
         String rightCode = VerificationUtil.generateVerificationCode();

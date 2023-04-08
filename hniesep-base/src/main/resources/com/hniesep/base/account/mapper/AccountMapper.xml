@@ -28,7 +28,7 @@
     </select>
 
     <insert id="insert">
-        insert into t_account (account_email,account_password,account_register_time) values (#{email},#{password},#{regTime});
+        insert into t_account (account_email,account_username,account_password,account_register_time) values (#{email},#{username},#{password},#{regTime});
     </insert>
 
     <update id="changePasswordByOldPassword" >
