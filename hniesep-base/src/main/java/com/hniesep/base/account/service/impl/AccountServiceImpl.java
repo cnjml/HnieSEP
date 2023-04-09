@@ -5,6 +5,7 @@ import com.hniesep.base.account.service.AccountService;
 import com.hniesep.base.entity.User;
 
 import com.hniesep.base.protocol.Autograph;
+import com.hniesep.base.protocol.StatusCode;
 import com.hniesep.base.util.AccountUtil;
 import com.hniesep.base.util.VerificationUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,8 +30,8 @@ public class AccountServiceImpl implements AccountService {
         this.accountMapper=accountMapper;
     }
     @Override
-    public boolean checkExist(String username ,String email) {
-        return this.selectByEmail(email) != null || this.selectByName(username) != null;
+    public List<User> selectAll() {
+        return accountMapper.selectAll();
     }
     @Override
     public User selectByName(String username) {
@@ -41,10 +42,6 @@ public class AccountServiceImpl implements AccountService {
         return accountMapper.selectByEmail(email);
     }
     @Override
-    public List<User> selectAll() {
-        return accountMapper.selectAll();
-    }
-    @Override
     public void setVerificationImage(String realCode, HttpServletResponse httpServletResponse) {
        VerificationUtil.generateVerificationImage(realCode,httpServletResponse);
     }
@@ -53,5 +50,17 @@ public class AccountServiceImpl implements AccountService {
         oldPassword = accountUtil.generateMd5String(oldPassword, Autograph.PASSWORD_SALT);
         newPassword = accountUtil.generateMd5String(newPassword, Autograph.PASSWORD_SALT);
         return accountMapper.changePasswordByOldPassword(account,oldPassword,newPassword);
+    }
+    @Override
+    public boolean existUsername(String username) {
+        return this.selectByName(username)!=null;
+    }
+    @Override
+    public boolean existEmail(String email) {
+        return this.selectByEmail(email)!=null;
+    }
+    @Override
+    public boolean exist(String username ,String email) {
+        return existUsername(username) || existEmail(email);
     }
 }

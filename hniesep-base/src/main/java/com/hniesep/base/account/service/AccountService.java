@@ -14,7 +14,7 @@ public interface AccountService {
      * @param email 邮箱
      * @return 是否存在
      */
-    boolean checkExist(String username,String email);
+    boolean exist(String username,String email);
     /**
      *根据用户名查询用户
      * @param username 用户名
@@ -46,4 +46,16 @@ public interface AccountService {
      * @param newPassword 新密码
      */
     boolean changePasswordByEmailAndOldPassword(String email, String oldPassword,String newPassword);
+    /**
+     * 用户名是否注册
+     * @return 用户名是否注册
+     * @param username 用户名
+     */
+    boolean existUsername(String username);
+    /**
+     * 邮箱是否注册
+     * @return 邮箱是否注册
+     * @param email 邮箱
+     */
+    boolean existEmail(String email);
 }

@@ -8,13 +8,12 @@ import lombok.Data;
 @Data
 public class User {
     private int id;
-    private String username;
-    private String regUsername;
-    private String regPwd;
-    private String password;
-    private String tel;
     private String email;
+    private String username;
+    private String password;
+    private String confirmPassword;
     private String verificationCode;
     private String oldPassword;
     private String newPassword;
+    private String tel;
 }

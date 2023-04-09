@@ -9,7 +9,7 @@ import java.util.Date;
  */
 @Service
 public class DateTimeUtil {
-    static Date formatDate = new Date();
+    static final Date formatDate = new Date();
     /**
      *
      * @return 日期类
