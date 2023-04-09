@@ -17,7 +17,7 @@
     </select>
 
     <select id="selectByEmail" resultType="com.hniesep.base.entity.User">
-        select account_email username from t_account where account_email=#{email};
+        select account_email email from t_account where account_email = #{email};
     </select>
 
     <select id="selectByName" resultType="com.hniesep.base.entity.User">
