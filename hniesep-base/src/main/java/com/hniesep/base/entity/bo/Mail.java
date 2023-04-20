@@ -1,0 +1,13 @@
+package com.hniesep.base.entity.bo;
+
+import lombok.Data;
+
+/**
+ * @author 吉铭炼
+ */
+@Data
+public class Mail {
+    private String toAddress;
+    private String fromAddress;
+    private String email;
+}

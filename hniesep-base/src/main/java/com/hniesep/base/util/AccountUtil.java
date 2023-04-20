@@ -1,12 +1,12 @@
 package com.hniesep.base.util;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
 /**
  * @author 吉铭炼
  */
-@Service
+@Component
 public class AccountUtil {
     public String generateMd5String(String rawString,String salt){
         rawString = rawString+salt;

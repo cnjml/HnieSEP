@@ -104,9 +104,13 @@ spring:
       #主机端口
       port: 63799
       #数据库
-      database: 0
+      database: 1
       #密码
       password: Hni1sep-backend
+
+#  jackson:
+#    serialization:
+#      fail-on-empty-beans: false
 
 ---
 server:
@@ -210,6 +214,6 @@ spring:
       #主机端口
       port: 6379
       #数据库
-      database: 0
+      database: 1
       #密码
       password:

@@ -1,21 +1,21 @@
 package com.hniesep.base.util;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 /**
  * @author 吉铭炼
  */
-@Service
+@Component
 public class DateTimeUtil {
-    static final Date formatDate = new Date();
+    static final Date FORMAT_DATE = new Date();
     /**
      *
      * @return 日期类
      */
-    public static Date getDateTime(){
-        formatDate.setTime(System.currentTimeMillis());
-        return formatDate;
+    public static Date getDateTime() {
+        FORMAT_DATE.setTime(System.currentTimeMillis());
+        return FORMAT_DATE;
     }
 }

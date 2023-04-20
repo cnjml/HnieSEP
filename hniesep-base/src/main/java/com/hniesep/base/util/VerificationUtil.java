@@ -1,19 +1,18 @@
 package com.hniesep.base.util;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 /**
  * @author 吉铭炼
  */
-@Service
+@Component
 public class VerificationUtil {
     /**
      * generateVerificationCodeLength 生成的验证码的位数

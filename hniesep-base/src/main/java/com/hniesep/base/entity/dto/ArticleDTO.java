@@ -1,7 +1,5 @@
-package com.hniesep.base.entity;
+package com.hniesep.base.entity.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,31 +7,21 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Date;
 
-
 /**
- * (Article)表实体类
- *
- * @author makejava
- * @since 2023-04-20 11:11:31
+ * @author 吉铭炼
  */
-@TableName("t_article")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article implements Serializable {
+public class ArticleDTO implements Serializable {
     /**
      * 文章ID
      */
-    @TableId
     private Integer articleId;
     /**
      * 所属板块ID
      */
     private Integer boardId;
-    /**
-     * 所属板块名称
-     */
-    private String boardName;
     /**
      * 作者ID
      */
@@ -74,14 +62,4 @@ public class Article implements Serializable {
      * 修改时间
      */
     private Date articleUpdateTime;
-    /**
-     * 审核状态 0:未审核 1:通过审核
-     */
-    private Integer articleAudit;
-    /**
-     * 发布状态 -1: 已删除 0:草稿 1:发布
-     */
-    private Integer articleRelease;
-
 }
-
