@@ -16,7 +16,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modules>
-        <module>hniesep-base</module>
+        <module>hniesep-framework</module>
         <module>hniesep-user</module>
         <module>hniesep-admin</module>
     </modules>
