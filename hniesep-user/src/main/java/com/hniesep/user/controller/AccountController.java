@@ -1,17 +1,17 @@
 package com.hniesep.user.controller;
 
-import com.hniesep.base.entity.bo.User;
-import com.hniesep.base.entity.vo.ResponseVO;
-import com.hniesep.base.exception.ServiceException;
-import com.hniesep.base.protocol.Autograph;
-import com.hniesep.base.protocol.StatusCode;
-import com.hniesep.base.protocol.StatusMessage;
-import com.hniesep.base.service.impl.AccountServiceImpl;
-import com.hniesep.base.service.impl.LoginServiceImpl;
-import com.hniesep.base.service.impl.RegisterServiceImpl;
-import com.hniesep.base.util.DateTimeUtil;
-import com.hniesep.base.util.StringUtil;
-import com.hniesep.base.util.VerificationUtil;
+import com.hniesep.framework.entity.bo.User;
+import com.hniesep.framework.entity.vo.ResponseResult;
+import com.hniesep.framework.exception.ServiceException;
+import com.hniesep.framework.protocol.Autograph;
+import com.hniesep.framework.protocol.StatusCode;
+import com.hniesep.framework.protocol.StatusMessage;
+import com.hniesep.framework.service.impl.AccountServiceImpl;
+import com.hniesep.framework.service.impl.LoginServiceImpl;
+import com.hniesep.framework.service.impl.RegisterServiceImpl;
+import com.hniesep.framework.util.DateTimeUtil;
+import com.hniesep.framework.util.StringUtil;
+import com.hniesep.framework.util.VerificationUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.annotations.Param;
@@ -50,11 +50,11 @@ public class AccountController {
      */
     @PostMapping("/login")
     @ResponseBody
-    public ResponseVO login(@RequestBody User user) {
+    public ResponseResult login(@RequestBody User user) {
         boolean flag = loginService.login(user.getEmail(), user.getPassword()) || loginService.login(user.getUsername(), user.getPassword());
         Integer code = flag ? StatusCode.LOGIN_OK : StatusCode.LOGIN_ERR;
         String msg = flag ? StatusMessage.LOGIN_OK : StatusMessage.LOGIN_ERR;
-        return new ResponseVO(code, msg);
+        return new ResponseResult(code, msg);
     }
 
     /**
@@ -67,11 +67,11 @@ public class AccountController {
     @PostMapping("/originLogin")
     @ResponseBody
     @Deprecated
-    public ResponseVO originLogin(@Param("username") String username, @Param("email") String email, @Param("password") String password) {
+    public ResponseResult originLogin(@Param("username") String username, @Param("email") String email, @Param("password") String password) {
         boolean flag = loginService.login(username, password) || loginService.login(email, password);
         Integer code = flag ? StatusCode.LOGIN_OK : StatusCode.LOGIN_ERR;
         String msg = flag ? StatusMessage.LOGIN_OK : StatusMessage.LOGIN_ERR;
-        return new ResponseVO(code, msg);
+        return new ResponseResult(code, msg);
     }
 
     /**
@@ -82,11 +82,11 @@ public class AccountController {
      */
     @PostMapping("/isExist")
     @ResponseBody
-    public ResponseVO isExist(@RequestBody User user) {
+    public ResponseResult isExist(@RequestBody User user) {
         boolean existFlag = accountService.exist(user.getUsername(), user.getEmail());
         Integer code = existFlag ? StatusCode.EXIST_TRUE : StatusCode.EXIST_FALSE;
         String msg = existFlag ? StatusMessage.EXIST_TRUE : StatusMessage.EXIST_FALSE;
-        return new ResponseVO(code, msg);
+        return new ResponseResult(code, msg);
     }
 
     /**
@@ -97,11 +97,11 @@ public class AccountController {
      */
     @PostMapping("/existUsername")
     @ResponseBody
-    public ResponseVO existUsername(@RequestBody User user) {
+    public ResponseResult existUsername(@RequestBody User user) {
         boolean existFlag = accountService.existUsername(user.getUsername());
         Integer code = existFlag ? StatusCode.EXIST_USERNAME_ONLY_TRUE : StatusCode.EXIST_USERNAME_ONLY_FALSE;
         String msg = existFlag ? StatusMessage.EXIST_USERNAME_TRUE : StatusMessage.EXIST_USERNAME_FALSE;
-        return new ResponseVO(code, msg);
+        return new ResponseResult(code, msg);
     }
 
     /**
@@ -112,11 +112,11 @@ public class AccountController {
      */
     @PostMapping("/existEmail")
     @ResponseBody
-    public ResponseVO existEmail(@RequestBody User user) {
+    public ResponseResult existEmail(@RequestBody User user) {
         boolean existFlag = accountService.existEmail(user.getEmail());
         Integer code = existFlag ? StatusCode.EXIST_EMAIL_ONLY_TRUE : StatusCode.EXIST_EMAIL_ONLY_FALSE;
         String msg = existFlag ? StatusMessage.EXIST_EMAIL_TRUE : StatusMessage.EXIST_EMAIL_FALSE;
-        return new ResponseVO(code, msg);
+        return new ResponseResult(code, msg);
     }
 
     /**
@@ -127,7 +127,7 @@ public class AccountController {
      */
     @PostMapping("/register")
     @ResponseBody
-    public ResponseVO register(@RequestBody User user) {
+    public ResponseResult register(@RequestBody User user) {
         String username = user.getUsername();
         String password = user.getPassword();
         String email = user.getEmail();
@@ -145,7 +145,7 @@ public class AccountController {
         Integer code = emptyVerificationCodeFlag ? StatusCode.VERIFICATION_CODE_EMPTY : StatusCode.VERIFICATION_CODE_EXIST;
         String msg = emptyVerificationCodeFlag ? StatusMessage.VERIFICATION_CODE_EMPTY : StatusMessage.VERIFICATION_CODE_EXIST;
         if (emptyVerificationCodeFlag) {
-            return new ResponseVO(code, msg);
+            return new ResponseResult(code, msg);
         }
         //判断用户名和邮箱是否存在
         boolean existFlag = accountService.exist(username, email);
@@ -165,7 +165,7 @@ public class AccountController {
                 msg = registerFlag ? StatusMessage.REGISTER_OK:StatusMessage.REGISTER_ERR;
             }
         }
-        return new ResponseVO(code,msg);
+        return new ResponseResult(code,msg);
     }
     /**
      * 获取所有用户，json格式
@@ -207,31 +207,31 @@ public class AccountController {
      */
     @PostMapping("/changePassword")
     @ResponseBody
-    public ResponseVO changePassword(@RequestBody User user) {
+    public ResponseResult changePassword(@RequestBody User user) {
         String email = user.getEmail();
         String oldPassword = user.getOldPassword();
         String newPassword = user.getNewPassword();
         boolean changePasswordFlag = accountService.changePasswordByEmailAndOldPassword(email, oldPassword, newPassword);
         Integer code = changePasswordFlag ? StatusCode.CHANGE_PASSWORD_OK : StatusCode.CHANGE_PASSWORD_ERR;
         String msg = changePasswordFlag ? StatusMessage.CHANGE_PASSWORD_OK : StatusMessage.CHANGE_PASSWORD_ERR;
-        return new ResponseVO(code, msg);
+        return new ResponseResult(code, msg);
     }
 
     @PostMapping("/existEmailAndUsername")
     @ResponseBody
-    public ResponseVO existEmailAndUsername(@RequestBody User user) {
+    public ResponseResult existEmailAndUsername(@RequestBody User user) {
         String email = user.getEmail();
         String username = user.getUsername();
         if (accountService.existUsername(username) && accountService.existEmail(email)) {
-            return new ResponseVO(StatusCode.EXIST_EMAIL_AND_USERNAME_TRUE, StatusMessage.EXIST_EMAIL_AND_USERNAME_TRUE);
+            return new ResponseResult(StatusCode.EXIST_EMAIL_AND_USERNAME_TRUE, StatusMessage.EXIST_EMAIL_AND_USERNAME_TRUE);
         }
         if (!accountService.existUsername(username) && !accountService.existEmail(email)) {
-            return new ResponseVO(StatusCode.EXIST_EMAIL_AND_USERNAME_FALSE, StatusMessage.EXIST_FALSE);
+            return new ResponseResult(StatusCode.EXIST_EMAIL_AND_USERNAME_FALSE, StatusMessage.EXIST_FALSE);
         }
         if (accountService.existUsername(username) && !accountService.existEmail(email)) {
-            return new ResponseVO(StatusCode.EXIST_EMAIL_ONLY_TRUE,StatusMessage.EXIST_EMAIL_TRUE);
+            return new ResponseResult(StatusCode.EXIST_EMAIL_ONLY_TRUE,StatusMessage.EXIST_EMAIL_TRUE);
         }
-        return new ResponseVO(StatusCode.EXIST_USERNAME_ONLY_TRUE,StatusMessage.EXIST_USERNAME_TRUE);
+        return new ResponseResult(StatusCode.EXIST_USERNAME_ONLY_TRUE,StatusMessage.EXIST_USERNAME_TRUE);
     }
 
 }

@@ -1,8 +1,10 @@
 package com.hniesep.user.controller;
 
-import com.hniesep.base.entity.Article;
-import com.hniesep.base.entity.vo.ResponseVO;
-import com.hniesep.base.service.impl.ArticleServiceImpl;
+import com.hniesep.framework.entity.vo.ArticleListVO;
+import com.hniesep.framework.entity.vo.ArticleVO;
+import com.hniesep.framework.entity.vo.ResponseResult;
+import com.hniesep.framework.service.impl.ArticleServiceImpl;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,22 +20,26 @@ import java.util.List;
 @RequestMapping("/article")
 public class ArticleController {
     private ArticleServiceImpl articleService;
-
-    @RequestMapping("/getAll")
-    @ResponseBody
-    public List<Article> getAll() {
-        return articleService.getAll();
-    }
-
     @Autowired
     public void setArticleService(ArticleServiceImpl articleService) {
         this.articleService = articleService;
     }
-
     @GetMapping("/popularArticles")
     @ResponseBody
-    public ResponseVO popularArticles() {
-        ResponseVO responseVO = articleService.popularArticles();
-        return responseVO;
+    public ResponseResult<List<ArticleVO>> popularArticles() {
+        return articleService.popularArticles();
+    }
+    @RequestMapping ("/articleList")
+    @ResponseBody
+    public ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(@Param("pageNum")Integer pageNum,@Param("pageSize")Integer pageSize,@Param("boardId")Integer boardId){
+        if (pageNum!=null&&pageSize!=null&&boardId!=null){
+            return articleService.articleList(pageNum,pageSize,boardId);
+        }
+        else {
+            if (pageNum!=null && pageSize!=null){
+                return articleService.articleList(pageNum,pageSize);
+            }
+        }
+        return articleService.articleList();
     }
 }

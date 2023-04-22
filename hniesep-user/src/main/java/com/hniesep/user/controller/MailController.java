@@ -1,11 +1,11 @@
 package com.hniesep.user.controller;
 
-import com.hniesep.base.entity.bo.Mail;
-import com.hniesep.base.entity.vo.ResponseVO;
-import com.hniesep.base.protocol.StatusCode;
-import com.hniesep.base.protocol.StatusMessage;
-import com.hniesep.base.util.MailUtil;
-import com.hniesep.base.util.StringUtil;
+import com.hniesep.framework.entity.bo.Mail;
+import com.hniesep.framework.entity.vo.ResponseResult;
+import com.hniesep.framework.protocol.StatusCode;
+import com.hniesep.framework.protocol.StatusMessage;
+import com.hniesep.framework.util.MailUtil;
+import com.hniesep.framework.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +27,7 @@ public class MailController {
     }
     @PostMapping("/sendVerifyCode")
     @ResponseBody
-    public ResponseVO sendVerifyCode(@RequestBody Mail mail) {
+    public ResponseResult sendVerifyCode(@RequestBody Mail mail) {
         boolean emailValidFlag = StringUtil.validEmail(mail.getEmail());
         Integer code = emailValidFlag ? StatusCode.EMAIL_LEGITIMATE : StatusCode.EMAIL_ILLEGAL;
         String msg = emailValidFlag ? StatusMessage.EMAIL_LEGITIMATE : StatusMessage.EMAIL_ILLEGAL;
@@ -36,6 +36,6 @@ public class MailController {
             code = sendVerificationCodeFlag ? StatusCode.SEND_VERIFICATION_CODE_OK : StatusCode.SEND_VERIFICATION_CODE_ERR;
             msg = sendVerificationCodeFlag ? StatusMessage.SEND_VERIFICATION_CODE_OK : StatusMessage.SEND_VERIFICATION_CODE_ERR;
         }
-        return new ResponseVO(code, msg);
+        return new ResponseResult(code, msg);
     }
 }

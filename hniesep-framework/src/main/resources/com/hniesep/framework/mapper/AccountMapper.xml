@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hniesep.framework.mapper.AccountMapper">
+
+    <select id="selectAll" resultType="com.hniesep.framework.entity.bo.User">
+        select account_id id,account_email email , account_telephone tel from t_account;
+    </select>
+
+    <select id="loginByEmail" resultType="com.hniesep.framework.entity.bo.User">
+        select account_id id from t_account where account_email = #{email} and account_password = #{password};
+    </select>
+
+    <select id="selectByEmail" resultType="com.hniesep.framework.entity.bo.User">
+        select account_email email from t_account where account_email = #{email};
+    </select>
+
+    <select id="selectByName" resultType="com.hniesep.framework.entity.bo.User">
+        select account_username username from t_account where account_username = #{username};
+    </select>
+
+    <select id="loginByName" resultType="com.hniesep.framework.entity.bo.User">
+        select account_username username from t_account where account_username = #{username} and account_password = #{password};
+    </select>
+
+    <update id="changePasswordByOldPassword" >
+        update t_account set account_password = #{newPassword} where account_password = #{oldPassword};
+    </update>
+
+</mapper>
