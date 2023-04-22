@@ -14,22 +14,5 @@ import java.util.List;
  */
 @Repository
 public interface ArticleMapper extends BaseMapper<Article> {
-    /**
-     * 查询所有文章
-     *
-     * @return 文章列表
-     */
-    List<Article> selectAll();
 
-    /**
-     * 根据作者查询
-     *
-     * @return 文章列表
-     */
-    List<Article> selectByAuthor();
-    /**
-     * 根据关键字查询
-     * @return 文章列表
-     */
-    List<Article> selectByKeyWords();
 }
