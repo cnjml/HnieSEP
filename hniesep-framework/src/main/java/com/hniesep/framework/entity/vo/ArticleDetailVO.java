@@ -1,5 +1,6 @@
 package com.hniesep.framework.entity.vo;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class ArticleDetailVO implements Serializable {
     /**
      * 文章ID
      */
+    @TableId
     private Integer articleId;
     /**
      * 所属板块ID

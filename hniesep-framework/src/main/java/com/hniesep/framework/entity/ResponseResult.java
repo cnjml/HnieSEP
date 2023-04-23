@@ -1,4 +1,4 @@
-package com.hniesep.framework.entity.vo;
+package com.hniesep.framework.entity;
 
 import com.hniesep.framework.protocol.StatusCode;
 import com.hniesep.framework.protocol.StatusMessage;
@@ -61,7 +61,7 @@ public class ResponseResult<T> implements Serializable {
      * @History:
      **/
     public static <T> ResponseResult<T> success() {
-        return new ResponseResult<T>();
+        return new ResponseResult<>();
     }
 
     /**
@@ -71,7 +71,7 @@ public class ResponseResult<T> implements Serializable {
      * @History:
      **/
     public static <T> ResponseResult<T> success(T data) {
-        return new ResponseResult<T>(data);
+        return new ResponseResult<>(data);
     }
     /**
      * @Method: fail
@@ -80,7 +80,7 @@ public class ResponseResult<T> implements Serializable {
      * @History:
      **/
     public static <T> ResponseResult<T> fail() {
-        return new ResponseResult<T>();
+        return new ResponseResult<>();
     }
     /**
      * @Method: fail
@@ -89,7 +89,7 @@ public class ResponseResult<T> implements Serializable {
      * @History:
      **/
     public static <T> ResponseResult<T> fail(String msg) {
-        return new ResponseResult<T>(400, msg);
+        return new ResponseResult<>(400, msg);
     }
     public static <T> boolean isSuccess(ResponseResult<T> result) {
         return 0 == result.getCode();

@@ -8,6 +8,8 @@ import com.hniesep.framework.protocol.Autograph;
 import com.hniesep.framework.util.RedisUtil;
 import com.hniesep.framework.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -45,6 +47,12 @@ public class RegisterServiceImpl implements RegisterService {
         account.setAccountPassword(md5Password);
         account.setAccountRegisterTime(regTime);
         return accountMapper.insert(account);
+    }
+
+    public static void main(String[] args) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String bcryptPassword = passwordEncoder.encode("123456");
+        System.out.println(bcryptPassword);
     }
 
     @Override

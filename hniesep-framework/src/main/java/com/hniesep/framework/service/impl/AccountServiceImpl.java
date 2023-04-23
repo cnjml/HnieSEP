@@ -1,8 +1,8 @@
 package com.hniesep.framework.service.impl;
 
+import com.hniesep.framework.entity.bo.UserBO;
 import com.hniesep.framework.mapper.AccountMapper;
 import com.hniesep.framework.service.AccountService;
-import com.hniesep.framework.entity.bo.User;
 import com.hniesep.framework.protocol.Autograph;
 import com.hniesep.framework.util.StringUtil;
 import com.hniesep.framework.util.VerificationUtil;
@@ -28,15 +28,15 @@ public class AccountServiceImpl implements AccountService {
         this.accountMapper=accountMapper;
     }
     @Override
-    public List<User> selectAll() {
+    public List<UserBO> selectAll() {
         return accountMapper.selectAll();
     }
     @Override
-    public User selectByName(String username) {
+    public UserBO selectByName(String username) {
         return accountMapper.selectByName(username);
     }
     @Override
-    public User selectByEmail(String email) {
+    public UserBO selectByEmail(String email) {
         return accountMapper.selectByEmail(email);
     }
     @Override

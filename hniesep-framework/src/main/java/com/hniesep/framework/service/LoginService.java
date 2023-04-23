@@ -1,5 +1,9 @@
 package com.hniesep.framework.service;
 
+import com.hniesep.framework.entity.bo.UserBO;
+import com.hniesep.framework.entity.vo.UserVO;
+import com.hniesep.framework.entity.ResponseResult;
+
 /**
  * @author 吉铭炼
  */
@@ -25,4 +29,11 @@ public interface LoginService {
    * @return 是否登录成功
    */
   boolean login(String account,String password);
+
+  /**
+   * 返回用户信息
+   * @param userBO 用户业务对象
+   * @return 返回类
+   */
+  ResponseResult<UserVO> authLogin(UserBO userBO);
 }

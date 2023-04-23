@@ -13,9 +13,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class OperationAspect {
     @Pointcut("@annotation(com.hniesep.framework.annotation.GlobalInterceptor)")
-    private void requestInterceptor() {
-        System.out.println("interceptor");
-    }
+    private void requestInterceptor() {}
 
     @Around("requestInterceptor()")
     public Object interceptorDo(ProceedingJoinPoint point) {

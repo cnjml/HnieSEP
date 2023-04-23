@@ -3,7 +3,7 @@ package com.hniesep.framework.mapper;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hniesep.framework.entity.Account;
-import com.hniesep.framework.entity.bo.User;
+import com.hniesep.framework.entity.bo.UserBO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,35 +22,35 @@ public interface AccountMapper extends BaseMapper<Account> {
      *查询所有用户
      * @return 返回所有用户
      */
-    List<User> selectAll();
+    List<UserBO> selectAll();
     /**
      * 登录用户名密码校验
      * @param username 用户名
      * @param password 密码
      * @return 查询用户
      */
-    User loginByName(@Param("username") String username, @Param("password") String password);
+    UserBO loginByName(@Param("username") String username, @Param("password") String password);
     /**
      * 登录邮箱密码校验
      * @param email 用户名
      * @param password 密码
      * @return 查询用户
      */
-    User loginByEmail(@Param("email") String email,@Param("password") String password);
+    UserBO loginByEmail(@Param("email") String email, @Param("password") String password);
     /**
      *根据邮箱查找用户
      * @param email 用户名
      * @return 返回一个用户
      *
      */
-    User selectByEmail(@Param("email")String email);
+    UserBO selectByEmail(@Param("email")String email);
     /**
      *根据用户名查找用户
      * @param username 用户名
      * @return 返回一个用户
      *
      */
-    User selectByName(@Param("username")String username);
+    UserBO selectByName(@Param("username")String username);
     /**
      * 使用旧密码更改密码
      * @return 更改密码结果

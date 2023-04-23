@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hniesep.framework.entity.Article;
+import com.hniesep.framework.entity.vo.ArticleDetailVO;
 import com.hniesep.framework.entity.vo.ArticleListVO;
 import com.hniesep.framework.entity.vo.ArticleVO;
-import com.hniesep.framework.entity.vo.ResponseResult;
+import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.mapper.ArticleMapper;
 import com.hniesep.framework.protocol.FieldCode;
 import com.hniesep.framework.service.ArticleService;
@@ -20,6 +21,10 @@ import java.util.List;
  */
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
+    private final ArticleMapper articleMapper;
+    public ArticleServiceImpl(ArticleMapper articleMapper) {
+        this.articleMapper = articleMapper;
+    }
     @Override
     public ResponseResult<List<ArticleVO>> popularArticles() {
         LambdaQueryWrapper<Article> articleLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -57,5 +62,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(Integer pageIndex, Integer pageSize) {
         return articleList(pageIndex,pageSize,0);
+    }
+    @Override
+    public ResponseResult<ArticleDetailVO> articleDetail(Integer articleId){
+        LambdaQueryWrapper<Article> articleLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        articleLambdaQueryWrapper.eq(Article::getArticleId,articleId);
+        articleLambdaQueryWrapper.eq(Article::getArticleAudit, FieldCode.ARTICLE_AUDIT_PASS);
+        articleLambdaQueryWrapper.eq(Article::getArticleRelease, FieldCode.ARTICLE_RELEASE_PUBLISH);
+        ArticleDetailVO articleDetailVO = BeanUtil.copyBean(articleMapper.selectOne(articleLambdaQueryWrapper), ArticleDetailVO.class);
+        return ResponseResult.success(articleDetailVO);
     }
 }

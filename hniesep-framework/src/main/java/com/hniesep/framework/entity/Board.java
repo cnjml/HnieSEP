@@ -1,5 +1,6 @@
 package com.hniesep.framework.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class Board implements Serializable {
     /**
      * 板块ID
      */
+    @TableId
      private Integer boardId;
     /**
      * 父板块ID

@@ -3,7 +3,7 @@ package com.hniesep.framework.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hniesep.framework.entity.Board;
 import com.hniesep.framework.entity.vo.BoardVO;
-import com.hniesep.framework.entity.vo.ResponseResult;
+import com.hniesep.framework.entity.ResponseResult;
 
 import java.util.List;
 

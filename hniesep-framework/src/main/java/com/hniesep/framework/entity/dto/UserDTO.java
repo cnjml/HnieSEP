@@ -1,30 +1,21 @@
-package com.hniesep.framework.entity;
+package com.hniesep.framework.entity.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.Date;
 
-
 /**
- * (Account)表实体类
- *
- * @author makejava
- * @since 2023-04-23 11:21:11
+ * @author 吉铭炼
  */
-@TableName("t_account")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Account implements Serializable {
+@AllArgsConstructor
+public class UserDTO {
     /**
      * 账户ID
      */
-    @TableId
     private Integer accountId;
     /**
      * 手机号
@@ -66,14 +57,4 @@ public class Account implements Serializable {
      * IP对应地址
      */
     private String accountLoginAddress;
-    /**
-     * 1:正常 0:禁用
-     */
-    private Integer accountStatus;
-    /**
-     * 0:管理员 1:普通用户
-     */
-    private Integer accountType;
-
 }
-

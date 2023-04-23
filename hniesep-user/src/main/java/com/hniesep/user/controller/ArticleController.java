@@ -1,22 +1,20 @@
 package com.hniesep.user.controller;
 
+import com.hniesep.framework.entity.vo.ArticleDetailVO;
 import com.hniesep.framework.entity.vo.ArticleListVO;
 import com.hniesep.framework.entity.vo.ArticleVO;
-import com.hniesep.framework.entity.vo.ResponseResult;
+import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.service.impl.ArticleServiceImpl;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
  * @author 吉铭炼
  */
-@Controller
+@RestController
 @RequestMapping("/article")
 public class ArticleController {
     private ArticleServiceImpl articleService;
@@ -41,5 +39,10 @@ public class ArticleController {
             }
         }
         return articleService.articleList();
+    }
+    @GetMapping("/articleDetail/{articleId}")
+    @ResponseBody
+    public ResponseResult<ArticleDetailVO> articleDetail(@PathVariable("articleId")Integer articleId){
+        return articleService.articleDetail(articleId);
     }
 }

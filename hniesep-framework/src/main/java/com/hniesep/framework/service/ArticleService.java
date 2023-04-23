@@ -2,9 +2,10 @@ package com.hniesep.framework.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hniesep.framework.entity.Article;
+import com.hniesep.framework.entity.vo.ArticleDetailVO;
 import com.hniesep.framework.entity.vo.ArticleListVO;
 import com.hniesep.framework.entity.vo.ArticleVO;
-import com.hniesep.framework.entity.vo.ResponseResult;
+import com.hniesep.framework.entity.ResponseResult;
 
 import java.util.List;
 
@@ -48,4 +49,10 @@ public interface ArticleService extends IService<Article> {
      * @return 文章列表
      */
     ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(Integer pageIndex, Integer pageSize);
+    /**
+     * 根据id获取文章详情
+     * @param articleId 文章id
+     * @return 文章详情
+     */
+    ResponseResult<ArticleDetailVO> articleDetail(Integer articleId);
 }

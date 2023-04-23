@@ -1,6 +1,6 @@
 package com.hniesep.framework.service;
 
-import com.hniesep.framework.entity.bo.User;
+import com.hniesep.framework.entity.bo.UserBO;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
@@ -21,18 +21,18 @@ public interface AccountService {
      * @param username 用户名
      * @return boolean 返回一个user对象
      */
-    User selectByName(String username);
+    UserBO selectByName(String username);
     /**
      *根据邮箱查询用户
      * @param email 用户名
      * @return boolean 返回一个user对象
      */
-    User selectByEmail(String email);
+    UserBO selectByEmail(String email);
     /**
      * 选择所有用户
      * @return 返回所有user对象
      */
-    List<User> selectAll();
+    List<UserBO> selectAll();
     /**
      * 设置图片验证码
      * @param rightCode 正确验证码

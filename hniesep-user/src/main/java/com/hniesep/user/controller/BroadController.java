@@ -1,7 +1,7 @@
 package com.hniesep.user.controller;
 
 import com.hniesep.framework.entity.vo.BoardVO;
-import com.hniesep.framework.entity.vo.ResponseResult;
+import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.service.impl.BoardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

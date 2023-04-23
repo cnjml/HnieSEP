@@ -1,7 +1,8 @@
 package com.hniesep.user.controller;
 
-import com.hniesep.framework.entity.bo.User;
-import com.hniesep.framework.entity.vo.ResponseResult;
+import com.hniesep.framework.entity.bo.UserBO;
+import com.hniesep.framework.entity.ResponseResult;
+import com.hniesep.framework.entity.vo.UserVO;
 import com.hniesep.framework.exception.ServiceException;
 import com.hniesep.framework.protocol.Autograph;
 import com.hniesep.framework.protocol.StatusCode;
@@ -16,14 +17,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 吉铭炼
  * user控制器
  */
-@Controller
+@RestController
 @RequestMapping("/account")
 public class AccountController {
     private LoginServiceImpl loginService;
@@ -45,13 +45,13 @@ public class AccountController {
     /**
      * json注册
      *
-     * @param user 请求体：一个json对象
+     * @param userBO 请求体：一个json对象
      * @return 返回类
      */
     @PostMapping("/login")
     @ResponseBody
-    public ResponseResult login(@RequestBody User user) {
-        boolean flag = loginService.login(user.getEmail(), user.getPassword()) || loginService.login(user.getUsername(), user.getPassword());
+    public ResponseResult login(@RequestBody UserBO userBO) {
+        boolean flag = loginService.login(userBO.getEmail(), userBO.getPassword()) || loginService.login(userBO.getUsername(), userBO.getPassword());
         Integer code = flag ? StatusCode.LOGIN_OK : StatusCode.LOGIN_ERR;
         String msg = flag ? StatusMessage.LOGIN_OK : StatusMessage.LOGIN_ERR;
         return new ResponseResult(code, msg);
@@ -77,13 +77,13 @@ public class AccountController {
     /**
      * json注册
      *
-     * @param user 请求体：一个json对象
+     * @param userBO 请求体：一个json对象
      * @return 返回类
      */
     @PostMapping("/isExist")
     @ResponseBody
-    public ResponseResult isExist(@RequestBody User user) {
-        boolean existFlag = accountService.exist(user.getUsername(), user.getEmail());
+    public ResponseResult isExist(@RequestBody UserBO userBO) {
+        boolean existFlag = accountService.exist(userBO.getUsername(), userBO.getEmail());
         Integer code = existFlag ? StatusCode.EXIST_TRUE : StatusCode.EXIST_FALSE;
         String msg = existFlag ? StatusMessage.EXIST_TRUE : StatusMessage.EXIST_FALSE;
         return new ResponseResult(code, msg);
@@ -92,13 +92,13 @@ public class AccountController {
     /**
      * 检测用户名是否注册
      *
-     * @param user 待检测用户对象
+     * @param userBO 待检测用户对象
      * @return 用户名是否注册
      */
     @PostMapping("/existUsername")
     @ResponseBody
-    public ResponseResult existUsername(@RequestBody User user) {
-        boolean existFlag = accountService.existUsername(user.getUsername());
+    public ResponseResult existUsername(@RequestBody UserBO userBO) {
+        boolean existFlag = accountService.existUsername(userBO.getUsername());
         Integer code = existFlag ? StatusCode.EXIST_USERNAME_ONLY_TRUE : StatusCode.EXIST_USERNAME_ONLY_FALSE;
         String msg = existFlag ? StatusMessage.EXIST_USERNAME_TRUE : StatusMessage.EXIST_USERNAME_FALSE;
         return new ResponseResult(code, msg);
@@ -107,13 +107,13 @@ public class AccountController {
     /**
      * 检测邮箱是否注册
      *
-     * @param user 待检测用户对象
+     * @param userBO 待检测用户对象
      * @return 邮箱是否注册
      */
     @PostMapping("/existEmail")
     @ResponseBody
-    public ResponseResult existEmail(@RequestBody User user) {
-        boolean existFlag = accountService.existEmail(user.getEmail());
+    public ResponseResult existEmail(@RequestBody UserBO userBO) {
+        boolean existFlag = accountService.existEmail(userBO.getEmail());
         Integer code = existFlag ? StatusCode.EXIST_EMAIL_ONLY_TRUE : StatusCode.EXIST_EMAIL_ONLY_FALSE;
         String msg = existFlag ? StatusMessage.EXIST_EMAIL_TRUE : StatusMessage.EXIST_EMAIL_FALSE;
         return new ResponseResult(code, msg);
@@ -122,15 +122,15 @@ public class AccountController {
     /**
      * json注册
      *
-     * @param user 请求体：一个json对象
+     * @param userBO 请求体：一个json对象
      * @return 返回类
      */
     @PostMapping("/register")
     @ResponseBody
-    public ResponseResult register(@RequestBody User user) {
-        String username = user.getUsername();
-        String password = user.getPassword();
-        String email = user.getEmail();
+    public ResponseResult register(@RequestBody UserBO userBO) {
+        String username = userBO.getUsername();
+        String password = userBO.getPassword();
+        String email = userBO.getEmail();
         if (!StringUtil.validPassword(password)) {
             throw new ServiceException("密码格式错误");
         }
@@ -141,7 +141,7 @@ public class AccountController {
             throw new ServiceException("邮箱格式错误");
         }
         //判断验证码是否为空
-        boolean emptyVerificationCodeFlag = user.getVerificationCode() == null || "".equals(user.getVerificationCode());
+        boolean emptyVerificationCodeFlag = userBO.getVerificationCode() == null || "".equals(userBO.getVerificationCode());
         Integer code = emptyVerificationCodeFlag ? StatusCode.VERIFICATION_CODE_EMPTY : StatusCode.VERIFICATION_CODE_EXIST;
         String msg = emptyVerificationCodeFlag ? StatusMessage.VERIFICATION_CODE_EMPTY : StatusMessage.VERIFICATION_CODE_EXIST;
         if (emptyVerificationCodeFlag) {
@@ -155,7 +155,7 @@ public class AccountController {
         //用户名和邮箱不存在则进行下一步注册
         if(!existFlag) {
             //校验验证码
-            boolean checkVerificationCodeFlag = registerService.checkRegisterVerificationCode(email,user.getVerificationCode());
+            boolean checkVerificationCodeFlag = registerService.checkRegisterVerificationCode(email, userBO.getVerificationCode());
             code = checkVerificationCodeFlag ? StatusCode.CHECK_VERIFICATION_CODE_OK : StatusCode.CHECK_VERIFICATION_CODE_ERR;
             msg = checkVerificationCodeFlag ? StatusMessage.CHECK_VERIFICATION_CODE_OK : StatusMessage.CHECK_VERIFICATION_CODE_ERR;
             //校验成功则直接注册
@@ -202,15 +202,15 @@ public class AccountController {
     /**
      * 修改密码
      *
-     * @param user 用户对象
+     * @param userBO 用户对象
      * @return 结果
      */
     @PostMapping("/changePassword")
     @ResponseBody
-    public ResponseResult changePassword(@RequestBody User user) {
-        String email = user.getEmail();
-        String oldPassword = user.getOldPassword();
-        String newPassword = user.getNewPassword();
+    public ResponseResult changePassword(@RequestBody UserBO userBO) {
+        String email = userBO.getEmail();
+        String oldPassword = userBO.getOldPassword();
+        String newPassword = userBO.getNewPassword();
         boolean changePasswordFlag = accountService.changePasswordByEmailAndOldPassword(email, oldPassword, newPassword);
         Integer code = changePasswordFlag ? StatusCode.CHANGE_PASSWORD_OK : StatusCode.CHANGE_PASSWORD_ERR;
         String msg = changePasswordFlag ? StatusMessage.CHANGE_PASSWORD_OK : StatusMessage.CHANGE_PASSWORD_ERR;
@@ -219,9 +219,9 @@ public class AccountController {
 
     @PostMapping("/existEmailAndUsername")
     @ResponseBody
-    public ResponseResult existEmailAndUsername(@RequestBody User user) {
-        String email = user.getEmail();
-        String username = user.getUsername();
+    public ResponseResult existEmailAndUsername(@RequestBody UserBO userBO) {
+        String email = userBO.getEmail();
+        String username = userBO.getUsername();
         if (accountService.existUsername(username) && accountService.existEmail(email)) {
             return new ResponseResult(StatusCode.EXIST_EMAIL_AND_USERNAME_TRUE, StatusMessage.EXIST_EMAIL_AND_USERNAME_TRUE);
         }
@@ -232,6 +232,11 @@ public class AccountController {
             return new ResponseResult(StatusCode.EXIST_EMAIL_ONLY_TRUE,StatusMessage.EXIST_EMAIL_TRUE);
         }
         return new ResponseResult(StatusCode.EXIST_USERNAME_ONLY_TRUE,StatusMessage.EXIST_USERNAME_TRUE);
+    }
+    @PostMapping("/authLogin")
+    @ResponseBody
+    public ResponseResult<UserVO> authLogin(@RequestBody UserBO userBO){
+        return loginService.authLogin(userBO);
     }
 
 }

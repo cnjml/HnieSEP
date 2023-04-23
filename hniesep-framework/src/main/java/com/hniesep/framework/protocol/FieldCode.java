@@ -10,4 +10,6 @@ public class FieldCode {
     public static final Integer ARTICLE_RELEASE_PUBLISH = 1;
     public static final Integer ARTICLE_RELEASE_DRAFT = 1;
     public static final Integer ARTICLE_RELEASE_DELETE = -1;
+    public static final Integer ACCOUNT_TYPE_ADMIN = 0;
+    public static final Integer ACCOUNT_TYPE_USER = 1;
 }

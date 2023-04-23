@@ -2,9 +2,7 @@ package com.hniesep.framework.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hniesep.framework.entity.Article;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * (Article)表数据库访问层
@@ -12,7 +10,7 @@ import java.util.List;
  * @author 吉铭炼
  * @since 2023-04-22 12:08:19
  */
-@Repository
+@Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
 
 }
