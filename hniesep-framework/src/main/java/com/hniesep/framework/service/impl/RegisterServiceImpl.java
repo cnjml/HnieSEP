@@ -1,15 +1,14 @@
 package com.hniesep.framework.service.impl;
 
 import com.hniesep.framework.entity.Account;
+import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.RegisterService;
-import com.hniesep.framework.exception.ServiceException;
+import com.hniesep.framework.exception.SystemException;
 import com.hniesep.framework.mapper.AccountMapper;
 import com.hniesep.framework.protocol.Autograph;
 import com.hniesep.framework.util.RedisUtil;
 import com.hniesep.framework.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -49,17 +48,11 @@ public class RegisterServiceImpl implements RegisterService {
         return accountMapper.insert(account);
     }
 
-    public static void main(String[] args) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String bcryptPassword = passwordEncoder.encode("123456");
-        System.out.println(bcryptPassword);
-    }
-
     @Override
     public void setRegisterVerificationCode(String toAddress, String verificationCode) {
         String autograph = Autograph.VERIFICATION_CODE_SIGNATURE;
         if (redisUtil.get(toAddress) != null) {
-            throw new ServiceException("验证码还在有效期内");
+            throw new SystemException(HttpResultEnum.VERIFICATION_CODE_EXIST);
         } else {
             redisUtil.set(toAddress, autograph + verificationCode);
         }

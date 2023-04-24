@@ -3,7 +3,8 @@ package com.hniesep.user.controller;
 import com.hniesep.framework.entity.bo.UserBO;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.entity.vo.UserVO;
-import com.hniesep.framework.exception.ServiceException;
+import com.hniesep.framework.exception.SystemException;
+import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.protocol.Autograph;
 import com.hniesep.framework.protocol.StatusCode;
 import com.hniesep.framework.protocol.StatusMessage;
@@ -131,14 +132,8 @@ public class AccountController {
         String username = userBO.getUsername();
         String password = userBO.getPassword();
         String email = userBO.getEmail();
-        if (!StringUtil.validPassword(password)) {
-            throw new ServiceException("密码格式错误");
-        }
-        if (!StringUtil.validUsername(username)) {
-            throw new ServiceException("用户名格式错误");
-        }
-        if (!StringUtil.validEmail(email)) {
-            throw new ServiceException("邮箱格式错误");
+        if (!StringUtil.validPassword(password)||!StringUtil.validUsername(username)||!StringUtil.validEmail(email)) {
+            throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
         }
         //判断验证码是否为空
         boolean emptyVerificationCodeFlag = userBO.getVerificationCode() == null || "".equals(userBO.getVerificationCode());

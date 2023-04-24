@@ -7,4 +7,5 @@ public class Autograph {
     public static final String VERIFICATION_CODE_SIGNATURE = "HNIESEP_VERIFICATION_CODE";
     public static final String VERIFICATION_IMAGE_SIGNATURE = "HNIESEP_VERIFICATION_IMAGE";
     public static final String PASSWORD_SALT = "HNIESEP_PASSWORD_SALT";
+    public static final String LOGIN_SECRET = "HniesepSecret";
 }

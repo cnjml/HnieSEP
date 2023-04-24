@@ -4,6 +4,9 @@ import com.hniesep.framework.entity.bo.UserBO;
 import com.hniesep.framework.entity.vo.UserVO;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.mapper.AccountMapper;
+import com.hniesep.framework.protocol.Autograph;
+import com.hniesep.framework.protocol.HttpResultEnum;
+import com.hniesep.framework.protocol.StatusMessage;
 import com.hniesep.framework.service.LoginService;
 import com.hniesep.framework.util.JwtUtil;
 import com.hniesep.framework.util.RedisCache;
@@ -12,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -25,25 +26,21 @@ import static com.hniesep.framework.protocol.Autograph.PASSWORD_SALT;
  */
 @Service
 public class LoginServiceImpl implements LoginService {
-    private JwtUtil jwtUtil;
-    @Autowired
     private AuthenticationManager authenticationManager;
     private AccountMapper accountMapper;
     private StringUtil stringUtil;
     private RedisCache redisCache;
-
     @Autowired
-    public void setAuthenticationManager(RedisCache redisCache) {
+    public void setAuthenticationManager(AuthenticationManager authenticationManager){
+        this.authenticationManager = authenticationManager;
+    }
+    @Autowired
+    public void setRedisCache(RedisCache redisCache) {
         this.redisCache = redisCache;
     }
 
     @Autowired
-    public void setJwtUtil(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
-
-    @Autowired
-    public void setAccountUtil(StringUtil stringUtil) {
+    public void setStringUtil(StringUtil stringUtil) {
         this.stringUtil = stringUtil;
     }
 
@@ -71,18 +68,17 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ResponseResult<UserVO> authLogin(UserBO userBO) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userBO.getUsername(), userBO.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         if (!Objects.nonNull(authentication)) {
-            throw new RuntimeException("用户名或密码错误");
+            throw new RuntimeException(StatusMessage.LOGIN_ERR);
         }
         UserVO userVO = (UserVO) authentication.getPrincipal();
         Integer userId = userVO.getAccount().getAccountId();
         String token = JwtUtil.createJwt(Long.valueOf(userId).toString());
-        redisCache.setCacheObject("jwtLogin" + userId, userVO);
+        redisCache.setCacheObject(Autograph.LOGIN_SECRET + userId, userVO);
         userVO.setToken(token);
-        return ResponseResult.success(userVO);
+        return new ResponseResult<>(HttpResultEnum.SUCCESS,userVO);
     }
 
 }

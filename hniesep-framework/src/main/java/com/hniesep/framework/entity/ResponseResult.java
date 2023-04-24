@@ -1,5 +1,6 @@
 package com.hniesep.framework.entity;
 
+import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.protocol.StatusCode;
 import com.hniesep.framework.protocol.StatusMessage;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,21 @@ public class ResponseResult<T> implements Serializable {
      * @param data 响应数据
      */
     public ResponseResult(T data) {
-        this(StatusCode.SUCCESS, data, StatusMessage.SUCCESS);
+        this.data = data;
+    }
+
+    /**
+     * 返回相应结果
+     * @param resultEnum 相应枚举类
+     */
+    public ResponseResult(HttpResultEnum resultEnum) {
+        this.msg = resultEnum.getMsg();
+        this.code = resultEnum.getCode();
+    }
+    public ResponseResult(HttpResultEnum resultEnum,T data) {
+        this.msg = resultEnum.getMsg();
+        this.code = resultEnum.getCode();
+        this.data = data;
     }
     /**
      * 设置响应结果
@@ -50,6 +65,12 @@ public class ResponseResult<T> implements Serializable {
         this.msg = msg;
         this.data = data;
     }
+    /**
+     * 设置响应结果
+     *
+     * @param code 响应码
+     * @param msg 信息
+     */
     public ResponseResult(int code,String msg) {
         this.code = code;
         this.msg = msg;
@@ -96,23 +117,5 @@ public class ResponseResult<T> implements Serializable {
     }
     public static <T> boolean isFail(ResponseResult<T> result) {
         return !isSuccess(result);
-    }
-    public int getCode() {
-        return code;
-    }
-    public void setCode(int code) {
-        this.code = code;
-    }
-    public T getData() {
-        return data;
-    }
-    public void setData(T data) {
-        this.data = data;
-    }
-    public String getMsg() {
-        return msg;
-    }
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 }
