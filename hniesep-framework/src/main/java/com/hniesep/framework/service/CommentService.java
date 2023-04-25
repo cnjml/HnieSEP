@@ -30,5 +30,6 @@ public interface CommentService extends IService<Comment> {
      * @param commentBO 评论业务对象
      * @return 响应结果
      */
-    ResponseResult<Object> comment(CommentBO commentBO);
+    ResponseResult<Object> addComment(CommentBO commentBO);
+
 }

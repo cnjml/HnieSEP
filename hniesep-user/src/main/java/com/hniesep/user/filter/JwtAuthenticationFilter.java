@@ -53,7 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             claims = JwtUtil.parseJwt(token);
         }catch (Exception e){
             //解析token失败，因为token错误，返回需要登录
-            String responseString = objectMapper.writeValueAsString(new ResponseResult<>(HttpResultEnum.NEED_LOGIN));
+            String responseString = objectMapper.writeValueAsString(ResponseResult.fail(HttpResultEnum.NEED_LOGIN));
             WebUtils.renderString(response,responseString);
             return;
         }
@@ -64,7 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //数据是否为空
         if(Objects.isNull(userVO)){
             //退出登录或token到期，导致获取用户详细信息失败，返回授权过期
-            String responseString = objectMapper.writeValueAsString(new ResponseResult<>(HttpResultEnum.CREDENTIALS_EXPIRE));
+            String responseString = objectMapper.writeValueAsString(ResponseResult.fail(HttpResultEnum.CREDENTIALS_EXPIRE));
             WebUtils.renderString(response,responseString);
             return;
         }

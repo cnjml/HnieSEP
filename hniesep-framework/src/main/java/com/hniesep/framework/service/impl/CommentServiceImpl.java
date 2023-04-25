@@ -16,8 +16,10 @@ import com.hniesep.framework.protocol.FieldMessage;
 import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.CommentService;
 import com.hniesep.framework.util.BeanUtil;
+import com.hniesep.framework.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +32,12 @@ import java.util.Objects;
  */
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
-    AccountServiceImpl accountService;
+    private AccountServiceImpl accountService;
+    private CommentMapper commentMapper;
+    @Autowired
+    public void setCommentMapper(CommentMapper commentMapper){
+        this.commentMapper = commentMapper;
+    }
     @Autowired
     public void setAccountService(AccountServiceImpl accountService){
         this.accountService = accountService;
@@ -92,8 +99,13 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return toCommentVOList(comments);
     }
     @Override
-    public ResponseResult<Object> comment(CommentBO commentBO) {
-//        commentService.save();
-        return null;
+    public ResponseResult<Object> addComment(CommentBO commentBO) {
+        //内容未空
+        if(!StringUtils.hasText(commentBO.getCommentContent())){
+            throw new SystemException(HttpResultEnum.CONTENT_IS_NULL);
+        }
+        Comment comment = BeanUtil.copyBean(commentBO,Comment.class);
+        commentMapper.insert(comment);
+        return ResponseResult.success();
     }
 }

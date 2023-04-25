@@ -111,6 +111,9 @@ public class ResponseResult<T> implements Serializable {
     public static <T> ResponseResult<T> fail(String msg) {
         return new ResponseResult<>(HttpResultEnum.FAILED);
     }
+    public static <T> ResponseResult<T> fail(HttpResultEnum resultEnum) {
+        return new ResponseResult<>(resultEnum);
+    }
     public static <T> boolean isSuccess(ResponseResult<T> result) {
         return 0 == result.getCode();
     }

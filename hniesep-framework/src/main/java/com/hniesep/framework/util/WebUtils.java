@@ -9,6 +9,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @author 吉铭炼
+ */
 @Component
 public class WebUtils {
     /**
@@ -27,7 +30,6 @@ public class WebUtils {
             e.printStackTrace();
         }
     }
-
 
     public static void setDownLoadHeader(String filename, ServletContext context, HttpServletResponse response) throws UnsupportedEncodingException {
         //获取文件的mime类型

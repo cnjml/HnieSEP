@@ -24,7 +24,6 @@ public class UserVO implements Serializable, UserDetails {
     private Account account;
 
     public UserVO(Account account) {
-
         this.account = account;
     }
 

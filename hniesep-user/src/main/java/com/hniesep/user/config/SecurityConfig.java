@@ -63,10 +63,12 @@ public class SecurityConfig {
                         .requestMatchers("/mail/**").permitAll()
                         .requestMatchers("/board/**").permitAll()
                         //个别放开
-                        .requestMatchers("/comment/commentList").anonymous()
+                        .requestMatchers("/comment/commentList/**").anonymous()
                         .requestMatchers("/account/authLogin").anonymous()
                         // 其他地址的访问均需验证权限
                         .anyRequest().authenticated()
+                        //测试接口
+//                        .anyRequest().permitAll()
                 )
                 //不需要默认注销方法
                 .logout().disable();
@@ -83,6 +85,7 @@ public class SecurityConfig {
 
     /**
      * 配置资源文件跨源访问(CORS)
+     *
      * @return CorsConfigurationSource
      */
     @Bean

@@ -14,29 +14,17 @@ public class CommentBO {
     /**
      * 父级评论ID
      */
-    private Integer commentParentId;
+    private Long commentParentId;
     /**
      * 所属文章ID
      */
-    private Integer articleId;
-    /**
-     * 评论用户ID
-     */
-    private Integer accountId;
-    /**
-     * 评论用户IP地址
-     */
-    private String accountIpAddress;
+    private Long articleId;
     /**
      * 发送给谁的评论
      */
-    private Integer commentToAccountId;
+    private Long commentToAccountId;
     /**
      * 评论内容
      */
     private String commentContent;
-    /**
-     * 评论图片路径
-     */
-    private String commentImagePath;
 }

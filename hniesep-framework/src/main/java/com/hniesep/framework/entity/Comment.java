@@ -1,5 +1,7 @@
 package com.hniesep.framework.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -37,11 +39,8 @@ public class Comment implements Serializable {
     /**
      * 评论用户ID notnull
      */
-    private Integer accountId;
-    /**
-     * 评论用户IP地址
-     */
-    private String accountIpAddress;
+    @TableField(fill = FieldFill.INSERT)
+    private Long accountId;
     /**
      * 发送对象ID
      */
@@ -57,9 +56,10 @@ public class Comment implements Serializable {
     /**
      * 评论时间 自动获取
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date commentTime;
     /**
-     * 审核状态 -1:已删除 0:未审核 1:通过审核 默认0
+     * 评论状态 0:已删除 1:正常 默认1
      */
     private Integer commentStatus;
 

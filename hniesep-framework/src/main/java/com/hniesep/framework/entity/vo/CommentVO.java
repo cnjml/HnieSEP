@@ -34,11 +34,7 @@ public class CommentVO implements Serializable {
     /**
      * 评论用户ID notnull
      */
-    private Integer accountId;
-    /**
-     * 评论用户IP地址
-     */
-    private String accountIpAddress;
+    private Long accountId;
     /**
      * 发送对象ID
      */

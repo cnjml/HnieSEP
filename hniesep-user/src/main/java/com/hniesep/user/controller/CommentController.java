@@ -26,8 +26,9 @@ public class CommentController {
     public ResponseResult<CommentListVO<List<CommentVO>>> commentList(@PathVariable("articleId") Integer articleId, @PathVariable("pageIndex") Integer pageIndex,@PathVariable("pageSize")Integer pageSize){
         return commentService.commentList(articleId,pageIndex,pageSize);
     }
-    @ResponseBody
-    public ResponseResult<Object> comment(@RequestBody CommentBO commentBO){
-        return commentService.comment(commentBO);
+    @PostMapping("/addComment")
+    @ResponseBody()
+    public ResponseResult<Object> addComment(@RequestBody CommentBO commentBO){
+        return commentService.addComment(commentBO);
     }
 }

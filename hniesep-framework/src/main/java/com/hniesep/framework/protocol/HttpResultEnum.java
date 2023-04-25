@@ -6,16 +6,13 @@ package com.hniesep.framework.protocol;
 
 public enum HttpResultEnum {
     /**
-     * 相应结果枚举类
+     * 响应结果枚举类
      */
-    SUCCESS(200, "操作成功"),
-    FAILED(400,"操作失败"),
     NEED_LOGIN(401, "需要登录后操作"),
     NO_PERMISSION(403, "无操作权限"),
     NO_INTERFACE(404, "接口不存在"),
     SYSTEM_ERROR(500, "系统错误"),
     USER_NOT_EXIST(446,"用户不存在"),
-
     CREDENTIALS_EXPIRE(445,"登录过期，请重新登录"),
     ARGUMENTS_ERROR(444,"参数错误"),
     USERNAME_EXIT(501, "用户名已存在"),
@@ -27,7 +24,10 @@ public enum HttpResultEnum {
     PASSWORD_NOT_NULL(507, "密码不能为空"),
     EMAIL_NOT_NULL(508, "邮箱不能为空"),
     VERIFICATION_CODE_EXIST(411,"验证码还在有效期内"),
-    LOGIN_ERROR(509, "用户名或密码错误");
+    LOGIN_ERROR(509, "用户名或密码错误"),
+    CONTENT_IS_NULL(510,"内容为空"),
+    SUCCESS(200, "操作成功"),
+    FAILED(400,"操作失败");
 
     final String msg;
     final Integer code;
