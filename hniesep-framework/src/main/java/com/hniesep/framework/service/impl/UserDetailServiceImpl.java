@@ -33,7 +33,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if(Objects.isNull(account)){
             throw new SystemException(HttpResultEnum.USER_NOT_EXIST);
         }
-        UserDTO userDTO = BeanUtil.copyBean(account,UserDTO.class);
+//        UserDTO userDTO = BeanUtil.copyBean(account,UserDTO.class);
         return new UserVO(account);
     }
 }

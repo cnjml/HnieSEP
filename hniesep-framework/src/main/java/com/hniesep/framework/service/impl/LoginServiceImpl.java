@@ -4,8 +4,7 @@ import com.hniesep.framework.entity.bo.UserBO;
 import com.hniesep.framework.entity.vo.UserVO;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.mapper.AccountMapper;
-import com.hniesep.framework.protocol.Autograph;
-import com.hniesep.framework.protocol.HttpResultEnum;
+import com.hniesep.framework.protocol.Signature;
 import com.hniesep.framework.protocol.StatusMessage;
 import com.hniesep.framework.service.LoginService;
 import com.hniesep.framework.util.JwtUtil;
@@ -15,11 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
-import static com.hniesep.framework.protocol.Autograph.PASSWORD_SALT;
+import static com.hniesep.framework.protocol.Signature.PASSWORD_SALT;
 
 /**
  * @author 吉铭炼
@@ -76,9 +76,16 @@ public class LoginServiceImpl implements LoginService {
         UserVO userVO = (UserVO) authentication.getPrincipal();
         Integer userId = userVO.getAccount().getAccountId();
         String token = JwtUtil.createJwt(Long.valueOf(userId).toString());
-        redisCache.setCacheObject(Autograph.LOGIN_SECRET + userId, userVO);
+        redisCache.setCacheObject(Signature.LOGIN_SECRET + userId, userVO);
         userVO.setToken(token);
-        return new ResponseResult<>(HttpResultEnum.SUCCESS,userVO);
+        return ResponseResult.success(userVO);
     }
-
+    @Override
+    public ResponseResult<Object> logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserVO userVO = (UserVO) authentication.getPrincipal();
+        Long userId = Long.valueOf(userVO.getAccount().getAccountId());
+        redisCache.deleteObject(Signature.LOGIN_SECRET+userId);
+        return ResponseResult.success();
+    }
 }

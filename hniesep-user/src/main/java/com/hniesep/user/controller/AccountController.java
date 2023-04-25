@@ -5,7 +5,7 @@ import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.entity.vo.UserVO;
 import com.hniesep.framework.exception.SystemException;
 import com.hniesep.framework.protocol.HttpResultEnum;
-import com.hniesep.framework.protocol.Autograph;
+import com.hniesep.framework.protocol.Signature;
 import com.hniesep.framework.protocol.StatusCode;
 import com.hniesep.framework.protocol.StatusMessage;
 import com.hniesep.framework.service.impl.AccountServiceImpl;
@@ -43,6 +43,26 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    /**
+     * 登录
+     * @param userBO 用户业务对象
+     * @return 响应结果
+     */
+    @PostMapping("/authLogin")
+    @ResponseBody
+    public ResponseResult<UserVO> authLogin(@RequestBody UserBO userBO){
+        return loginService.authLogin(userBO);
+    }
+
+    /**
+     * 退出登录
+     * @return 响应结果
+     */
+    @PostMapping("/logout")
+    @ResponseBody
+    public ResponseResult<Object> logout(){
+        return loginService.logout();
+    }
     /**
      * json注册
      *
@@ -178,7 +198,7 @@ public class AccountController {
     @ResponseBody
     public void verificationImage(HttpServletResponse httpServletResponse){
         String rightCode = VerificationUtil.generateVerificationCode();
-        httpServletResponse.setHeader(Autograph.VERIFICATION_IMAGE_SIGNATURE + "verificationImageCode", rightCode);
+        httpServletResponse.setHeader(Signature.VERIFICATION_IMAGE_SIGNATURE + "verificationImageCode", rightCode);
         httpServletResponse.setContentType("image/jpeg");
         httpServletResponse.setHeader("Cache-Control","no-cache");
         accountService.setVerificationImage(rightCode,httpServletResponse);
@@ -190,7 +210,7 @@ public class AccountController {
     @ResponseBody
     public boolean checkVerificationImage(@Param("code") String code, HttpSession httpSession) {
         System.out.println(code);
-        String realCode = (String) httpSession.getAttribute(Autograph.VERIFICATION_IMAGE_SIGNATURE + "verificationImageCode");
+        String realCode = (String) httpSession.getAttribute(Signature.VERIFICATION_IMAGE_SIGNATURE + "verificationImageCode");
         return code.equals(realCode);
     }
 
@@ -227,11 +247,6 @@ public class AccountController {
             return new ResponseResult(StatusCode.EXIST_EMAIL_ONLY_TRUE,StatusMessage.EXIST_EMAIL_TRUE);
         }
         return new ResponseResult(StatusCode.EXIST_USERNAME_ONLY_TRUE,StatusMessage.EXIST_USERNAME_TRUE);
-    }
-    @PostMapping("/authLogin")
-    @ResponseBody
-    public ResponseResult<UserVO> authLogin(@RequestBody UserBO userBO){
-        return loginService.authLogin(userBO);
     }
 
 }

@@ -5,7 +5,6 @@ import com.hniesep.framework.entity.vo.ArticleListVO;
 import com.hniesep.framework.entity.vo.ArticleVO;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.service.impl.ArticleServiceImpl;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,18 +26,10 @@ public class ArticleController {
     public ResponseResult<List<ArticleVO>> popularArticles() {
         return articleService.popularArticles();
     }
-    @RequestMapping ("/articleList")
+    @GetMapping ("/articleList/pageIndex/{pageIndex}/pageSize/{pageSize}/boardId/{boardId}")
     @ResponseBody
-    public ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(@Param("pageNum")Integer pageNum,@Param("pageSize")Integer pageSize,@Param("boardId")Integer boardId){
-        if (pageNum!=null&&pageSize!=null&&boardId!=null){
-            return articleService.articleList(pageNum,pageSize,boardId);
-        }
-        else {
-            if (pageNum!=null && pageSize!=null){
-                return articleService.articleList(pageNum,pageSize);
-            }
-        }
-        return articleService.articleList();
+    public ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(@PathVariable("pageIndex")Integer pageIndex,@PathVariable("pageSize")Integer pageSize,@PathVariable("boardId")Integer boardId){
+        return articleService.articleList(pageIndex,pageSize,boardId);
     }
     @GetMapping("/articleDetail/{articleId}")
     @ResponseBody

@@ -30,7 +30,8 @@ public class ResponseResult<T> implements Serializable {
      * 默认响应成功
      */
     public ResponseResult() {
-        code = StatusCode.SUCCESS;
+        code = HttpResultEnum.SUCCESS.getCode();
+        msg = HttpResultEnum.SUCCESS.getMsg();
     }
     /**
      * 正常响应成功
@@ -40,7 +41,6 @@ public class ResponseResult<T> implements Serializable {
     public ResponseResult(T data) {
         this.data = data;
     }
-
     /**
      * 返回相应结果
      * @param resultEnum 相应枚举类
@@ -82,9 +82,8 @@ public class ResponseResult<T> implements Serializable {
      * @History:
      **/
     public static <T> ResponseResult<T> success() {
-        return new ResponseResult<>();
+        return new ResponseResult<>(HttpResultEnum.SUCCESS);
     }
-
     /**
      * @Method: success
      * @Description:  默认执行成功带结果
@@ -92,7 +91,7 @@ public class ResponseResult<T> implements Serializable {
      * @History:
      **/
     public static <T> ResponseResult<T> success(T data) {
-        return new ResponseResult<>(data);
+        return new ResponseResult<>(HttpResultEnum.SUCCESS,data);
     }
     /**
      * @Method: fail
@@ -110,7 +109,7 @@ public class ResponseResult<T> implements Serializable {
      * @History:
      **/
     public static <T> ResponseResult<T> fail(String msg) {
-        return new ResponseResult<>(400, msg);
+        return new ResponseResult<>(HttpResultEnum.FAILED);
     }
     public static <T> boolean isSuccess(ResponseResult<T> result) {
         return 0 == result.getCode();

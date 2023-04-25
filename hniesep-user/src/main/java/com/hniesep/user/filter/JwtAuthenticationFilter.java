@@ -3,7 +3,7 @@ package com.hniesep.user.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.entity.vo.UserVO;
-import com.hniesep.framework.protocol.Autograph;
+import com.hniesep.framework.protocol.Signature;
 import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.util.JwtUtil;
 import com.hniesep.framework.util.RedisCache;
@@ -44,16 +44,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = request.getHeader("token");
         Claims claims = null;
         try {
-            //没有token请求头
+            //没有token请求头，直接返回
             if(!StringUtils.hasText(token)){
                 filterChain.doFilter(request,response);
-                //返回
                 return;
             }
             //解析token
             claims = JwtUtil.parseJwt(token);
         }catch (Exception e){
-            //解析token失败，因为token超时，重新登录
+            //解析token失败，因为token错误，返回需要登录
             String responseString = objectMapper.writeValueAsString(new ResponseResult<>(HttpResultEnum.NEED_LOGIN));
             WebUtils.renderString(response,responseString);
             return;
@@ -61,10 +60,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //获取用户id
         String userId = claims.getSubject();
         //根据userid从redis获取用户详细信息
-        UserVO userVO = redisCache.getCacheObject(Autograph.LOGIN_SECRET +userId);
+        UserVO userVO = redisCache.getCacheObject(Signature.LOGIN_SECRET +userId);
         //数据是否为空
         if(Objects.isNull(userVO)){
-            //获取用户详细信息失败
+            //退出登录或token到期，导致获取用户详细信息失败，返回授权过期
             String responseString = objectMapper.writeValueAsString(new ResponseResult<>(HttpResultEnum.CREDENTIALS_EXPIRE));
             WebUtils.renderString(response,responseString);
             return;

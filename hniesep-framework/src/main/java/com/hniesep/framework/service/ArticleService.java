@@ -27,28 +27,6 @@ public interface ArticleService extends IService<Article> {
      * @return 文章列表
      */
     ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(Integer pageIndex, Integer pageSize, Integer boardId);
-
-    /**
-     * 获取指定板块的文章列表
-     *
-     * @param boardId 板块id
-     * @return 文章列表
-     */
-    ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(Integer boardId);
-
-    /**
-     * 获取文章列表
-     *
-     * @return 文章列表
-     */
-    ResponseResult<ArticleListVO<List<ArticleVO>>> articleList();
-    /**
-     * 获取文章列表
-     * @param pageIndex 页码
-     * @param pageSize  文章数量
-     * @return 文章列表
-     */
-    ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(Integer pageIndex, Integer pageSize);
     /**
      * 根据id获取文章详情
      * @param articleId 文章id

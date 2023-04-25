@@ -1,9 +1,11 @@
 package com.hniesep.framework.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.bo.UserBO;
 import com.hniesep.framework.mapper.AccountMapper;
 import com.hniesep.framework.service.AccountService;
-import com.hniesep.framework.protocol.Autograph;
+import com.hniesep.framework.protocol.Signature;
 import com.hniesep.framework.util.StringUtil;
 import com.hniesep.framework.util.VerificationUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +18,7 @@ import java.util.List;
  * @author 吉铭炼
  */
 @Service
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> implements AccountService {
     private AccountMapper accountMapper;
     private StringUtil stringUtil;
     @Autowired
@@ -45,8 +47,8 @@ public class AccountServiceImpl implements AccountService {
     }
     @Override
     public boolean changePasswordByEmailAndOldPassword(String account, String oldPassword,String newPassword){
-        oldPassword = stringUtil.generateMd5String(oldPassword, Autograph.PASSWORD_SALT);
-        newPassword = stringUtil.generateMd5String(newPassword, Autograph.PASSWORD_SALT);
+        oldPassword = stringUtil.generateMd5String(oldPassword, Signature.PASSWORD_SALT);
+        newPassword = stringUtil.generateMd5String(newPassword, Signature.PASSWORD_SALT);
         return accountMapper.changePasswordByOldPassword(account,oldPassword,newPassword);
     }
     @Override

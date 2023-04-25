@@ -49,6 +49,8 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .logout().disable()
+                //cors放开
                 .cors().disable()
                 // 基于 token，不需要 csrf
                 .csrf().disable()
@@ -56,26 +58,31 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 // 下面开始设置权限
                 .authorizeHttpRequests(authorize -> authorize
-                        // 请求放开
+                        //通用放开
                         .requestMatchers("/article/**").permitAll()
                         .requestMatchers("/mail/**").permitAll()
                         .requestMatchers("/board/**").permitAll()
-                        .requestMatchers("/mail").permitAll()
-                        .requestMatchers("/account/authLogin").permitAll()
+                        //个别放开
+                        .requestMatchers("/comment/commentList").anonymous()
+                        .requestMatchers("/account/authLogin").anonymous()
                         // 其他地址的访问均需验证权限
                         .anyRequest().authenticated()
                 )
+                //不需要默认注销方法
                 .logout().disable();
+        //用户密码验证过滤器前加token过滤器，如果token有效则跳过用户密码验证过滤器
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        //添加异常处理器
         http.exceptionHandling()
+                //自定义禁止访问处理器
                 .accessDeniedHandler(accessDeniedHandler)
+                //自定义认证入口处理器
                 .authenticationEntryPoint(authenticationEntryPoint);
         return http.build();
     }
 
     /**
-     * 配置跨源访问(CORS)
-     *
+     * 配置资源文件跨源访问(CORS)
      * @return CorsConfigurationSource
      */
     @Bean

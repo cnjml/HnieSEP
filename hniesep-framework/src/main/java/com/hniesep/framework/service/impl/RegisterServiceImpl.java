@@ -5,7 +5,7 @@ import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.RegisterService;
 import com.hniesep.framework.exception.SystemException;
 import com.hniesep.framework.mapper.AccountMapper;
-import com.hniesep.framework.protocol.Autograph;
+import com.hniesep.framework.protocol.Signature;
 import com.hniesep.framework.util.RedisUtil;
 import com.hniesep.framework.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public int register(String email, String username, String password, Date regTime) {
-        String md5Password = stringUtil.generateMd5String(password, Autograph.PASSWORD_SALT);
+        String md5Password = stringUtil.generateMd5String(password, Signature.PASSWORD_SALT);
         Account account = new Account();
         account.setAccountEmail(email);
         account.setAccountUsername(username);
@@ -50,7 +50,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public void setRegisterVerificationCode(String toAddress, String verificationCode) {
-        String autograph = Autograph.VERIFICATION_CODE_SIGNATURE;
+        String autograph = Signature.VERIFICATION_CODE_SIGNATURE;
         if (redisUtil.get(toAddress) != null) {
             throw new SystemException(HttpResultEnum.VERIFICATION_CODE_EXIST);
         } else {
@@ -64,7 +64,7 @@ public class RegisterServiceImpl implements RegisterService {
         if (realVerificationCode == null) {
             return false;
         } else {
-            return realVerificationCode.equals(Autograph.VERIFICATION_CODE_SIGNATURE + verificationCode);
+            return realVerificationCode.equals(Signature.VERIFICATION_CODE_SIGNATURE + verificationCode);
         }
     }
 

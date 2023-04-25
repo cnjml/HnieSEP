@@ -8,8 +8,10 @@ import com.hniesep.framework.entity.vo.ArticleDetailVO;
 import com.hniesep.framework.entity.vo.ArticleListVO;
 import com.hniesep.framework.entity.vo.ArticleVO;
 import com.hniesep.framework.entity.ResponseResult;
+import com.hniesep.framework.exception.SystemException;
 import com.hniesep.framework.mapper.ArticleMapper;
 import com.hniesep.framework.protocol.FieldCode;
+import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.ArticleService;
 import com.hniesep.framework.util.BeanUtil;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
     @Override
     public ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(Integer pageIndex, Integer pageSize, Integer boardId){
+        if(pageIndex==null||pageSize==null||boardId==null){
+            throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
+        }
         LambdaQueryWrapper<Article> articleLambdaQueryWrapper = new LambdaQueryWrapper<>();
         articleLambdaQueryWrapper.eq(Article::getArticleAudit, FieldCode.ARTICLE_AUDIT_PASS);
         articleLambdaQueryWrapper.eq(Article::getArticleRelease, FieldCode.ARTICLE_RELEASE_PUBLISH);
@@ -52,19 +57,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return ResponseResult.success(articleListVO);
     }
     @Override
-    public ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(Integer boardId) {
-        return articleList(1,10,boardId);
-    }
-    @Override
-    public ResponseResult<ArticleListVO<List<ArticleVO>>> articleList() {
-        return articleList(1,10,0);
-    }
-    @Override
-    public ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(Integer pageIndex, Integer pageSize) {
-        return articleList(pageIndex,pageSize,0);
-    }
-    @Override
     public ResponseResult<ArticleDetailVO> articleDetail(Integer articleId){
+        if(articleId==null){
+            throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
+        }
         LambdaQueryWrapper<Article> articleLambdaQueryWrapper = new LambdaQueryWrapper<>();
         articleLambdaQueryWrapper.eq(Article::getArticleId,articleId);
         articleLambdaQueryWrapper.eq(Article::getArticleAudit, FieldCode.ARTICLE_AUDIT_PASS);
