@@ -14,15 +14,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class BoardVO implements Serializable {
     /**
-     * 板块ID
+     * 板块ID notnull 主键自增
      */
-    private Integer boardId;
+    private Long boardId;
     /**
-     * 父板块ID
+     * 父板块ID 默认0
      */
-    private Integer boardParentId;
+    private Long boardParentId;
     /**
-     * 板块名称
+     * 板块名称 notnull
      */
     private String boardName;
     /**

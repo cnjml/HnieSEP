@@ -16,55 +16,52 @@ import java.util.List;
 @AllArgsConstructor
 public class CommentVO implements Serializable {
     /**
-     * 评论ID
+     * 评论ID notnull 主键自增
      */
-    private Integer commentId;
-    /**
-     * 父级评论ID
-     */
-    private Integer commentParentId;
-    /**
-     * 子评论
-     */
-    private List<CommentVO> children;
-    /**
-     * 所属文章ID
-     */
-    private Integer articleId;
-    /**
-     * 评论用户ID
-     */
-    private Integer accountId;
+    private Long commentId;
     /**
      * 评论用户昵称
      */
     private String accountNickName;
     /**
+     * 父级评论ID 默认0
+     */
+    private Long commentParentId;
+    /**
+     * 所属文章ID notnull
+     */
+    private Long articleId;
+    /**
+     * 评论用户ID notnull
+     */
+    private Integer accountId;
+    /**
      * 评论用户IP地址
      */
     private String accountIpAddress;
     /**
-     * 发送给谁的评论
+     * 发送对象ID
      */
-    private Integer commentToAccountId;
+    private Long commentToAccountId;
     /**
      * 发送对象的昵称
      */
     private String commentToAccountNickName;
     /**
-     * 评论内容
+     * 评论内容 notnull
      */
     private String commentContent;
     /**
-     * 评论图片路径
-     */
-    private String commentImagePath;
-    /**
-     * 评论点赞数
+     * 评论点赞数 默认0
      */
     private Integer commentLikes;
     /**
-     * 评论时间
+     * 评论时间 自动获取
      */
     private Date commentTime;
+    /**
+     * 子评论
+     */
+    private List<CommentVO> children;
+
 }

@@ -1,6 +1,5 @@
 package com.hniesep.framework.entity.vo;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,24 +21,23 @@ import java.util.Date;
 @NoArgsConstructor
 public class ArticleVO implements Serializable {
     /**
-     * 文章ID
+     * 文章ID notnull 主键自增
      */
-    @TableId
-    private Integer articleId;
+    private Long articleId;
     /**
-     * 所属板块ID
+     * 所属板块ID 默认0
      */
-    private Integer boardId;
+    private Long boardId;
     /**
-     * 所属板块名称
+     * 作者ID notnull
      */
-    private String boardName;
+    private Long accountId;
     /**
-     * 作者ID
+     * 作者昵称
      */
-    private Integer accountId;
+    private String accountNickName;
     /**
-     * 标题
+     * 标题 notnull
      */
     private String articleTitle;
     /**
@@ -51,21 +49,21 @@ public class ArticleVO implements Serializable {
      */
     private String articleTopic;
     /**
-     * 内容
+     * 文章内容 notnull
      */
     private String articleContent;
     /**
-     * 阅读数
+     * 阅读数 默认0
      */
     private Integer articleReads;
     /**
-     * 点赞数
+     * 点赞数 默认0
      */
     private Integer articleLikes;
     /**
      * 置顶评论的ID
      */
-    private Integer articleTopComment;
+    private Long articleTopCommendId;
     /**
      * 发布时间
      */
@@ -76,4 +74,3 @@ public class ArticleVO implements Serializable {
     private Date articleUpdateTime;
 
 }
-

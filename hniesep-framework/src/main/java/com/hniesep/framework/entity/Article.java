@@ -14,7 +14,7 @@ import java.util.Date;
  * (Article)表实体类
  *
  * @author makejava
- * @since 2023-04-22 12:04:23
+ * @since 2023-04-25 15:49:36
  */
 @TableName("t_article")
 @Data
@@ -22,24 +22,20 @@ import java.util.Date;
 @NoArgsConstructor
 public class Article implements Serializable {
     /**
-     * 文章ID
+     * 文章ID notnull 主键自增
      */
     @TableId
-    private Integer articleId;
+    private Long articleId;
     /**
-     * 所属板块ID
+     * 所属板块ID 默认0
      */
-    private Integer boardId;
+    private Long boardId;
     /**
-     * 所属板块名称
+     * 作者ID notnull
      */
-    private String boardName;
+    private Long accountId;
     /**
-     * 作者ID
-     */
-    private Integer accountId;
-    /**
-     * 标题
+     * 标题 notnull
      */
     private String articleTitle;
     /**
@@ -51,21 +47,21 @@ public class Article implements Serializable {
      */
     private String articleTopic;
     /**
-     * 内容
+     * 文章内容 notnull
      */
     private String articleContent;
     /**
-     * 阅读数
+     * 阅读数 默认0
      */
     private Integer articleReads;
     /**
-     * 点赞数
+     * 点赞数 默认0
      */
     private Integer articleLikes;
     /**
      * 置顶评论的ID
      */
-    private Integer articleTopComment;
+    private Long articleTopCommendId;
     /**
      * 发布时间
      */
@@ -75,13 +71,16 @@ public class Article implements Serializable {
      */
     private Date articleUpdateTime;
     /**
-     * 审核状态 -1:未通过审核 0:未审核 1:通过审核
+     * 审核状态 -1:未通过审核 0:未审核 1:通过审核 默认0
      */
     private Integer articleAudit;
     /**
-     * 发布状态 -1: 即将删除 0:草稿 1:发布
+     * 发布状态 -1: 私密 0:草稿 1:发布 默认0
      */
     private Integer articleRelease;
+    /**
+     * 逻辑删除  0: 正常 1:删除 默认0
+     */
+    private Integer articleDelFlag;
 
 }
-

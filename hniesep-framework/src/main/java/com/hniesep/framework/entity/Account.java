@@ -14,7 +14,7 @@ import java.util.Date;
  * (Account)表实体类
  *
  * @author makejava
- * @since 2023-04-23 11:21:11
+ * @since 2023-04-25 15:52:32
  */
 @TableName("t_account")
 @Data
@@ -22,24 +22,24 @@ import java.util.Date;
 @NoArgsConstructor
 public class Account implements Serializable {
     /**
-     * 账户ID
+     * 账户ID notnull 主键自增
      */
     @TableId
-    private Integer accountId;
+    private Long accountId;
     /**
      * 手机号
      */
     private String accountTelephone;
     /**
-     * 邮箱
+     * 邮箱 notnull
      */
     private String accountEmail;
     /**
-     * 用户名
+     * 用户名 notnull
      */
     private String accountUsername;
     /**
-     * 密码
+     * 密码 notnull
      */
     private String accountPassword;
     /**
@@ -67,13 +67,12 @@ public class Account implements Serializable {
      */
     private String accountLoginAddress;
     /**
-     * 1:正常 0:禁用
+     * 账户状态 0:禁用 1:正常 默认1
      */
     private Integer accountStatus;
     /**
-     * 0:管理员 1:普通用户
+     * 账户权限 0:管理员 1:用户 默认1
      */
     private Integer accountType;
 
 }
-

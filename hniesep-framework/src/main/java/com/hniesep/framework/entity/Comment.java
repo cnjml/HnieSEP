@@ -1,20 +1,20 @@
 package com.hniesep.framework.entity;
 
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
-import com.baomidou.mybatisplus.annotation.TableName;
+import java.util.Date;
 
 
 /**
  * (Comment)表实体类
  *
  * @author makejava
- * @since 2023-04-24 10:57:37
+ * @since 2023-04-25 15:51:48
  */
 @TableName("t_comment")
 @Data
@@ -22,50 +22,45 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @NoArgsConstructor
 public class Comment implements Serializable {
     /**
-     * 评论ID
+     * 评论ID notnull 主键自增
      */
     @TableId
-     private Integer commentId;
+    private Long commentId;
     /**
-     * 父级评论ID
+     * 父级评论ID 默认0
      */
-     private Integer commentParentId;
+    private Long commentParentId;
     /**
-     * 所属文章ID
+     * 所属文章ID notnull
      */
-     private Integer articleId;
+    private Long articleId;
     /**
-     * 评论用户ID
+     * 评论用户ID notnull
      */
-     private Integer accountId;
+    private Integer accountId;
     /**
      * 评论用户IP地址
      */
-     private String accountIpAddress;
+    private String accountIpAddress;
     /**
-     * 发送给谁的评论
+     * 发送对象ID
      */
-     private Integer commentToAccountId;
+    private Long commentToAccountId;
     /**
-     * 评论内容
+     * 评论内容 notnull
      */
-     private String commentContent;
+    private String commentContent;
     /**
-     * 评论图片路径
+     * 评论点赞数 默认0
      */
-     private String commentImagePath;
+    private Integer commentLikes;
     /**
-     * 评论点赞数
+     * 评论时间 自动获取
      */
-     private Integer commentLikes;
+    private Date commentTime;
     /**
-     * 评论时间
+     * 审核状态 -1:已删除 0:未审核 1:通过审核 默认0
      */
-     private Date commentTime;
-    /**
-     * 审核状态 -1:已删除 0:未审核 1:通过审核
-     */
-     private Integer commentStatus;
+    private Integer commentStatus;
 
 }
-

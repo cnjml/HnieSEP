@@ -57,7 +57,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         for(CommentVO comment:comments){
             List<CommentVO> children = getChildren(comment.getCommentId());
             //set子评论
-            comment.setChildren(children);
+            if(Objects.nonNull(children)){
+                comment.setChildren(children);
+            }
         }
         //设置评论列表对象的rows和total
         commentListVO.setRows(comments);
@@ -77,12 +79,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 //获取回复对象的昵称
                 account = accountService.getById(commentVO.getCommentToAccountId());
                 nickName = Objects.isNull(account)? FieldMessage.ACCOUNT_NOT_EXIST : account.getAccountNickName();
-                commentVO.setAccountNickName(nickName);
+                commentVO.setCommentToAccountNickName(nickName);
             }
         }
         return comments;
     }
-    private List<CommentVO> getChildren(Integer commentId){
+    private List<CommentVO> getChildren(Long commentId){
         LambdaQueryWrapper<Comment> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Comment::getCommentParentId,commentId);
         lambdaQueryWrapper.orderByAsc(Comment::getCommentTime);

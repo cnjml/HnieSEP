@@ -74,8 +74,8 @@ public class LoginServiceImpl implements LoginService {
             throw new RuntimeException(StatusMessage.LOGIN_ERR);
         }
         UserVO userVO = (UserVO) authentication.getPrincipal();
-        Integer userId = userVO.getAccount().getAccountId();
-        String token = JwtUtil.createJwt(Long.valueOf(userId).toString());
+        Long userId = userVO.getAccount().getAccountId();
+        String token = JwtUtil.createJwt(userId.toString());
         redisCache.setCacheObject(Signature.LOGIN_SECRET + userId, userVO);
         userVO.setToken(token);
         return ResponseResult.success(userVO);
@@ -84,7 +84,7 @@ public class LoginServiceImpl implements LoginService {
     public ResponseResult<Object> logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserVO userVO = (UserVO) authentication.getPrincipal();
-        Long userId = Long.valueOf(userVO.getAccount().getAccountId());
+        Long userId = userVO.getAccount().getAccountId();
         redisCache.deleteObject(Signature.LOGIN_SECRET+userId);
         return ResponseResult.success();
     }

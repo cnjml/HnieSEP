@@ -29,6 +29,10 @@ public class ArticleDetailVO implements Serializable {
      */
     private Integer accountId;
     /**
+     * 作者昵称
+     */
+    private String accountNickName;
+    /**
      * 标题
      */
     private String articleTitle;
