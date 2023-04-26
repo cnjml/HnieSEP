@@ -26,6 +26,7 @@ public enum HttpResultEnum {
     VERIFICATION_CODE_EXIST(411,"验证码还在有效期内"),
     LOGIN_ERROR(509, "用户名或密码错误"),
     CONTENT_IS_NULL(510,"内容为空"),
+    VERIFICATION_CODE_ERROR(511,"验证码错误"),
     SUCCESS(200, "操作成功"),
     FAILED(400,"操作失败");
 

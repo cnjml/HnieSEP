@@ -49,6 +49,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                //不需要默认注销方法
                 .logout().disable()
                 //cors放开
                 .cors().disable()
@@ -64,14 +65,13 @@ public class SecurityConfig {
                         .requestMatchers("/board/**").permitAll()
                         //个别放开
                         .requestMatchers("/comment/commentList/**").anonymous()
-                        .requestMatchers("/account/authLogin").anonymous()
+                        .requestMatchers("/account/register").anonymous()
+                        .requestMatchers("/account/login").anonymous()
                         // 其他地址的访问均需验证权限
                         .anyRequest().authenticated()
                         //测试接口
 //                        .anyRequest().permitAll()
-                )
-                //不需要默认注销方法
-                .logout().disable();
+                );
         //用户密码验证过滤器前加token过滤器，如果token有效则跳过用户密码验证过滤器
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         //添加异常处理器

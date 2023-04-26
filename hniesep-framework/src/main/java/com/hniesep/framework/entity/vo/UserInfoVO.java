@@ -1,4 +1,4 @@
-package com.hniesep.framework.entity.dto;
+package com.hniesep.framework.entity.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO implements Serializable {
+public class UserInfoVO implements Serializable {
     /**
      * 账户ID
      */

@@ -1,5 +1,7 @@
 package com.hniesep.framework.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -53,6 +55,7 @@ public class Account implements Serializable {
     /**
      * 注册时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date accountRegisterTime;
     /**
      * 最后登录时间

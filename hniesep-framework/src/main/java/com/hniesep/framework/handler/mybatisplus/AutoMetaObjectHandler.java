@@ -25,6 +25,7 @@ public class AutoMetaObjectHandler implements MetaObjectHandler {
         this.setFieldValByName("createTime",new Date(),metaObject);
         this.setFieldValByName("updateTime",new Date(),metaObject);
         this.setFieldValByName("accountId",accountId,metaObject);
+        this.setFieldValByName("accountRegisterTime",new Date(),metaObject);
     }
 
     @Override

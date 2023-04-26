@@ -1,18 +1,15 @@
 package com.hniesep.user.controller;
 
+import com.hniesep.framework.annotation.SystemLog;
 import com.hniesep.framework.entity.bo.UserBO;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.entity.vo.UserVO;
-import com.hniesep.framework.exception.SystemException;
-import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.protocol.Signature;
 import com.hniesep.framework.protocol.StatusCode;
 import com.hniesep.framework.protocol.StatusMessage;
 import com.hniesep.framework.service.impl.AccountServiceImpl;
 import com.hniesep.framework.service.impl.LoginServiceImpl;
 import com.hniesep.framework.service.impl.RegisterServiceImpl;
-import com.hniesep.framework.util.DateTimeUtil;
-import com.hniesep.framework.util.StringUtil;
 import com.hniesep.framework.util.VerificationUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -48,10 +45,11 @@ public class AccountController {
      * @param userBO 用户业务对象
      * @return 响应结果
      */
-    @PostMapping("/authLogin")
+    @PostMapping("/login")
     @ResponseBody
-    public ResponseResult<UserVO> authLogin(@RequestBody UserBO userBO){
-        return loginService.authLogin(userBO);
+    @SystemLog(businessName = "登录")
+    public ResponseResult<UserVO> login(@RequestBody UserBO userBO){
+        return loginService.login(userBO);
     }
 
     /**
@@ -64,40 +62,6 @@ public class AccountController {
         return loginService.logout();
     }
     /**
-     * json注册
-     *
-     * @param userBO 请求体：一个json对象
-     * @return 返回类
-     */
-    @PostMapping("/login")
-    @ResponseBody
-    public ResponseResult login(@RequestBody UserBO userBO) {
-        boolean flag = loginService.login(userBO.getEmail(), userBO.getPassword()) || loginService.login(userBO.getUsername(), userBO.getPassword());
-        Integer code = flag ? StatusCode.LOGIN_OK : StatusCode.LOGIN_ERR;
-        String msg = flag ? StatusMessage.LOGIN_OK : StatusMessage.LOGIN_ERR;
-        return new ResponseResult(code, msg);
-    }
-
-    /**
-     * 原始表单登录
-     *
-     * @param username 原始表单的username
-     * @param password 原始表单的password
-     * @return 返回类
-     */
-    @PostMapping("/originLogin")
-    @ResponseBody
-    @Deprecated
-    public ResponseResult originLogin(@Param("username") String username, @Param("email") String email, @Param("password") String password) {
-        boolean flag = loginService.login(username, password) || loginService.login(email, password);
-        Integer code = flag ? StatusCode.LOGIN_OK : StatusCode.LOGIN_ERR;
-        String msg = flag ? StatusMessage.LOGIN_OK : StatusMessage.LOGIN_ERR;
-        return new ResponseResult(code, msg);
-    }
-
-    /**
-     * json注册
-     *
      * @param userBO 请求体：一个json对象
      * @return 返回类
      */
@@ -109,7 +73,6 @@ public class AccountController {
         String msg = existFlag ? StatusMessage.EXIST_TRUE : StatusMessage.EXIST_FALSE;
         return new ResponseResult(code, msg);
     }
-
     /**
      * 检测用户名是否注册
      *
@@ -148,39 +111,8 @@ public class AccountController {
      */
     @PostMapping("/register")
     @ResponseBody
-    public ResponseResult register(@RequestBody UserBO userBO) {
-        String username = userBO.getUsername();
-        String password = userBO.getPassword();
-        String email = userBO.getEmail();
-        if (!StringUtil.validPassword(password)||!StringUtil.validUsername(username)||!StringUtil.validEmail(email)) {
-            throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
-        }
-        //判断验证码是否为空
-        boolean emptyVerificationCodeFlag = userBO.getVerificationCode() == null || "".equals(userBO.getVerificationCode());
-        Integer code = emptyVerificationCodeFlag ? StatusCode.VERIFICATION_CODE_EMPTY : StatusCode.VERIFICATION_CODE_EXIST;
-        String msg = emptyVerificationCodeFlag ? StatusMessage.VERIFICATION_CODE_EMPTY : StatusMessage.VERIFICATION_CODE_EXIST;
-        if (emptyVerificationCodeFlag) {
-            return new ResponseResult(code, msg);
-        }
-        //判断用户名和邮箱是否存在
-        boolean existFlag = accountService.exist(username, email);
-        code = existFlag ? StatusCode.EXIST_TRUE : StatusCode.EXIST_FALSE;
-        msg = existFlag ? StatusMessage.EXIST_TRUE: StatusMessage.EXIST_FALSE;
-
-        //用户名和邮箱不存在则进行下一步注册
-        if(!existFlag) {
-            //校验验证码
-            boolean checkVerificationCodeFlag = registerService.checkRegisterVerificationCode(email, userBO.getVerificationCode());
-            code = checkVerificationCodeFlag ? StatusCode.CHECK_VERIFICATION_CODE_OK : StatusCode.CHECK_VERIFICATION_CODE_ERR;
-            msg = checkVerificationCodeFlag ? StatusMessage.CHECK_VERIFICATION_CODE_OK : StatusMessage.CHECK_VERIFICATION_CODE_ERR;
-            //校验成功则直接注册
-            if(checkVerificationCodeFlag){
-                boolean registerFlag = registerService.register(email,username,password,DateTimeUtil.getDateTime())>=1;
-                code = registerFlag ? StatusCode.REGISTER_OK:StatusCode.REGISTER_ERR;
-                msg = registerFlag ? StatusMessage.REGISTER_OK:StatusMessage.REGISTER_ERR;
-            }
-        }
-        return new ResponseResult(code,msg);
+    public ResponseResult<Object> register(@RequestBody UserBO userBO) {
+        return registerService.register(userBO);
     }
     /**
      * 获取所有用户，json格式

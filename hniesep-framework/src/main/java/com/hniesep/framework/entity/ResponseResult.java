@@ -1,8 +1,6 @@
 package com.hniesep.framework.entity;
 
 import com.hniesep.framework.protocol.HttpResultEnum;
-import com.hniesep.framework.protocol.StatusCode;
-import com.hniesep.framework.protocol.StatusMessage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.io.Serial;

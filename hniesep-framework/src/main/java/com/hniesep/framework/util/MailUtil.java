@@ -1,5 +1,9 @@
 package com.hniesep.framework.util;
 
+import com.hniesep.framework.entity.ResponseResult;
+import com.hniesep.framework.entity.bo.MailBO;
+import com.hniesep.framework.exception.SystemException;
+import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.impl.RegisterServiceImpl;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -12,6 +16,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * @author 吉铭炼
@@ -25,6 +30,11 @@ public class MailUtil {
     private JavaMailSender javaMailSender;
     private TemplateEngine templateEngine;
     private RegisterServiceImpl registerService;
+    private RedisUtil redisUtil;
+    @Autowired
+    public void setRedisUtil(RedisUtil redisUtil){
+        this.redisUtil = redisUtil;
+    }
     @Autowired
     public void setRegisterService(RegisterServiceImpl registerService){
         this.registerService = registerService;
@@ -40,14 +50,16 @@ public class MailUtil {
 
     /**
      * 发送验证码到指定邮箱
-     * @param toAddress 邮箱地址
+     * @param mailBO 邮箱业务对象
      * @return 发送结果
      */
-    public boolean sendVerificationCode(String toAddress) {
-        //调用 VerificationCodeService 生产验证码
+    public ResponseResult<Object> sendVerificationCode(MailBO mailBO) {
+        String toAddress = mailBO.getEmail();
+        if(!StringUtil.isValidEmail(toAddress)){
+            throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
+        }
+        //调用 VerificationUtil 生成验证码
         String verificationCode = VerificationUtil.generateVerificationCode();
-        //先放验证码
-        registerService.setRegisterVerificationCode(toAddress, verificationCode);
         //创建邮件正文
         Context context = new Context();
         context.setVariable("verifyCode", Arrays.asList(verificationCode.split("")));
@@ -61,11 +73,13 @@ public class MailUtil {
             helper.setTo(toAddress);
             helper.setSubject("注册验证码");
             helper.setText(emailContent,true);
+            //存储验证码到redis
+            registerService.setRegisterVerificationCode(toAddress, verificationCode);
             javaMailSender.send(message);
-            //redis设置验证码
-            return true;
+            return ResponseResult.success();
         }catch (MessagingException ignored) {
-            return false;
+            return ResponseResult.fail();
         }
     }
+
 }

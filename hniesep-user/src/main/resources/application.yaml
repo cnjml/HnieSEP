@@ -100,13 +100,13 @@ spring:
       #超时时间
       timeout: 3000ms
       #主机ip
-      host: 43.206.126.181
+      host: localhost
       #主机端口
-      port: 63799
+      port: 6379
       #数据库
       database: 1
       #密码
-      password: Hni1sep-backend
+      password:
 
 #  jackson:
 #    serialization:
@@ -210,10 +210,10 @@ spring:
       #超时时间
       timeout: 3000ms
       #主机ip
-      host: localhost
+      host: 43.206.126.181
       #主机端口
-      port: 6379
+      port: 63799
       #数据库
       database: 1
       #密码
-      password:
+      password: Hni1sep-backend

@@ -6,7 +6,7 @@ import lombok.Data;
  * @author 吉铭炼
  */
 @Data
-public class mailBO {
+public class MailBO {
     private String toAddress;
     private String fromAddress;
     private String email;

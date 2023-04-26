@@ -5,7 +5,6 @@ import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.bo.UserBO;
 import com.hniesep.framework.mapper.AccountMapper;
 import com.hniesep.framework.service.AccountService;
-import com.hniesep.framework.protocol.Signature;
 import com.hniesep.framework.util.StringUtil;
 import com.hniesep.framework.util.VerificationUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,11 +19,6 @@ import java.util.List;
 @Service
 public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> implements AccountService {
     private AccountMapper accountMapper;
-    private StringUtil stringUtil;
-    @Autowired
-    public void setAccountUtil(StringUtil stringUtil){
-        this.stringUtil = stringUtil;
-    }
     @Autowired
     public void setAccountMapper(AccountMapper accountMapper){
         this.accountMapper=accountMapper;
@@ -47,8 +41,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     }
     @Override
     public boolean changePasswordByEmailAndOldPassword(String account, String oldPassword,String newPassword){
-        oldPassword = stringUtil.generateMd5String(oldPassword, Signature.PASSWORD_SALT);
-        newPassword = stringUtil.generateMd5String(newPassword, Signature.PASSWORD_SALT);
+        oldPassword = StringUtil.generateBcrypt(oldPassword);
+        newPassword = StringUtil.generateBcrypt(newPassword);
         return accountMapper.changePasswordByOldPassword(account,oldPassword,newPassword);
     }
     @Override
@@ -63,4 +57,5 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     public boolean exist(String username ,String email) {
         return existUsername(username) || existEmail(email);
     }
+
 }

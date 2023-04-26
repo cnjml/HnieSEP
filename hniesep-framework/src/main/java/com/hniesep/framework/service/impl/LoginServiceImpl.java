@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
-import static com.hniesep.framework.protocol.Signature.PASSWORD_SALT;
-
 /**
  * @author 吉铭炼
  */
@@ -28,7 +26,6 @@ import static com.hniesep.framework.protocol.Signature.PASSWORD_SALT;
 public class LoginServiceImpl implements LoginService {
     private AuthenticationManager authenticationManager;
     private AccountMapper accountMapper;
-    private StringUtil stringUtil;
     private RedisCache redisCache;
     @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager){
@@ -40,34 +37,18 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Autowired
-    public void setStringUtil(StringUtil stringUtil) {
-        this.stringUtil = stringUtil;
-    }
-
-    @Autowired
     public void setAccountMapper(AccountMapper accountMapper) {
         this.accountMapper = accountMapper;
     }
 
     @Override
-    public boolean loginByName(String username, String password) {
-        String md5Password = stringUtil.generateMd5String(password, PASSWORD_SALT);
-        return accountMapper.loginByName(username, md5Password) != null;
-    }
-
-    @Override
     public boolean loginByEmail(String email, String password) {
-        String md5Password = stringUtil.generateMd5String(password, PASSWORD_SALT);
+        String md5Password = StringUtil.generateBcrypt(password);
         return accountMapper.loginByEmail(email, md5Password) != null;
     }
 
     @Override
-    public boolean login(String account, String password) {
-        return this.loginByEmail(account, password) || this.loginByName(account, password);
-    }
-
-    @Override
-    public ResponseResult<UserVO> authLogin(UserBO userBO) {
+    public ResponseResult<UserVO> login(UserBO userBO) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userBO.getUsername(), userBO.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         if (!Objects.nonNull(authentication)) {
@@ -88,4 +69,5 @@ public class LoginServiceImpl implements LoginService {
         redisCache.deleteObject(Signature.LOGIN_SECRET+userId);
         return ResponseResult.success();
     }
+
 }

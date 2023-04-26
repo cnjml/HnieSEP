@@ -9,15 +9,6 @@ import com.hniesep.framework.entity.vo.UserVO;
  */
 public interface LoginService {
     /**
-     * 使用用户名登录
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return 是否登录成功
-     */
-    boolean loginByName(String username, String password);
-
-    /**
      * 使用邮箱登录
      *
      * @param email    邮箱
@@ -25,28 +16,16 @@ public interface LoginService {
      * @return 是否登录成功
      */
     boolean loginByEmail(String email, String password);
-
     /**
-     * 未指定方式登录
-     *
-     * @param account  用户名或邮箱
-     * @param password 密码
-     * @return 是否登录成功
-     */
-    boolean login(String account, String password);
-
-    /**
-     * 返回用户信息
-     *
+     * 登录，返回用户token及信息
      * @param userBO 用户业务对象
-     * @return 返回类
+     * @return 响应结果
      */
-    ResponseResult<UserVO> authLogin(UserBO userBO);
-
+    ResponseResult<UserVO> login(UserBO userBO);
     /**
      * 退出登录
-     *
      * @return 响应结果
      */
     ResponseResult<Object> logout();
+
 }
