@@ -1,9 +1,9 @@
 package com.hniesep.user.filter;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.entity.vo.UserVO;
-import com.hniesep.framework.protocol.Signature;
 import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.util.JwtUtil;
 import com.hniesep.framework.util.RedisCache;
@@ -60,7 +60,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //获取用户id
         String userId = claims.getSubject();
         //根据userid从redis获取用户详细信息
-        UserVO userVO = redisCache.getCacheObject(Signature.LOGIN_SECRET +userId);
+        UserVO userVO = JSONObject.parseObject(redisCache.getCacheObject("loginUser:" +userId).toString(),UserVO.class);
+
         //数据是否为空
         if(Objects.isNull(userVO)){
             //退出登录或token到期，导致获取用户详细信息失败，返回授权过期

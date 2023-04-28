@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 吉铭炼
@@ -56,8 +57,8 @@ public class LoginServiceImpl implements LoginService {
         }
         UserVO userVO = (UserVO) authentication.getPrincipal();
         Long userId = userVO.getAccount().getAccountId();
-        String token = JwtUtil.createJwt(userId.toString());
-        redisCache.setCacheObject(Signature.LOGIN_SECRET + userId, userVO);
+        String token = JwtUtil.createJwt(userId.toString(), TimeUnit.HOURS.toMillis(1));
+        redisCache.setCacheObject("loginUser:" + userId, userVO);
         userVO.setToken(token);
         return ResponseResult.success(userVO);
     }
@@ -66,7 +67,7 @@ public class LoginServiceImpl implements LoginService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserVO userVO = (UserVO) authentication.getPrincipal();
         Long userId = userVO.getAccount().getAccountId();
-        redisCache.deleteObject(Signature.LOGIN_SECRET+userId);
+        redisCache.deleteObject("loginUser:"+userId);
         return ResponseResult.success();
     }
 

@@ -21,16 +21,20 @@ public class AutoMetaObjectHandler implements MetaObjectHandler {
             e.printStackTrace();
             accountId = -1L;
         }
+        if(accountId!=-1L){
+            this.setFieldValByName("accountId",accountId,metaObject);
+        }
         this.setFieldValByName("commentTime",new Date(),metaObject);
         this.setFieldValByName("createTime",new Date(),metaObject);
+        this.setFieldValByName("articleCreateTime",new Date(),metaObject);
         this.setFieldValByName("updateTime",new Date(),metaObject);
-        this.setFieldValByName("accountId",accountId,metaObject);
         this.setFieldValByName("accountRegisterTime",new Date(),metaObject);
+        this.setFieldValByName("articleUpdateTime",new Date(),metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         this.setFieldValByName("updateTime",new Date(),metaObject);
-
+        this.setFieldValByName("articleUpdateTime",new Date(),metaObject);
     }
 }

@@ -60,17 +60,16 @@ public class SecurityConfig {
                 // 下面开始设置权限
                 .authorizeHttpRequests(authorize -> authorize
                         //通用放开
-                        .requestMatchers("/article/**").permitAll()
                         .requestMatchers("/mail/**").permitAll()
                         .requestMatchers("/board/**").permitAll()
                         //个别放开
+                        .requestMatchers("/article/articleDetail/**").permitAll()
+                        .requestMatchers("/article/popularArticles").anonymous()
                         .requestMatchers("/comment/commentList/**").anonymous()
                         .requestMatchers("/account/register").anonymous()
                         .requestMatchers("/account/login").anonymous()
                         // 其他地址的访问均需验证权限
                         .anyRequest().authenticated()
-                        //测试接口
-//                        .anyRequest().permitAll()
                 );
         //用户密码验证过滤器前加token过滤器，如果token有效则跳过用户密码验证过滤器
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -1,9 +1,6 @@
 package com.hniesep.framework.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +23,7 @@ public class Account implements Serializable {
     /**
      * 账户ID notnull 主键自增
      */
-    @TableId
+    @TableId(type = IdType.ASSIGN_ID)
     private Long accountId;
     /**
      * 手机号

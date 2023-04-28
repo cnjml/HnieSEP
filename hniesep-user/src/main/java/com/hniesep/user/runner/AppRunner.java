@@ -32,7 +32,7 @@ public class AppRunner implements CommandLineRunner {
         List<Article> articles = articleMapper.selectList(null);
         Map<String, Integer> readsMap = articles.stream().collect(Collectors.toMap(article -> article.getArticleId().toString(), Article::getArticleReads));
         //存储到redis中
-        redisCache.setCacheMap("reads",readsMap);
+        redisCache.setCacheMap("article:reads",readsMap);
     }
 
 }

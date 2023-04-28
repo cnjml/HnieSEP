@@ -1,5 +1,7 @@
 package com.hniesep.framework.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -33,6 +35,7 @@ public class Article implements Serializable {
     /**
      * 作者ID notnull
      */
+    @TableField(fill = FieldFill.INSERT)
     private Long accountId;
     /**
      * 标题 notnull
@@ -65,10 +68,12 @@ public class Article implements Serializable {
     /**
      * 发布时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date articleCreateTime;
     /**
      * 修改时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date articleUpdateTime;
     /**
      * 审核状态 -1:未通过审核 0:未审核 1:通过审核 默认0
@@ -83,4 +88,8 @@ public class Article implements Serializable {
      */
     private Integer articleDelFlag;
 
+    public Article(Long articleId, Integer reads) {
+        this.setArticleId(articleId);
+        this.setArticleReads(reads);
+    }
 }

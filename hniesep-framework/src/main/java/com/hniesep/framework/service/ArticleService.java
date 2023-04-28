@@ -2,6 +2,7 @@ package com.hniesep.framework.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hniesep.framework.entity.Article;
+import com.hniesep.framework.entity.bo.ArticleBO;
 import com.hniesep.framework.entity.vo.ArticleDetailVO;
 import com.hniesep.framework.entity.vo.ArticleListVO;
 import com.hniesep.framework.entity.vo.ArticleVO;
@@ -26,11 +27,26 @@ public interface ArticleService extends IService<Article> {
      * @param boardId   板块id
      * @return 文章列表
      */
-    ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(Integer pageIndex, Integer pageSize, Integer boardId);
+    ResponseResult<ArticleListVO<List<ArticleVO>>> articleList(Integer pageIndex, Integer pageSize, Long boardId);
     /**
      * 根据id获取文章详情
      * @param articleId 文章id
      * @return 文章详情
      */
-    ResponseResult<ArticleDetailVO> articleDetail(Integer articleId);
+    ResponseResult<ArticleDetailVO> articleDetail(Long articleId);
+
+    /**
+     * 增加浏览量
+     * @param articleId 文章id
+     * @return 响应结果
+     */
+    ResponseResult<Object> updateReads(Long articleId);
+
+    /**
+     * 添加文章
+     * @param articleBO 文章业务对象
+     * @return 响应
+     */
+    ResponseResult<Object> addArticle(ArticleBO articleBO);
+
 }

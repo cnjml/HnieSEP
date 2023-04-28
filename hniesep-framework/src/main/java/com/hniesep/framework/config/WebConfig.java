@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author HKRR
  */
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         //添加映射路径
@@ -26,4 +26,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 //暴露哪些原始请求头部信息
                 .exposedHeaders("*");
     }
+
+
+
 }

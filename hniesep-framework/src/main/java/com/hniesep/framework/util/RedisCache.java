@@ -1,5 +1,6 @@
 package com.hniesep.framework.util;
 
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
@@ -16,9 +17,8 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings(value = {"unchecked", "rawtypes"})
 @Component
 public class RedisCache {
-    @Autowired
-    public RedisTemplate redisTemplate;
-
+    @Resource(name = "myRedisTemplate")
+    private RedisTemplate redisTemplate;
     /**
      * 缓存基本的对象，Integer、String、实体类等
      *
@@ -201,4 +201,15 @@ public class RedisCache {
     public Collection<String> keys(final String pattern) {
         return redisTemplate.keys(pattern);
     }
+
+    /**
+     * 增加浏览量
+     * @param key Redis键
+     * @param hKey Hash键集合
+     * @param v 增加的值
+     */
+    public void incrementCacheMapValue(String key,String hKey,long v){
+        redisTemplate.boundHashOps(key).increment(hKey, v);
+    }
+
 }
