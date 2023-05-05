@@ -31,6 +31,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if(Objects.isNull(account)){
             throw new SystemException(HttpResultEnum.USER_NOT_EXIST);
         }
-        return new UserVO(account);
+        return account;
     }
 }

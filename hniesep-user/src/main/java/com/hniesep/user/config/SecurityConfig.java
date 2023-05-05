@@ -63,11 +63,14 @@ public class SecurityConfig {
                         .requestMatchers("/mail/**").permitAll()
                         .requestMatchers("/board/**").permitAll()
                         //个别放开
-                        .requestMatchers("/article/articleDetail/**").permitAll()
+                        .requestMatchers("/article/articleDetail/**").anonymous()
                         .requestMatchers("/article/popularArticles").anonymous()
+                        .requestMatchers("/article/articleList/**").anonymous()
                         .requestMatchers("/comment/commentList/**").anonymous()
                         .requestMatchers("/account/register").anonymous()
                         .requestMatchers("/account/login").anonymous()
+                        .requestMatchers("/account/existUsername/**").anonymous()
+                        .requestMatchers("/account/existEmail/**").anonymous()
                         // 其他地址的访问均需验证权限
                         .anyRequest().authenticated()
                 );

@@ -1,5 +1,6 @@
 package com.hniesep.framework.util;
 
+import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.vo.UserVO;
 import com.hniesep.framework.protocol.FieldCode;
 import org.springframework.security.core.Authentication;
@@ -11,16 +12,16 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SecurityUtil {
-    public static UserVO getUserVO(){
-        return (UserVO) getAuthentication().getPrincipal();
+    public static Account getAccount(){
+        return (Account) getAuthentication().getPrincipal();
     }
     public static Authentication getAuthentication(){
         return SecurityContextHolder.getContext().getAuthentication();
     }
     public static boolean isAdmin(){
-        return getUserVO().getAccount().getAccountType().equals(FieldCode.ACCOUNT_TYPE_ADMIN);
+        return getAccount().getAccountType().equals(FieldCode.ACCOUNT_TYPE_ADMIN);
     }
     public static Long getAccountId(){
-        return getUserVO().getAccount().getAccountId();
+        return getAccount().getAccountId();
     }
 }

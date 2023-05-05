@@ -61,4 +61,3 @@ public interface AccountMapper extends BaseMapper<Account> {
     boolean changePasswordByOldPassword(String account, String oldPassword,String newPassword);
 
 }
-

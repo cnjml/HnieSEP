@@ -25,7 +25,7 @@
     </select>
 
     <update id="changePasswordByOldPassword" >
-        update t_account set account_password = #{newPassword} where account_password = #{oldPassword};
+        update t_account set account_password = #{newPassword} where account_username = #{account} or account_email = #{account} and account_password = #{oldPassword};
     </update>
 
 </mapper>
