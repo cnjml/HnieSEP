@@ -1,7 +1,9 @@
 package com.hniesep.user.filter;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.entity.vo.UserVO;
 import com.hniesep.framework.protocol.HttpResultEnum;
@@ -25,6 +27,7 @@ import java.util.Objects;
 
 /**
  * @author 吉铭炼
+ * TODO 解析uservo
  */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -60,16 +63,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //获取用户id
         String userId = claims.getSubject();
         //根据userid从redis获取用户详细信息
-        UserVO userVO = JSONObject.parseObject(redisCache.getCacheObject("loginUser:" +userId).toString(),UserVO.class);
-
+        Account account = JSONObject.parseObject(redisCache.getCacheObject("loginUser:" +userId).toString(),Account.class);
         //数据是否为空
-        if(Objects.isNull(userVO)){
+        if(Objects.isNull(account)){
             //退出登录或token到期，导致获取用户详细信息失败，返回授权过期
-            String responseString = objectMapper.writeValueAsString(ResponseResult.fail(HttpResultEnum.CREDENTIALS_EXPIRE));
+            String responseString = JSON.toJSONString(ResponseResult.fail(HttpResultEnum.CREDENTIALS_EXPIRE));
             WebUtils.renderString(response,responseString);
             return;
         }
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userVO,null,null);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(account,null,null);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         filterChain.doFilter(request,response);
     }

@@ -7,7 +7,6 @@ import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.RegisterService;
 import com.hniesep.framework.exception.SystemException;
 import com.hniesep.framework.mapper.AccountMapper;
-import com.hniesep.framework.protocol.Signature;
 import com.hniesep.framework.util.RedisUtil;
 import com.hniesep.framework.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +23,8 @@ import static com.hniesep.framework.protocol.Signature.VERIFICATION_CODE_SIGNATU
  */
 @Service
 public class RegisterServiceImpl implements RegisterService {
-    private AccountServiceImpl accountService;
     private AccountMapper accountMapper;
     private RedisUtil redisUtil;
-    @Autowired
-    public void setAccountService(AccountServiceImpl accountService){
-        this.accountService = accountService;
-    }
     @Autowired
     public void setAccountMapper(AccountMapper accountMapper) {
         this.accountMapper = accountMapper;
@@ -54,11 +48,11 @@ public class RegisterServiceImpl implements RegisterService {
             throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
         }
         //判断用户名是否存在
-        if(accountService.existUsername(username)){
-            throw new SystemException(HttpResultEnum.USERNAME_EXIT);
+        if(accountMapper.selectByName(username)!=null){
+            throw new SystemException(HttpResultEnum.USERNAME_EXIST);
         }
         //判断邮箱是否存在
-        if(accountService.existEmail(email)){
+        if(accountMapper.selectByEmail(email)!=null){
             throw new SystemException(HttpResultEnum.EMAIL_EXIST);
         }
         //校验验证码，成功则直接注册
@@ -75,16 +69,16 @@ public class RegisterServiceImpl implements RegisterService {
     }
     @Override
     public void setRegisterVerificationCode(String toAddress, String verificationCode) {
-        if (redisUtil.get(VERIFICATION_CODE_SIGNATURE + toAddress) != null) {
+        if (redisUtil.get(VERIFICATION_CODE_SIGNATURE + ":" + toAddress) != null) {
             throw new SystemException(HttpResultEnum.VERIFICATION_CODE_EXIST);
         } else {
-            redisUtil.set(VERIFICATION_CODE_SIGNATURE + toAddress, VERIFICATION_CODE_SIGNATURE + verificationCode);
+            redisUtil.set(VERIFICATION_CODE_SIGNATURE + ":" + toAddress, VERIFICATION_CODE_SIGNATURE + verificationCode);
         }
     }
     @Override
     public boolean checkRegisterVerificationCode(String email, String verificationCode) {
-        String realVerificationCode = redisUtil.get(VERIFICATION_CODE_SIGNATURE + email);
-        if (Objects.isNull(email) || !StringUtils.hasText(email)) {
+        String realVerificationCode = redisUtil.get(VERIFICATION_CODE_SIGNATURE + ":" + email);
+        if (!StringUtils.hasText(realVerificationCode)||Objects.isNull(email) || !StringUtils.hasText(email)) {
             return false;
         } else {
             return realVerificationCode.equals(VERIFICATION_CODE_SIGNATURE + verificationCode);

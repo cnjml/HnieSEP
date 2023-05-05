@@ -1,11 +1,11 @@
 package com.hniesep.framework.service.impl;
 
+import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.bo.UserBO;
 import com.hniesep.framework.entity.vo.UserVO;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.mapper.AccountMapper;
-import com.hniesep.framework.protocol.Signature;
-import com.hniesep.framework.protocol.StatusMessage;
+import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.LoginService;
 import com.hniesep.framework.util.JwtUtil;
 import com.hniesep.framework.util.RedisCache;
@@ -53,20 +53,21 @@ public class LoginServiceImpl implements LoginService {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userBO.getUsername(), userBO.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         if (!Objects.nonNull(authentication)) {
-            throw new RuntimeException(StatusMessage.LOGIN_ERR);
+            throw new RuntimeException(HttpResultEnum.LOGIN_ERROR.getMsg());
         }
-        UserVO userVO = (UserVO) authentication.getPrincipal();
-        Long userId = userVO.getAccount().getAccountId();
+        Account account = (Account) authentication.getPrincipal();
+        Long userId = account.getAccountId();
+        redisCache.setCacheObject("loginUser:" + userId, account);
+        UserVO userVO = new UserVO(account);
         String token = JwtUtil.createJwt(userId.toString(), TimeUnit.HOURS.toMillis(1));
-        redisCache.setCacheObject("loginUser:" + userId, userVO);
         userVO.setToken(token);
         return ResponseResult.success(userVO);
     }
     @Override
     public ResponseResult<Object> logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserVO userVO = (UserVO) authentication.getPrincipal();
-        Long userId = userVO.getAccount().getAccountId();
+        Account account = (Account) authentication.getPrincipal();
+        Long userId = account.getAccountId();
         redisCache.deleteObject("loginUser:"+userId);
         return ResponseResult.success();
     }

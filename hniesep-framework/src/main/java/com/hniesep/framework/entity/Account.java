@@ -4,9 +4,15 @@ import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -19,7 +25,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account implements Serializable {
+public class Account implements Serializable, UserDetails {
     /**
      * 账户ID notnull 主键自增
      */
@@ -75,4 +81,40 @@ public class Account implements Serializable {
      */
     private Integer accountType;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>(1);
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return getAccountPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return getAccountUsername();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return getAccountStatus()==1;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

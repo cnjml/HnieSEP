@@ -1,5 +1,6 @@
 package com.hniesep.framework.handler.security;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.protocol.HttpResultEnum;
@@ -20,26 +21,20 @@ import java.io.IOException;
  */
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
-
-    ObjectMapper objectMapper;
-    @Autowired
-    public void setObjectMapper(ObjectMapper objectMapper){
-        this.objectMapper = objectMapper;
-    }
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         authException.printStackTrace();
         if(authException instanceof BadCredentialsException){
             ResponseResult<Object> result = new ResponseResult<>(HttpResultEnum.CREDENTIALS_EXPIRE);
-            WebUtils.renderString(response,objectMapper.writeValueAsString(result));
+            WebUtils.renderString(response,JSON.toJSONString(result));
         }
         else if(authException instanceof InsufficientAuthenticationException) {
             ResponseResult<Object> result = new ResponseResult<>(HttpResultEnum.NEED_LOGIN);
-            WebUtils.renderString(response,objectMapper.writeValueAsString(result));
+            WebUtils.renderString(response, JSON.toJSONString(result));
         }
         else {
             ResponseResult<Object> result = new ResponseResult<>(HttpResultEnum.FAILED.getCode(),authException.getMessage());
-            WebUtils.renderString(response,objectMapper.writeValueAsString(result));
+            WebUtils.renderString(response,JSON.toJSONString(result));
         }
     }
 }
