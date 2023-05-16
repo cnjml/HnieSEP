@@ -65,7 +65,7 @@ public class SecurityConfig {
                         .requestMatchers("/mail/**").permitAll()
                         .requestMatchers("/board/**").permitAll()
                         //个别放开
-                        .requestMatchers("/article/articleDetail/**").permitAll()
+                        .requestMatchers("/article/articleDetail/**").anonymous()
                         .requestMatchers("/article/popularArticles").anonymous()
                         .requestMatchers("/article/articleList/**").anonymous()
                         .requestMatchers("/comment/commentList/**").anonymous()
