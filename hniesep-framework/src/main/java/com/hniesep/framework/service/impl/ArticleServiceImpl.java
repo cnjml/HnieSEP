@@ -3,6 +3,7 @@ package com.hniesep.framework.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.Article;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.entity.bo.ArticleBO;
@@ -30,7 +31,11 @@ import java.util.List;
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
     private final ArticleMapper articleMapper;
     private RedisCache redisCache;
-
+    private AccountServiceImpl accountService;
+    @Autowired
+    public void setAccountService(AccountServiceImpl accountService){
+        this.accountService = accountService;
+    }
     @Autowired
     public void setRedisCache(RedisCache redisCache) {
         this.redisCache = redisCache;
@@ -66,6 +71,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         page(page, articleLambdaQueryWrapper);
         ArticleListVO<List<ArticleVO>> articleListVO = new ArticleListVO<>();
         List<ArticleVO> articles = BeanUtil.copyBeanList(page.getRecords(), ArticleVO.class);
+        for(ArticleVO articleVO : articles){
+            Account account = accountService.getById(articleVO.getAccountId());
+            articleVO.setAccountNickname(account.getAccountNickname());
+        }
         articleListVO.setRows(articles);
         articleListVO.setTotal(page.getTotal());
         return ResponseResult.success(articleListVO);

@@ -87,6 +87,7 @@ public class AccountController {
      */
     @PostMapping("/register")
     @ResponseBody
+    @SystemLog(businessName = "注册")
     public ResponseResult<Object> register(@RequestBody UserBO userBO) {
         return registerService.register(userBO);
     }
@@ -122,7 +123,6 @@ public class AccountController {
     }
     /**
      * 修改密码
-     *
      * @param userBO 用户对象
      * @return 结果
      */

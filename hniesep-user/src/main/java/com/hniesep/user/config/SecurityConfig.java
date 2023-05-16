@@ -6,6 +6,7 @@ import com.hniesep.user.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
@@ -59,11 +60,12 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 // 下面开始设置权限
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         //通用放开
                         .requestMatchers("/mail/**").permitAll()
                         .requestMatchers("/board/**").permitAll()
                         //个别放开
-                        .requestMatchers("/article/articleDetail/**").anonymous()
+                        .requestMatchers("/article/articleDetail/**").permitAll()
                         .requestMatchers("/article/popularArticles").anonymous()
                         .requestMatchers("/article/articleList/**").anonymous()
                         .requestMatchers("/comment/commentList/**").anonymous()
@@ -75,7 +77,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 );
         //用户密码验证过滤器前加token过滤器，如果token有效则跳过用户密码验证过滤器
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         //添加异常处理器
         http.exceptionHandling()
                 //自定义禁止访问处理器
@@ -96,4 +98,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
         return source;
     }
+
 }

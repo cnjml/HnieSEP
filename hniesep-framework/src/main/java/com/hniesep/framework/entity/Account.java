@@ -50,7 +50,7 @@ public class Account implements Serializable, UserDetails {
     /**
      * 昵称
      */
-    private String accountNickName;
+    private String accountNickname;
     /**
      * 头像url
      */

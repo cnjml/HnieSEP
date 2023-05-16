@@ -61,11 +61,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         List<CommentVO> comments = toCommentVOList(page.getRecords());
         CommentListVO<List<CommentVO>> commentListVO = new CommentListVO<>();
         //查询子评论
-        for(CommentVO comment:comments){
-            List<CommentVO> children = getChildren(comment.getCommentId());
+        for(CommentVO commentVO:comments){
+            List<CommentVO> children = getChildren(commentVO.getCommentId());
             //set子评论
             if(Objects.nonNull(children)){
-                comment.setChildren(children);
+                commentVO.setChildren(children);
             }
         }
         //设置评论列表对象的rows和total
@@ -79,14 +79,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             //获取根评论对象
             Account account = accountService.getById(commentVO.getAccountId());
             //设置根评论昵称
-            String nickName = Objects.isNull(account)? FieldMessage.ACCOUNT_NOT_EXIST : account.getAccountNickName();
-            commentVO.setAccountNickName(nickName);
+            String nickName = Objects.isNull(account)? FieldMessage.ACCOUNT_NOT_EXIST : account.getAccountNickname();
+            commentVO.setAccountNickname(nickName);
             //如果不是根评论
             if(commentVO.getCommentParentId()!=0){
                 //获取回复对象的昵称
                 account = accountService.getById(commentVO.getCommentToAccountId());
-                nickName = Objects.isNull(account)? FieldMessage.ACCOUNT_NOT_EXIST : account.getAccountNickName();
-                commentVO.setCommentToAccountNickName(nickName);
+                nickName = Objects.isNull(account)? FieldMessage.ACCOUNT_NOT_EXIST : account.getAccountNickname();
+                commentVO.setCommentToAccountNickname(nickName);
             }
         }
         return comments;

@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.ResponseResult;
-import com.hniesep.framework.entity.vo.UserVO;
 import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.util.JwtUtil;
 import com.hniesep.framework.util.RedisCache;

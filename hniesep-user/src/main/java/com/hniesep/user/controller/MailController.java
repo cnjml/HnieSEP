@@ -1,5 +1,6 @@
 package com.hniesep.user.controller;
 
+import com.hniesep.framework.annotation.SystemLog;
 import com.hniesep.framework.entity.bo.MailBO;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.util.MailUtil;
@@ -24,6 +25,7 @@ public class MailController {
     }
     @PostMapping("/sendVerifyCode")
     @ResponseBody
+    @SystemLog(businessName = "获取注册验证码")
     public ResponseResult<Object> sendVerifyCode(@RequestBody MailBO mailBO) {
         return mailUtil.sendVerificationCode(mailBO);
     }

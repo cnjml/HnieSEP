@@ -1,6 +1,7 @@
 package com.hniesep.framework.entity.vo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,6 @@ import java.util.Date;
 
 /**
  * (Article)表实体类
- *
  * @author makejava
  * @since 2023-04-22 12:04:23
  */
@@ -23,19 +23,22 @@ public class ArticleVO implements Serializable {
     /**
      * 文章ID notnull 主键自增
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long articleId;
     /**
      * 所属板块ID 默认0
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long boardId;
     /**
      * 作者ID notnull
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long accountId;
     /**
      * 作者昵称
      */
-    private String accountNickName;
+    private String accountNickname;
     /**
      * 标题 notnull
      */

@@ -1,5 +1,6 @@
 package com.hniesep.framework.entity.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,8 @@ public class UserInfoVO implements Serializable {
     /**
      * 账户ID
      */
-    private Integer accountId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long accountId;
     /**
      * 手机号
      */
@@ -37,7 +39,7 @@ public class UserInfoVO implements Serializable {
     /**
      * 昵称
      */
-    private String accountNickName;
+    private String accountNickname;
     /**
      * 头像url
      */
