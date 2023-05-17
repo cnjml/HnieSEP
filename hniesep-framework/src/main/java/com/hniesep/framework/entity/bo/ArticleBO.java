@@ -30,5 +30,8 @@ public class ArticleBO {
      * 文章内容 notnull
      */
     private String content;
-
+    /**
+     * 发布状态 -1: 私密 0:草稿 1:发布 默认0
+     */
+    private Integer release;
 }

@@ -23,7 +23,7 @@ public interface CommentService extends IService<Comment> {
      * @param pageSize 页面大小
      * @return 评论列表
      */
-    ResponseResult<CommentListVO<List<CommentVO>>> commentList(Integer articleId, Integer pageIndex, Integer pageSize);
+    ResponseResult<CommentListVO<List<CommentVO>>> commentList(Long articleId, Integer pageIndex, Integer pageSize);
 
     /**
      * 发送评论

@@ -3,7 +3,7 @@ package com.hniesep.framework.service;
 import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.entity.bo.UserBO;
-import com.hniesep.framework.entity.vo.UserVO;
+import com.hniesep.framework.entity.vo.UserInfoVO;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
@@ -53,5 +53,10 @@ public interface AccountService {
      * @param email 邮箱
      */
     ResponseResult<Object> existEmail(String email);
-
+    /**
+     * 获取用户详细信息
+     * @param accountId 用户id
+     * @return 详用户详细信息细
+     */
+    ResponseResult<UserInfoVO> getUserInfo(Long accountId);
 }
