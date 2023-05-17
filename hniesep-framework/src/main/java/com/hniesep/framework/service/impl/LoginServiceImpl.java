@@ -2,11 +2,13 @@ package com.hniesep.framework.service.impl;
 
 import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.bo.UserBO;
+import com.hniesep.framework.entity.vo.UserInfoVO;
 import com.hniesep.framework.entity.vo.UserVO;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.mapper.AccountMapper;
 import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.LoginService;
+import com.hniesep.framework.util.BeanUtil;
 import com.hniesep.framework.util.JwtUtil;
 import com.hniesep.framework.util.RedisCache;
 import com.hniesep.framework.util.StringUtil;
@@ -58,7 +60,8 @@ public class LoginServiceImpl implements LoginService {
         Account account = (Account) authentication.getPrincipal();
         Long userId = account.getAccountId();
         redisCache.setCacheObject("loginUser:" + userId, account);
-        UserVO userVO = new UserVO(account);
+        UserInfoVO userInfoVO = BeanUtil.copyBean(account,UserInfoVO.class);
+        UserVO userVO = new UserVO(userInfoVO);
         String token = JwtUtil.createJwt(userId.toString(), TimeUnit.HOURS.toMillis(1));
         userVO.setToken(token);
         return ResponseResult.success(userVO);

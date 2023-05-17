@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.entity.bo.UserBO;
+import com.hniesep.framework.entity.vo.UserInfoVO;
 import com.hniesep.framework.exception.SystemException;
 import com.hniesep.framework.mapper.AccountMapper;
 import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.AccountService;
+import com.hniesep.framework.util.BeanUtil;
 import com.hniesep.framework.util.StringUtil;
 import com.hniesep.framework.util.VerificationUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -82,5 +84,11 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         else {
             return ResponseResult.fail(HttpResultEnum.EMAIL_EXIST);
         }
+    }
+
+    @Override
+    public ResponseResult<UserInfoVO> getUserInfo(Long accountId) {
+        UserInfoVO userInfoVO = BeanUtil.copyBean(accountMapper.selectById(accountId),UserInfoVO.class);
+        return ResponseResult.success(userInfoVO);
     }
 }

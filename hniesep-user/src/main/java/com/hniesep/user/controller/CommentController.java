@@ -23,7 +23,7 @@ public class CommentController {
     }
     @GetMapping("/commentList/articleId/{articleId}/pageIndex/{pageIndex}/pageSize/{pageSize}")
     @ResponseBody
-    public ResponseResult<CommentListVO<List<CommentVO>>> commentList(@PathVariable("articleId") Integer articleId, @PathVariable("pageIndex") Integer pageIndex,@PathVariable("pageSize")Integer pageSize){
+    public ResponseResult<CommentListVO<List<CommentVO>>> commentList(@PathVariable("articleId") Long articleId, @PathVariable("pageIndex") Integer pageIndex,@PathVariable("pageSize")Integer pageSize){
         return commentService.commentList(articleId,pageIndex,pageSize);
     }
     @PostMapping("/addComment")

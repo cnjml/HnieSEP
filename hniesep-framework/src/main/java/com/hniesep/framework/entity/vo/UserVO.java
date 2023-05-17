@@ -15,9 +15,9 @@ import java.io.Serializable;
 public class UserVO implements Serializable{
 
     private String token;
-    private Account account;
-    public UserVO(Account account) {
-        this.account = account;
+    private UserInfoVO userInfoVO;
+    public UserVO(UserInfoVO userInfoVO) {
+        this.userInfoVO = userInfoVO;
     }
 
 }

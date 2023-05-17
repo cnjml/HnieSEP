@@ -32,10 +32,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private final ArticleMapper articleMapper;
     private RedisCache redisCache;
     private AccountServiceImpl accountService;
+    private SettingServiceImpl settingService;
+
     @Autowired
-    public void setAccountService(AccountServiceImpl accountService){
+    public void setAccountService(AccountServiceImpl accountService) {
         this.accountService = accountService;
     }
+
+    @Autowired
+    public void setSettingService(SettingServiceImpl settingService) {
+        this.settingService = settingService;
+    }
+
     @Autowired
     public void setRedisCache(RedisCache redisCache) {
         this.redisCache = redisCache;
@@ -71,7 +79,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         page(page, articleLambdaQueryWrapper);
         ArticleListVO<List<ArticleVO>> articleListVO = new ArticleListVO<>();
         List<ArticleVO> articles = BeanUtil.copyBeanList(page.getRecords(), ArticleVO.class);
-        for(ArticleVO articleVO : articles){
+        for (ArticleVO articleVO : articles) {
             Account account = accountService.getById(articleVO.getAccountId());
             articleVO.setAccountNickname(account.getAccountNickname());
         }
@@ -111,7 +119,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         String content = articleBO.getContent();
         String topic = articleBO.getTopic();
         Long boardId = articleBO.getBoardId();
-        if (!StringUtils.hasText(title) ||!StringUtils.hasText(content)) {
+        Integer release = articleBO.getRelease();
+        if (!StringUtils.hasText(title) || !StringUtils.hasText(content)) {
+            throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
+        }
+        if (release != 0 && release != 1) {
             throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
         }
         Article article = new Article();
@@ -120,6 +132,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setArticleTopic(topic);
         article.setBoardId(boardId);
         article.setAccountId(SecurityUtil.getAccountId());
+        article.setArticleRelease(release);
+        article.setArticleAudit(settingService.isArticleNeedAudit() ? FieldCode.ARTICLE_AUDIT_WAIT : FieldCode.ARTICLE_AUDIT_PASS);
         articleMapper.insert(article);
         return ResponseResult.success();
     }

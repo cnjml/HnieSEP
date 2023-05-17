@@ -16,7 +16,6 @@ import com.hniesep.framework.protocol.FieldMessage;
 import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.CommentService;
 import com.hniesep.framework.util.BeanUtil;
-import com.hniesep.framework.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -43,7 +42,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         this.accountService = accountService;
     }
     @Override
-    public ResponseResult<CommentListVO<List<CommentVO>>> commentList(Integer articleId, Integer pageIndex, Integer pageSize){
+    public ResponseResult<CommentListVO<List<CommentVO>>> commentList(Long articleId, Integer pageIndex, Integer pageSize){
         if(pageIndex==null||pageSize==null||articleId==null){
             throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
         }

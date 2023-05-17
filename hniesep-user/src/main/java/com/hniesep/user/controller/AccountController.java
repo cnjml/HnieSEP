@@ -4,6 +4,7 @@ import com.hniesep.framework.annotation.SystemLog;
 import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.bo.UserBO;
 import com.hniesep.framework.entity.ResponseResult;
+import com.hniesep.framework.entity.vo.UserInfoVO;
 import com.hniesep.framework.entity.vo.UserVO;
 import com.hniesep.framework.protocol.Signature;
 import com.hniesep.framework.service.impl.AccountServiceImpl;
@@ -12,7 +13,6 @@ import com.hniesep.framework.service.impl.RegisterServiceImpl;
 import com.hniesep.framework.util.VerificationUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -130,6 +130,11 @@ public class AccountController {
     @ResponseBody
     public ResponseResult<Object> changePassword(@RequestBody UserBO userBO) {
         return accountService.changePasswordByEmailAndOldPassword(userBO);
+    }
+    @GetMapping("/userInfo/{accountId}")
+    @ResponseBody
+    public ResponseResult<UserInfoVO> useInfo(@PathVariable("accountId")Long accountId){
+        return accountService.getUserInfo(accountId);
     }
 
 }
