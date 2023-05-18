@@ -133,7 +133,7 @@ public class AccountController {
     }
     @GetMapping("/userInfo/{accountId}")
     @ResponseBody
-    public ResponseResult<UserInfoVO> useInfo(@PathVariable("accountId")Long accountId){
+    public ResponseResult<UserInfoVO> useInfo(@PathVariable("accountId")Long accountId) {
         return accountService.getUserInfo(accountId);
     }
 

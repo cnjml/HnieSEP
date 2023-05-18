@@ -108,6 +108,14 @@ spring:
       #密码
       password:
 
+oss:
+  accessKey: uJ7M7dqwGG9mdu4muHbllQBbQgsqK5VqvHKhgfPX
+  secretKey: R-UuuKiMlQHQ0BBVNpqYPiqS4YwWKpb3BV0N9A1j
+  bucket: hniesep
+
+filepath:
+  avatar: user/avatar/
+
 ---
 server:
   #设置启动端口
@@ -213,3 +221,10 @@ spring:
       database: 1
       #密码
       password: Hni1sep-backend
+oss:
+  accessKey:
+  secretKey:
+  bucket:
+
+filepath:
+  avatar: user/avatar/

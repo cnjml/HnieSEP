@@ -1,6 +1,5 @@
 package com.hniesep.framework.entity.vo;
 
-import com.hniesep.framework.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
