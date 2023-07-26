@@ -11,6 +11,7 @@ import com.hniesep.framework.mapper.AccountMapper;
 import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.AccountService;
 import com.hniesep.framework.util.BeanUtil;
+import com.hniesep.framework.util.SecurityUtil;
 import com.hniesep.framework.util.StringUtil;
 import com.hniesep.framework.util.VerificationUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -90,5 +91,13 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     public ResponseResult<UserInfoVO> getUserInfo(Long accountId) {
         UserInfoVO userInfoVO = BeanUtil.copyBean(accountMapper.selectById(accountId),UserInfoVO.class);
         return ResponseResult.success(userInfoVO);
+    }
+
+    @Override
+    public ResponseResult<Object> updateUserInfo(UserBO userBO) {
+        Account account = accountMapper.selectById(SecurityUtil.getAccountId());
+        account.setAccountNickname(userBO.getNickname());
+        accountMapper.updateById(account);
+        return ResponseResult.success();
     }
 }

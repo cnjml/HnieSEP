@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -131,10 +132,27 @@ public class AccountController {
     public ResponseResult<Object> changePassword(@RequestBody UserBO userBO) {
         return accountService.changePasswordByEmailAndOldPassword(userBO);
     }
+
+    /**
+     * 获取用户信息
+     * @param accountId 账户id
+     * @return 用户信息
+     */
     @GetMapping("/userInfo/{accountId}")
     @ResponseBody
     public ResponseResult<UserInfoVO> useInfo(@PathVariable("accountId")Long accountId) {
         return accountService.getUserInfo(accountId);
+    }
+
+    /**
+     * 修改用户信息
+     * @param userBO 用户业务对象
+     * @return 操作结果
+     */
+    @PutMapping("/userInfo")
+    @ResponseBody
+    public ResponseResult<Object> updateUserInfo(@RequestBody UserBO userBO){
+        return accountService.updateUserInfo(userBO);
     }
 
 }

@@ -32,6 +32,10 @@ public class ArticleDetailVO implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long accountId;
     /**
+     * 作者头像
+     */
+    private String accountAvatar;
+    /**
      * 作者昵称
      */
     private String accountNickname;

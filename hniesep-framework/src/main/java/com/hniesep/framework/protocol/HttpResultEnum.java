@@ -26,6 +26,12 @@ public enum HttpResultEnum {
     LOGIN_ERROR(452, "用户名或密码错误"),
     CONTENT_IS_NULL(453,"内容为空"),
     VERIFICATION_CODE_ERROR(454,"验证码错误"),
+    ARTICLE_ALREADY_LIKE(455,"文章已点赞"),
+    ARTICLE_UN_LIKE(200,"文章未点赞"),
+    COMMENT_ALREADY_LIKE(456,"评论已经点赞"),
+    COMMENT_UN_LIKE(200,"评论未点赞"),
+    ARTICLE_UN_FAVORITE(200,"文章未收藏"),
+    ARTICLE_ALREADY_FAVORITE(457,"文章已收藏"),
 
 
 

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hniesep.framework.entity.Account;
 import com.hniesep.framework.entity.Article;
+import com.hniesep.framework.entity.Like;
 import com.hniesep.framework.entity.ResponseResult;
 import com.hniesep.framework.entity.bo.ArticleBO;
 import com.hniesep.framework.entity.vo.ArticleDetailVO;
@@ -12,10 +13,12 @@ import com.hniesep.framework.entity.vo.ArticleListVO;
 import com.hniesep.framework.entity.vo.ArticleVO;
 import com.hniesep.framework.exception.SystemException;
 import com.hniesep.framework.mapper.ArticleMapper;
+import com.hniesep.framework.mapper.LikeMapper;
 import com.hniesep.framework.protocol.FieldCode;
 import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.ArticleService;
 import com.hniesep.framework.util.BeanUtil;
+import com.hniesep.framework.util.DateTimeUtil;
 import com.hniesep.framework.util.RedisCache;
 import com.hniesep.framework.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,7 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
     private final ArticleMapper articleMapper;
+    private final LikeMapper likeMapper;
     private RedisCache redisCache;
     private AccountServiceImpl accountService;
     private SettingServiceImpl settingService;
@@ -49,8 +53,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         this.redisCache = redisCache;
     }
 
-    public ArticleServiceImpl(ArticleMapper articleMapper) {
+    public ArticleServiceImpl(ArticleMapper articleMapper, LikeMapper likeMapper) {
         this.articleMapper = articleMapper;
+        this.likeMapper = likeMapper;
     }
 
     @Override
@@ -82,6 +87,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         for (ArticleVO articleVO : articles) {
             Account account = accountService.getById(articleVO.getAccountId());
             articleVO.setAccountNickname(account.getAccountNickname());
+            articleVO.setArticleLikes(getLikes(articleVO.getArticleId()));
         }
         articleListVO.setRows(articles);
         articleListVO.setTotal(page.getTotal());
@@ -97,6 +103,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleLambdaQueryWrapper.eq(Article::getArticleId, articleId);
         articleLambdaQueryWrapper.eq(Article::getArticleAudit, FieldCode.ARTICLE_AUDIT_PASS);
         articleLambdaQueryWrapper.eq(Article::getArticleRelease, FieldCode.ARTICLE_RELEASE_PUBLISH);
+        Article article = articleMapper.selectOne(articleLambdaQueryWrapper);
         ArticleDetailVO articleDetailVO = BeanUtil.copyBean(articleMapper.selectOne(articleLambdaQueryWrapper), ArticleDetailVO.class);
         //增加浏览量到redis
         updateReads(articleId);
@@ -104,6 +111,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Integer reads = redisCache.getCacheMapValue("article:reads", articleId.toString());
         //设置redis中返回的浏览量
         articleDetailVO.setArticleReads(reads);
+        articleDetailVO.setArticleLikes(getLikes(articleId));
+        articleDetailVO.setAccountNickname(accountService.getById(article.getAccountId()).getAccountNickname());
+        articleDetailVO.setAccountAvatar(accountService.getById(article.getAccountId()).getAccountAvatar());
         return ResponseResult.success(articleDetailVO);
     }
 
@@ -135,6 +145,34 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setArticleRelease(release);
         article.setArticleAudit(settingService.isArticleNeedAudit() ? FieldCode.ARTICLE_AUDIT_WAIT : FieldCode.ARTICLE_AUDIT_PASS);
         articleMapper.insert(article);
+        return ResponseResult.success();
+    }
+
+    private Integer getLikes(Long articleId){
+        LambdaQueryWrapper<Like> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Like::getLikeType,FieldCode.LIKE_ARTICLE);
+        lambdaQueryWrapper.eq(Like::getLikeObjectId,articleId);
+        return likeMapper.selectList(lambdaQueryWrapper).size();
+    }
+    @Override
+    public String getTitleById(Long articleId){
+        LambdaQueryWrapper<Article> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Article::getArticleId,articleId);
+        return articleMapper.selectOne(lambdaQueryWrapper).getArticleTitle();
+    }
+
+    @Override
+    public ResponseResult<Object> updateArticle(ArticleBO articleBO){
+        if(!StringUtils.hasText(articleBO.getContent())){
+            throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
+        }
+        LambdaQueryWrapper<Article> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Article::getAccountId,SecurityUtil.getAccountId());
+        lambdaQueryWrapper.eq(Article::getArticleId,articleBO.getArticleId());
+        Article article = articleMapper.selectOne(lambdaQueryWrapper);
+        article.setArticleContent(articleBO.getContent());
+        article.setArticleUpdateTime(DateTimeUtil.getDateTime());
+        articleMapper.updateById(article);
         return ResponseResult.success();
     }
 

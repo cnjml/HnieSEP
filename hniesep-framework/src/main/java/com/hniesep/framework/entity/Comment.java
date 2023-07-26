@@ -62,5 +62,9 @@ public class Comment implements Serializable {
      * 评论状态 0:已删除 1:正常 默认1
      */
     private Integer commentStatus;
+    /**
+     * 点赞状态 0:未点赞 1:已点赞 默认0
+     */
+    private Integer commentAccountLike;
 
 }

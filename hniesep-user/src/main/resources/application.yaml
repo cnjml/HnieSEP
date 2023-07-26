@@ -109,9 +109,10 @@ spring:
       password:
 
 oss:
-  accessKey: uJ7M7dqwGG9mdu4muHbllQBbQgsqK5VqvHKhgfPX
-  secretKey: R-UuuKiMlQHQ0BBVNpqYPiqS4YwWKpb3BV0N9A1j
+  accessKey: PqX4y-bEbo4_5O_t1WY4NbzFv_VVnJS8JOkHUv5k
+  secretKey: zpqE--1aQNk67cjrRCTP1AvAklB4oA_JfjhVO5ZA
   bucket: hniesep
+  cdn: http://ruu2c97om.hn-bkt.clouddn.com
 
 filepath:
   avatar: user/avatar/
@@ -225,6 +226,7 @@ oss:
   accessKey:
   secretKey:
   bucket:
+  cdn: http://ruu2c97om.hn-bkt.clouddn.com
 
 filepath:
   avatar: user/avatar/

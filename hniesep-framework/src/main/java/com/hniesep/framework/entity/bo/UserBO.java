@@ -17,4 +17,5 @@ public class UserBO {
     private String verificationCode;
     private String oldPassword;
     private String newPassword;
+    private String nickname;
 }

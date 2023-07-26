@@ -59,4 +59,11 @@ public interface AccountService {
      * @return 详用户详细信息细
      */
     ResponseResult<UserInfoVO> getUserInfo(Long accountId);
+
+    /**
+     * 更新用户信息
+     * @param userBO 用户业务对象
+     * @return 执行结果
+     */
+    ResponseResult<Object> updateUserInfo(UserBO userBO);
 }

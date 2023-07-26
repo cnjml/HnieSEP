@@ -2,7 +2,7 @@ package com.hniesep.framework.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hniesep.framework.entity.Comment;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * (Comment)表数据库访问层
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * @author makejava
  * @since 2023-04-24 10:58:06
  */
-@Repository
+@Mapper
 public interface CommentMapper extends BaseMapper<Comment> {
 
 }

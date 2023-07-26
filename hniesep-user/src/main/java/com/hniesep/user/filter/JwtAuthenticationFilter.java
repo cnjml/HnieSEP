@@ -54,6 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //解析token
             claims = JwtUtil.parseJwt(token);
         }catch (Exception e){
+            e.printStackTrace();
             //解析token失败，因为token错误，返回需要登录
             String responseString = objectMapper.writeValueAsString(ResponseResult.fail(HttpResultEnum.NEED_LOGIN));
             WebUtils.renderString(response,responseString);

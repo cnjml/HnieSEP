@@ -42,4 +42,9 @@ public class ArticleController {
     public ResponseResult<Object> addArticle(@RequestBody ArticleBO articleBO){
         return articleService.addArticle(articleBO);
     }
+    @PutMapping("/updateArticle")
+    @ResponseBody
+    public ResponseResult<Object> updateArticle(@RequestBody ArticleBO articleBO){
+        return articleService.updateArticle(articleBO);
+    }
 }

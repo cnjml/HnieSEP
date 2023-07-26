@@ -59,6 +59,7 @@ public class RegisterServiceImpl implements RegisterService {
         if(this.checkRegisterVerificationCode(email,verificationCode)){
             Account account = new Account();
             account.setAccountEmail(email);
+            account.setAccountNickname(username);
             account.setAccountUsername(username);
             String bcryptPassword = StringUtil.generateBcrypt(password);
             account.setAccountPassword(bcryptPassword);

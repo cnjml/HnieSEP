@@ -49,4 +49,17 @@ public interface ArticleService extends IService<Article> {
      */
     ResponseResult<Object> addArticle(ArticleBO articleBO);
 
+    /**
+     * 根据id获取文章标题
+     * @param articleId 文章id
+     * @return 文章标题
+     */
+    String getTitleById(Long articleId);
+
+    /**
+     * 更新文章
+     * @param articleBO 文章业务对象
+     * @return 操作结果
+     */
+    ResponseResult<Object> updateArticle(ArticleBO articleBO);
 }

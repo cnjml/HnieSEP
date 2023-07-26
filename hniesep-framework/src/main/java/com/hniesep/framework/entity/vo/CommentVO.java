@@ -62,6 +62,10 @@ public class CommentVO implements Serializable {
      */
     private Date commentTime;
     /**
+     * 点赞状态 0:未点赞 1:已点赞 默认0
+     */
+    private Integer commentAccountLike;
+    /**
      * 子评论
      */
     private List<CommentVO> children;

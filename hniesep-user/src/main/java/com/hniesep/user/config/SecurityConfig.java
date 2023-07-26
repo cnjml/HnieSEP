@@ -60,20 +60,20 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 // 下面开始设置权限
                 .authorizeHttpRequests(authorize -> authorize
+                        //允许所有options请求
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                        //通用放开
+                        //允许所有权限访问
                         .requestMatchers("/mail/**").permitAll()
                         .requestMatchers("/board/**").permitAll()
-                        //个别放开
-                        .requestMatchers("/article/articleDetail/**").anonymous()
-                        .requestMatchers("/article/popularArticles").anonymous()
-                        .requestMatchers("/article/articleList/**").anonymous()
-                        .requestMatchers("/comment/commentList/**").anonymous()
-                        .requestMatchers("/account/register").anonymous()
-                        .requestMatchers("/account/login").anonymous()
-                        .requestMatchers("/account/userInfo/**").anonymous()
-                        .requestMatchers("/account/existUsername/**").anonymous()
-                        .requestMatchers("/account/existEmail/**").anonymous()
+                        .requestMatchers("/article/articleDetail/**").permitAll()
+                        .requestMatchers("/article/popularArticles").permitAll()
+                        .requestMatchers("/article/articleList/**").permitAll()
+                        .requestMatchers("/comment/commentList/**").permitAll()
+                        .requestMatchers("/account/register").permitAll()
+                        .requestMatchers("/account/login").permitAll()
+                        .requestMatchers("/account/userInfo/**").permitAll()
+                        .requestMatchers("/account/existUsername/**").permitAll()
+                        .requestMatchers("/account/existEmail/**").permitAll()
                         // 其他地址的访问均需验证权限
                         .anyRequest().authenticated()
                 );
