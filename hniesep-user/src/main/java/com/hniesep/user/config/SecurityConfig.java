@@ -90,7 +90,6 @@ public class SecurityConfig {
 
     /**
      * 配置资源文件跨源访问(CORS)
-     *
      * @return CorsConfigurationSource
      */
     @Bean

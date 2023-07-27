@@ -132,11 +132,6 @@ public class AccountController {
     public ResponseResult<Object> changePassword(@RequestBody UserBO userBO) {
         return accountService.changePasswordByEmailAndOldPassword(userBO);
     }
-    @GetMapping("/userInfo/{accountId}")
-    @ResponseBody
-    public ResponseResult<UserInfoVO> useInfo(@PathVariable("accountId")Long accountId){
-        return accountService.getUserInfo(accountId);
-    }
 
     /**
      * 获取用户信息

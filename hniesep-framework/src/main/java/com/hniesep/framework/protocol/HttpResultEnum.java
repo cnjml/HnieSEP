@@ -38,7 +38,8 @@ public enum HttpResultEnum {
 
     ARGUMENTS_ERROR(444,"参数错误"),
     SUCCESS(200, "操作成功"),
-    FAILED(400,"操作失败");
+    FAILED(400,"操作失败"),
+    EMAIL_NOT_EXIST(200,"邮箱未注册" );
     final String msg;
     final Integer code;
     HttpResultEnum(Integer code, String msg) {

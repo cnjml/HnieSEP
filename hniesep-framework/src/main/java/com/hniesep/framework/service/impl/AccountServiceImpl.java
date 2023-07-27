@@ -80,7 +80,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     @Override
     public ResponseResult<Object> existEmail(String email) {
         if(selectByEmail(email)==null){
-            return ResponseResult.success();
+            return ResponseResult.success(HttpResultEnum.EMAIL_NOT_EXIST);
         }
         else {
             return ResponseResult.fail(HttpResultEnum.EMAIL_EXIST);

@@ -50,7 +50,7 @@ spring:
     #账户名
     username: minglian-ji@qq.com
     #授权码
-    password: vtxqizxjaeyygbjc
+    password: jhvrrtsnfdqygacb
     #邮件端口
     port: 587
     #默认编码
