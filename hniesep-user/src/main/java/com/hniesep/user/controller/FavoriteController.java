@@ -1,6 +1,7 @@
 package com.hniesep.user.controller;
 
 import com.hniesep.framework.entity.ResponseResult;
+import com.hniesep.framework.entity.vo.FavoriteArticleListVO;
 import com.hniesep.framework.entity.vo.FavoriteArticleVO;
 import com.hniesep.framework.service.impl.FavoriteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class FavoriteController {
     }
     @GetMapping("/articleList")
     @ResponseBody
-    public ResponseResult<List<FavoriteArticleVO>> favoriteArticleList(){
+    public ResponseResult<FavoriteArticleListVO<List<FavoriteArticleVO>>> favoriteArticleList(){
         return favoriteService.favoriteArticleList();
     }
 }

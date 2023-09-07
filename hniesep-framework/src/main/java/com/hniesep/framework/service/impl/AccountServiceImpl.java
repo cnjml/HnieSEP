@@ -48,8 +48,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
        VerificationUtil.generateVerificationImage(realCode,httpServletResponse);
     }
     @Override
-    public ResponseResult<Object> changePasswordByEmailAndOldPassword(UserBO userBO){
-        String email = userBO.getEmail();
+    public ResponseResult<Object> changePasswordByOldPassword(UserBO userBO){
+        String email = SecurityUtil.getAccount().getAccountEmail();
         String oldPassword = userBO.getOldPassword();
         String newPassword = userBO.getNewPassword();
         if(!StringUtil.isValidPassword(newPassword)){
@@ -66,7 +66,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
             accountMapper.updateById(account);
             return ResponseResult.success();
         }
-        return ResponseResult.fail(HttpResultEnum.LOGIN_ERROR);
+        return ResponseResult.fail(HttpResultEnum.NO_PERMISSION);
     }
     @Override
     public ResponseResult<Object> existUsername(String username) {

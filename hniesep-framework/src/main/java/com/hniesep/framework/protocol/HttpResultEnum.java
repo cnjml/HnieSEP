@@ -32,6 +32,8 @@ public enum HttpResultEnum {
     COMMENT_UN_LIKE(200,"评论未点赞"),
     ARTICLE_UN_FAVORITE(200,"文章未收藏"),
     ARTICLE_ALREADY_FAVORITE(457,"文章已收藏"),
+    ARTICLE_NOT_EXIST(458,"文章不存在"),
+    COMMENT_NOT_EXIST(458,"评论不存在"),
 
 
 

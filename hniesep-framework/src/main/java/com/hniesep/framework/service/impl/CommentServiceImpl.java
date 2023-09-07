@@ -38,16 +38,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private final CommentMapper commentMapper;
     private AccountServiceImpl accountService;
     private LikeServiceImpl likeService;
-    public CommentServiceImpl(LikeMapper likeMapper,CommentMapper commentMapper) {
+
+    public CommentServiceImpl(LikeMapper likeMapper, CommentMapper commentMapper) {
         this.likeMapper = likeMapper;
         this.commentMapper = commentMapper;
     }
+
     @Autowired
     public void setAccountService(AccountServiceImpl accountService) {
         this.accountService = accountService;
     }
+
     @Autowired
-    public void setLikeService(LikeServiceImpl likeService){
+    public void setLikeService(LikeServiceImpl likeService) {
         this.likeService = likeService;
     }
 
@@ -92,6 +95,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         List<Comment> comments = list(lambdaQueryWrapper);
         return toCommentVOList(comments);
     }
+
     private List<CommentVO> toCommentVOList(List<Comment> list) {
         List<CommentVO> comments = BeanUtil.copyBeanList(list, CommentVO.class);
         for (CommentVO commentVO : comments) {
@@ -113,14 +117,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             try {
                 //动态：当前请求用户是否喜欢
                 Long accountId = SecurityUtil.getAccountId();
-                boolean isLiked = likeService.isCommentLiked(commentVO.getCommentId(),accountId);
-                commentVO.setCommentAccountLike(isLiked?FieldCode.COMMENT_LIKED:FieldCode.COMMENT_UN_LIKED);
-            }catch (Exception e){
+                boolean isLiked = likeService.isCommentLiked(commentVO.getCommentId(), accountId);
+                commentVO.setCommentAccountLike(isLiked ? FieldCode.COMMENT_LIKED : FieldCode.COMMENT_UN_LIKED);
+            } catch (Exception e) {
                 System.out.println("匿名用户请求评论列表");
             }
         }
         return comments;
     }
+
     @Override
     public ResponseResult<Object> addComment(CommentBO commentBO) {
         //内容未空
@@ -132,10 +137,48 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return ResponseResult.success();
     }
 
-    private Integer getCommentLikes(Long commentId){
+    public boolean isCommentExist(Long commentId) {
+        return commentMapper.selectById(commentId) != null;
+    }
+
+    public boolean deleteCommentById(Long commentId) {
+        return commentMapper.deleteById(commentId) > 0;
+    }
+
+    @Override
+    public ResponseResult<Object> deleteComment(CommentBO commentBO) {
+        if (commentBO.getCommentId() == null) {
+            throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
+        }
+        if (!isCommentExist(commentBO.getCommentId())) {
+            throw new SystemException(HttpResultEnum.COMMENT_NOT_EXIST);
+        }
+        if (!SecurityUtil.getAccountId().equals(commentMapper.selectById(commentBO.getCommentId()).getAccountId())) {
+            throw new SystemException(HttpResultEnum.NO_PERMISSION);
+        }
+        if (commentMapper.selectById(commentBO.getCommentId()) != null) {
+            LambdaQueryWrapper<Comment> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.eq(Comment::getCommentParentId, commentBO.getCommentId());
+            List<Comment> commentChildren = commentMapper.selectList(lambdaQueryWrapper);
+            for (Comment comment : commentChildren) {
+                commentMapper.deleteById(comment.getCommentId());
+            }
+            deleteCommentById(commentBO.getCommentId());
+            return ResponseResult.success();
+        }
+        return ResponseResult.fail();
+    }
+
+    private Integer getCommentLikes(Long commentId) {
         LambdaQueryWrapper<Like> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Like::getLikeType,FieldCode.LIKE_COMMENT);
+        lambdaQueryWrapper.eq(Like::getLikeType, FieldCode.LIKE_COMMENT);
         lambdaQueryWrapper.eq(Like::getLikeObjectId, commentId);
         return likeMapper.selectList(lambdaQueryWrapper).size();
+    }
+
+    public List<Comment> getAllComments(Long articleId) {
+        LambdaQueryWrapper<Comment> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Comment::getArticleId, articleId);
+        return commentMapper.selectList(lambdaQueryWrapper);
     }
 }

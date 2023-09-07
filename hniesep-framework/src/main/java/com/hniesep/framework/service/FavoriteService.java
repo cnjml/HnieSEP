@@ -3,6 +3,7 @@ package com.hniesep.framework.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hniesep.framework.entity.Favorite;
 import com.hniesep.framework.entity.ResponseResult;
+import com.hniesep.framework.entity.vo.FavoriteArticleListVO;
 import com.hniesep.framework.entity.vo.FavoriteArticleVO;
 
 import java.util.List;
@@ -32,6 +33,6 @@ public interface FavoriteService extends IService<Favorite> {
      * 收藏文章列表
      * @return 文章列表
      */
-    ResponseResult<List<FavoriteArticleVO>> favoriteArticleList();
+    ResponseResult<FavoriteArticleListVO<List<FavoriteArticleVO>>> favoriteArticleList();
 }
 

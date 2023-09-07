@@ -47,4 +47,9 @@ public class ArticleController {
     public ResponseResult<Object> updateArticle(@RequestBody ArticleBO articleBO){
         return articleService.updateArticle(articleBO);
     }
+    @DeleteMapping("/deleteArticle")
+    @ResponseBody
+    public ResponseResult<Object> deleteArticle(@RequestBody ArticleBO articleBO){
+        return articleService.deleteArticle(articleBO);
+    }
 }

@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * @author 吉铭炼
@@ -69,12 +70,12 @@ public class OssUtil {
             String upToken = auth.uploadToken(bucket);
             try {
                 if (accountMapper.selectById(SecurityUtil.getAccountId()).getAccountAvatar()!=null) {
-                    this.delete(key);
+                    this.delete(key+ Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".")));
                 }
-                Response response = uploadManager.put(inputStream, key, upToken, null, null);
+                Response response = uploadManager.put(inputStream, key+ Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".")), upToken, null, null);
                 //解析上传成功的结果
                 DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-                this.refresh(key);
+                this.refresh(key+ Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".")));
                 System.out.println(putRet.key);
                 System.out.println(putRet.hash);
             } catch (QiniuException ex) {
@@ -89,7 +90,7 @@ public class OssUtil {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        String[] urls = new String[]{"http://ruu2c97om.hn-bkt.clouddn.com/" + key};
+        String[] urls = new String[]{"http://cnjml.asia/" + key+ Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."))};
         CdnManager c = new CdnManager(Auth.create(accessKey, secretKey));
         try {
             c.refreshUrls(urls);
@@ -107,7 +108,7 @@ public class OssUtil {
     public void delete(String url) {
         try {
             //设置华南的服务器
-            Configuration cfg = new Configuration(Region.autoRegion());
+            Configuration cfg = new Configuration(Region.xinjiapo());
             Auth auth = Auth.create(accessKey, secretKey);
             BucketManager bucketManager = new BucketManager(auth, cfg);
             bucketManager.delete(bucket, url.replaceAll(cdn, ""));

@@ -63,6 +63,7 @@ public class SecurityConfig {
                         //允许所有options请求
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         //允许所有权限访问
+                        .requestMatchers("/search/**").permitAll()
                         .requestMatchers("/mail/**").permitAll()
                         .requestMatchers("/board/**").permitAll()
                         .requestMatchers("/article/articleDetail/**").permitAll()

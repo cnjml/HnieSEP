@@ -3,10 +3,7 @@ package com.hniesep.framework.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hniesep.framework.entity.Account;
-import com.hniesep.framework.entity.Article;
-import com.hniesep.framework.entity.Like;
-import com.hniesep.framework.entity.ResponseResult;
+import com.hniesep.framework.entity.*;
 import com.hniesep.framework.entity.bo.ArticleBO;
 import com.hniesep.framework.entity.vo.ArticleDetailVO;
 import com.hniesep.framework.entity.vo.ArticleListVO;
@@ -15,6 +12,7 @@ import com.hniesep.framework.exception.SystemException;
 import com.hniesep.framework.mapper.ArticleMapper;
 import com.hniesep.framework.mapper.LikeMapper;
 import com.hniesep.framework.protocol.FieldCode;
+import com.hniesep.framework.protocol.FieldMessage;
 import com.hniesep.framework.protocol.HttpResultEnum;
 import com.hniesep.framework.service.ArticleService;
 import com.hniesep.framework.util.BeanUtil;
@@ -37,6 +35,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private RedisCache redisCache;
     private AccountServiceImpl accountService;
     private SettingServiceImpl settingService;
+    private CommentServiceImpl commentService;
 
     @Autowired
     public void setAccountService(AccountServiceImpl accountService) {
@@ -51,6 +50,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Autowired
     public void setRedisCache(RedisCache redisCache) {
         this.redisCache = redisCache;
+    }
+
+    @Autowired
+    public void setCommentService(CommentServiceImpl commentService){
+        this.commentService = commentService;
     }
 
     public ArticleServiceImpl(ArticleMapper articleMapper, LikeMapper likeMapper) {
@@ -148,31 +152,58 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return ResponseResult.success();
     }
 
-    private Integer getLikes(Long articleId){
+    private Integer getLikes(Long articleId) {
         LambdaQueryWrapper<Like> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Like::getLikeType,FieldCode.LIKE_ARTICLE);
-        lambdaQueryWrapper.eq(Like::getLikeObjectId,articleId);
+        lambdaQueryWrapper.eq(Like::getLikeType, FieldCode.LIKE_ARTICLE);
+        lambdaQueryWrapper.eq(Like::getLikeObjectId, articleId);
         return likeMapper.selectList(lambdaQueryWrapper).size();
-    }
-    @Override
-    public String getTitleById(Long articleId){
-        LambdaQueryWrapper<Article> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Article::getArticleId,articleId);
-        return articleMapper.selectOne(lambdaQueryWrapper).getArticleTitle();
     }
 
     @Override
-    public ResponseResult<Object> updateArticle(ArticleBO articleBO){
-        if(!StringUtils.hasText(articleBO.getContent())){
+    public String getTitleById(Long articleId) {
+        LambdaQueryWrapper<Article> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Article::getArticleId, articleId);
+        return articleMapper.selectOne(lambdaQueryWrapper) != null ? articleMapper.selectOne(lambdaQueryWrapper).getArticleTitle() : FieldMessage.ARTICLE_NOT_EXIST;
+    }
+
+    @Override
+    public ResponseResult<Object> updateArticle(ArticleBO articleBO) {
+        if (!StringUtils.hasText(articleBO.getContent())) {
             throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
         }
         LambdaQueryWrapper<Article> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Article::getAccountId,SecurityUtil.getAccountId());
-        lambdaQueryWrapper.eq(Article::getArticleId,articleBO.getArticleId());
+        lambdaQueryWrapper.eq(Article::getAccountId, SecurityUtil.getAccountId());
+        lambdaQueryWrapper.eq(Article::getArticleId, articleBO.getArticleId());
         Article article = articleMapper.selectOne(lambdaQueryWrapper);
         article.setArticleContent(articleBO.getContent());
         article.setArticleUpdateTime(DateTimeUtil.getDateTime());
         articleMapper.updateById(article);
+        return ResponseResult.success();
+    }
+
+    public boolean isArticleExist(Long articleId) {
+        return articleMapper.selectById(articleId) != null;
+    }
+
+    @Override
+    public ResponseResult<Object> deleteArticle(ArticleBO articleBO) {
+        if (articleBO.getArticleId() == null || !isArticleExist(articleBO.getArticleId())) {
+            throw new SystemException(HttpResultEnum.ARGUMENTS_ERROR);
+        }
+        LambdaQueryWrapper<Article> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Article::getAccountId, SecurityUtil.getAccountId());
+        lambdaQueryWrapper.eq(Article::getArticleId, articleBO.getArticleId());
+        Article article = articleMapper.selectOne(lambdaQueryWrapper);
+        if (article == null) {
+            throw new SystemException(HttpResultEnum.NO_PERMISSION);
+        }
+        List<Comment> comments = commentService.getAllComments(article.getArticleId());
+        //原子性,删除文章下的评论
+        for (Comment comment:comments){
+            commentService.deleteCommentById(comment.getCommentId());
+        }
+        articleMapper.deleteById(article);
+        //原子性
         return ResponseResult.success();
     }
 

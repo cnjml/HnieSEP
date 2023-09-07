@@ -50,7 +50,7 @@ spring:
     #账户名
     username: minglian-ji@qq.com
     #授权码
-    password: jhvrrtsnfdqygacb
+    password: rcttromgsbvxhhbg
     #邮件端口
     port: 587
     #默认编码
@@ -111,8 +111,8 @@ spring:
 oss:
   accessKey: PqX4y-bEbo4_5O_t1WY4NbzFv_VVnJS8JOkHUv5k
   secretKey: zpqE--1aQNk67cjrRCTP1AvAklB4oA_JfjhVO5ZA
-  bucket: hniesep
-  cdn: http://ruu2c97om.hn-bkt.clouddn.com
+  bucket: hniesep-singpore
+  cdn: http://cnjml.asia
 
 filepath:
   avatar: user/avatar/
@@ -165,7 +165,7 @@ spring:
     #账户名
     username: minglian-ji@qq.com
     #授权码
-    password: vtxqizxjaeyygbjc
+    password: rwvouvrqhozuhhaf
     #邮件端口
     port: 587
     #默认编码
@@ -226,7 +226,7 @@ oss:
   accessKey:
   secretKey:
   bucket:
-  cdn: http://ruu2c97om.hn-bkt.clouddn.com
+  cdn: http://cnjml.asia
 
 filepath:
   avatar: user/avatar/

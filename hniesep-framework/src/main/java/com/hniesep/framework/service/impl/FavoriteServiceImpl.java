@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hniesep.framework.entity.Favorite;
 import com.hniesep.framework.entity.ResponseResult;
+import com.hniesep.framework.entity.vo.FavoriteArticleListVO;
 import com.hniesep.framework.entity.vo.FavoriteArticleVO;
 import com.hniesep.framework.exception.SystemException;
 import com.hniesep.framework.mapper.FavoriteMapper;
@@ -41,6 +42,9 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
         if(isFavoriteArticle(articleId)){
             throw new SystemException(HttpResultEnum.ARTICLE_ALREADY_FAVORITE);
         }
+        if(!articleService.isArticleExist(articleId)){
+            throw new SystemException(HttpResultEnum.ARTICLE_NOT_EXIST);
+        }
         Favorite favorite = new Favorite();
         favorite.setFavoriteObjectId(articleId);
         favorite.setAccountId(SecurityUtil.getAccountId());
@@ -76,7 +80,8 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
         return ResponseResult.success();
     }
     @Override
-    public ResponseResult<List<FavoriteArticleVO>> favoriteArticleList(){
+    public ResponseResult<FavoriteArticleListVO<List<FavoriteArticleVO>>> favoriteArticleList(){
+        FavoriteArticleListVO<List<FavoriteArticleVO>> favoriteArticleListVO = new FavoriteArticleListVO<>();
         LambdaQueryWrapper<Favorite> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Favorite::getAccountId,SecurityUtil.getAccountId());
         lambdaQueryWrapper.eq(Favorite::getFavoriteType,FieldCode.FAVORITE_TYPE_ARTICLE);
@@ -85,6 +90,8 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
             String articleTitle = articleService.getTitleById(articleVO.getFavoriteObjectId());
             articleVO.setArticleTitle(articleTitle);
         }
-        return ResponseResult.success(favorites);
+        favoriteArticleListVO.setTotal(favorites.size());
+        favoriteArticleListVO.setRows(favorites);
+        return ResponseResult.success(favoriteArticleListVO);
     }
 }

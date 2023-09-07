@@ -40,7 +40,7 @@ public interface AccountService {
      * @return 更改密码结果
      * @param userBO 用户业务对象
      */
-    ResponseResult<Object> changePasswordByEmailAndOldPassword(UserBO userBO);
+    ResponseResult<Object> changePasswordByOldPassword(UserBO userBO);
     /**
      * 用户名是否注册
      * @return 用户名是否注册

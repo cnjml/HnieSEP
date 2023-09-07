@@ -31,4 +31,9 @@ public class CommentController {
     public ResponseResult<Object> addComment(@RequestBody CommentBO commentBO){
         return commentService.addComment(commentBO);
     }
+    @DeleteMapping("/deleteComment")
+    @ResponseBody()
+    public ResponseResult<Object> deleteComment(@RequestBody CommentBO commentBO){
+        return commentService.deleteComment(commentBO);
+    }
 }

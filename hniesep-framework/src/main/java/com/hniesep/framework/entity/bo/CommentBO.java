@@ -1,5 +1,6 @@
 package com.hniesep.framework.entity.bo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentBO {
+    /**
+     * 评论ID
+     */
+    private Long commentId;
     /**
      * 父级评论ID
      */

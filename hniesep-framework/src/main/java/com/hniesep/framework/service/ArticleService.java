@@ -62,4 +62,11 @@ public interface ArticleService extends IService<Article> {
      * @return 操作结果
      */
     ResponseResult<Object> updateArticle(ArticleBO articleBO);
+
+    /**
+     * 删除文章
+     * @param articleBO 文章业务对象
+     * @return 操作结果
+     */
+    ResponseResult<Object> deleteArticle(ArticleBO articleBO);
 }

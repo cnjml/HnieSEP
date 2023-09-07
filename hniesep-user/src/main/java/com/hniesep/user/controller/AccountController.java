@@ -130,7 +130,7 @@ public class AccountController {
     @PutMapping("/changePassword")
     @ResponseBody
     public ResponseResult<Object> changePassword(@RequestBody UserBO userBO) {
-        return accountService.changePasswordByEmailAndOldPassword(userBO);
+        return accountService.changePasswordByOldPassword(userBO);
     }
 
     /**
